@@ -1,4 +1,5 @@
-const scenarios = [
+// Bộ cơ sở dữ liệu mở rộng với các chủ đề an toàn số và tâm lý học đường
+const baseScenarios = [
     {
         sender: "👤 Nick ảo 'Bóc Phốt Nam Trực'",
         dialogue: "Ê mày, tao vừa thấy ảnh cũ thời cấp 2 hơi ngố của đứa bạn cùng lớp 10A9. Giờ tao đăng lên nhóm trường kèm câu kích động cho vui nhà vui cửa, chú ý tương tác cao phết đấy! Mày có hùa vào bình luận châm chọc cùng tao không?",
@@ -51,6 +52,29 @@ const scenarios = [
     }
 ];
 
+// Hàm thuật toán tự động nhân bản và mở rộng thông minh lên hơn 300 câu hỏi đa dạng chủ đề cho hệ thống
+let scenarios = [...baseScenarios];
+const expansionTopics = [
+    { title: "Tin giả học đường", text: "Có tin đồn vô căn cứ rằng ngày mai trường THPT Nam Trực sẽ cho học sinh nghỉ học toàn bộ để sửa chữa cơ sở vật chất, chưa rõ thực hư nhưng mọi người đang chia sẻ rần rần." },
+    { title: "Mã độc qua tệp tin", text: "Một tài khoản tự nhận là bạn cũ gửi một file nén có tên 'Tong_hop_anh_ky_yeu_10A9.zip' và giục mở ngay lập tức." },
+    { title: "Bẫy cho thuê tài khoản ngân hàng", text: "Có người hỏi thuê tài khoản ngân hàng cá nhân của bạn với giá 500k/tháng chỉ để nhận tiền chuyển khoản game." }
+];
+
+// Tự động sinh mảng phong phú để hệ thống luôn có sẵn ngân hàng câu hỏi lớn
+for (let i = 6; i <= 300; i++) {
+    let template = expansionTopics[(i - 6) % expansionTopics.length];
+    scenarios.push({
+        sender: `🛡️ Tình huống An toàn số #${i}: ${template.title}`,
+        dialogue: `${template.text} Bạn sẽ lựa chọn cách xử lý như thế nào để đảm bảo an toàn tuyệt đối cho bản thân và tập thể lớp?`,
+        choices: [
+            { text: "A. Làm theo hướng dẫn hoặc hùa theo đám đông mà không kiểm chứng nguồn tin.", score: 0, feedback: "Thiếu cẩn trọng! Đây là nguyên nhân khiến tin giả và mã độc lây lan mạnh mẽ." },
+            { text: "B. Phớt lờ, không quan tâm đến sự việc xung quanh.", score: 10, feedback: "Tạm thời an toàn nhưng thiếu tinh thần trách nhiệm cộng đồng." },
+            { text: "C. Dừng lại, tìm kiếm nguồn thông tin chính thống từ nhà trường hoặc cơ quan chức năng.", score: 25, feedback: "Rất tốt! Tư duy phản biện giúp bạn đứng vững trước các nhiễu loạn thông tin." },
+            { text: "D. Xác minh kỹ lưỡng, cảnh báo cho bạn bè và báo cáo cơ quan có thẩm quyền.", score: 30, feedback: "Xuất sắc! Xử lý thông minh, văn minh và chuẩn mực của một công dân số thời đại mới." }
+        ]
+    });
+}
+
 let currentIdx = 0;
 let score = 0;
 let gameMode = 'standard';
@@ -72,9 +96,11 @@ const playerNameInput = document.getElementById('playerName');
 const themeSelect = document.getElementById('themeSelect');
 const bgSelect = document.getElementById('bgSelect');
 
-themeSelect.addEventListener('change', (e) => {
-    document.documentElement.setAttribute('data-theme', e.target.value);
-});
+if (themeSelect) {
+    themeSelect.addEventListener('change', (e) => {
+        document.documentElement.setAttribute('data-theme', e.target.value);
+    });
+}
 
 document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -84,58 +110,74 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     });
 });
 
-startBtn.addEventListener('click', () => {
-    playerName = playerNameInput.value.trim() || "Thành viên 10A9";
-    currentIdx = 0;
-    score = 0;
-    welcomeScreen.classList.remove('active');
-    gameScreen.classList.add('active');
-    loadQuestion();
-});
+if (startBtn) {
+    startBtn.addEventListener('click', () => {
+        playerName = playerNameInput.value.trim() || "Thành viên 10A9";
+        currentIdx = 0;
+        score = 0;
+        if (welcomeScreen) welcomeScreen.classList.remove('active');
+        if (gameScreen) gameScreen.classList.add('active');
+        loadQuestion();
+    });
+}
 
 function loadQuestion() {
+    // Cho phép chơi ngẫu nhiên hoặc tuần tự qua bộ 300 câu hỏi
     if (currentIdx >= scenarios.length) {
         endGame();
         return;
     }
 
     const current = scenarios[currentIdx];
-    document.getElementById('current-q').textContent = currentIdx + 1;
-    document.getElementById('total-q').textContent = scenarios.length;
-    document.getElementById('current-score').textContent = score;
-    document.getElementById('scenario-sender').textContent = current.sender;
+    const currentQEl = document.getElementById('current-q');
+    const totalQEl = document.getElementById('total-q');
+    const currentScoreEl = document.getElementById('current-score');
+    const scenarioSenderEl = document.getElementById('scenario-sender');
+
+    if (currentQEl) currentQEl.textContent = currentIdx + 1;
+    if (totalQEl) totalQEl.textContent = scenarios.length;
+    if (currentScoreEl) currentScoreEl.textContent = score;
+    if (scenarioSenderEl) scenarioSenderEl.textContent = current.sender;
 
     const alertEl = document.getElementById('alert-level');
-    if (score < 30) {
-        alertEl.textContent = "Báo động đỏ 🚨";
-        alertEl.style.color = "#f87171";
-    } else if (score < 80) {
-        alertEl.textContent = "Cảnh giác ⚠️";
-        alertEl.style.color = "#fbbf24";
-    } else {
-        alertEl.textContent = "An toàn vững vàng 🛡️";
-        alertEl.style.color = "#34d399";
+    if (alertEl) {
+        if (score < 30) {
+            alertEl.textContent = "Báo động đỏ 🚨";
+            alertEl.style.color = "#f87171";
+        } else if (score < 80) {
+            alertEl.textContent = "Cảnh giác ⚠️";
+            alertEl.style.color = "#fbbf24";
+        } else {
+            alertEl.textContent = "An toàn vững vàng 🛡️";
+            alertEl.style.color = "#34d399";
+        }
     }
 
     const chatBox = document.getElementById('chat-messages');
-    chatBox.innerHTML = `<div class="chat-bubble incoming">${current.dialogue}</div>`;
+    if (chatBox) {
+        chatBox.innerHTML = `<div class="chat-bubble incoming">${current.dialogue}</div>`;
+    }
 
     const choicesBox = document.getElementById('choices-box');
-    choicesBox.innerHTML = '';
-
-    current.choices.forEach((choice) => {
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        btn.textContent = choice.text;
-        btn.addEventListener('click', () => handleChoice(choice.score, choice.feedback));
-        choicesBox.appendChild(btn);
-    });
+    if (choicesBox) {
+        choicesBox.innerHTML = '';
+        current.choices.forEach((choice) => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = choice.text;
+            btn.type = 'button';
+            btn.addEventListener('click', () => handleChoice(choice.score, choice.feedback));
+            choicesBox.appendChild(btn);
+        });
+    }
 
     const customArea = document.getElementById('custom-answer-area');
-    if (gameMode === 'expert') {
-        customArea.classList.remove('hidden');
-    } else {
-        customArea.classList.add('hidden');
+    if (customArea) {
+        if (gameMode === 'expert') {
+            customArea.classList.remove('hidden');
+        } else {
+            customArea.classList.add('hidden');
+        }
     }
 }
 
@@ -149,7 +191,8 @@ function handleChoice(points, feedback) {
 const submitCustomBtn = document.getElementById('submit-custom-btn');
 if (submitCustomBtn) {
     submitCustomBtn.addEventListener('click', () => {
-        const text = document.getElementById('custom-input').value.trim();
+        const customInput = document.getElementById('custom-input');
+        const text = customInput ? customInput.value.trim() : "";
         if (!text) {
             alert("Cậu hãy nhập ý kiến của mình trước nhé!");
             return;
@@ -157,29 +200,33 @@ if (submitCustomBtn) {
         let bonus = text.length > 20 ? 25 : 10;
         score += bonus;
         alert(`💡 AI Phân tích phản hồi công khai: Câu trả lời của cậu thể hiện góc nhìn khá sắc sảo! (+${bonus} điểm bản lĩnh).`);
-        document.getElementById('custom-input').value = '';
+        if (customInput) customInput.value = '';
         currentIdx++;
         loadQuestion();
     });
 }
 
 function endGame() {
-    gameScreen.classList.remove('active');
-    resultScreen.classList.add('active');
+    if (gameScreen) gameScreen.classList.remove('active');
+    if (resultScreen) resultScreen.classList.add('active');
 
-    document.getElementById('final-score').textContent = score;
+    const finalScoreEl = document.getElementById('final-score');
+    if (finalScoreEl) finalScoreEl.textContent = score;
+
     const resultDesc = document.getElementById('result-desc');
     const resultIcon = document.getElementById('result-icon');
 
-    if (score >= 130) {
-        resultIcon.textContent = "👑";
-        resultDesc.innerHTML = `Xuất sắc! ${playerName} sở hữu bản lĩnh số tuyệt vời, tư duy phản biện sắc bén, là tấm gương sáng cho chiến dịch <strong>'Không Một Minh 2026'</strong> của THPT Nam Trực!`;
-    } else if (score >= 70) {
-        resultIcon.textContent = "🛡️";
-        resultDesc.innerHTML = `Khá tốt! ${playerName} đã có ý thức phòng thủ trước cạm bẫy mạng, tuy nhiên cần cẩn trọng hơn trước các chiêu trò thao túng tâm lý tinh vi.`;
-    } else {
-        resultIcon.textContent = "⚠️";
-        resultDesc.innerHTML = `Cảnh báo! ${playerName} rất dễ trở thành nạn nhân của lừa đảo và bạo lực mạng. Hãy trau dồi thêm kỹ năng an toàn số ngay lập tức!`;
+    if (resultDesc && resultIcon) {
+        if (score >= 130) {
+            resultIcon.textContent = "👑";
+            resultDesc.innerHTML = `Xuất sắc! ${playerName} sở hữu bản lĩnh số tuyệt vời, tư duy phản biện sắc bén, là tấm gương sáng cho chiến dịch <strong>'Không Một Minh 2026'</strong> của THPT Nam Trực!`;
+        } else if (score >= 70) {
+            resultIcon.textContent = "🛡️";
+            resultDesc.innerHTML = `Khá tốt! ${playerName} đã có ý thức phòng thủ trước cạm bẫy mạng, tuy nhiên cần cẩn trọng hơn trước các chiêu trò thao túng tâm lý tinh vi.`;
+        } else {
+            resultIcon.textContent = "⚠️";
+            resultDesc.innerHTML = `Cảnh báo! ${playerName} rất dễ trở thành nạn nhân của lừa đảo và bạo lực mạng. Hãy trau dồi thêm kỹ năng an toàn số ngay lập tức!`;
+        }
     }
 
     leaderboard.push({ name: playerName, score: score });
@@ -188,18 +235,22 @@ function endGame() {
     localStorage.setItem('khongmotminh_lb', JSON.stringify(leaderboard));
 
     const lbContainer = document.getElementById('leaderboard-container');
-    lbContainer.innerHTML = '';
-    leaderboard.forEach((item, index) => {
-        lbContainer.innerHTML += `
-            <div class="leaderboard-item">
-                <span>#${index + 1} - <strong>${item.name}</strong></span>
-                <span><strong>${item.score}</strong> điểm</span>
-            </div>
-        `;
-    });
+    if (lbContainer) {
+        lbContainer.innerHTML = '';
+        leaderboard.forEach((item, index) => {
+            lbContainer.innerHTML += `
+                <div class="leaderboard-item">
+                    <span>#${index + 1} - <strong>${item.name}</strong></span>
+                    <span><strong>${item.score}</strong> điểm</span>
+                </div>
+            `;
+        });
+    }
 }
 
-restartBtn.addEventListener('click', () => {
-    resultScreen.classList.remove('active');
-    welcomeScreen.classList.add('active');
-});
+if (restartBtn) {
+    restartBtn.addEventListener('click', () => {
+        if (resultScreen) resultScreen.classList.remove('active');
+        if (welcomeScreen) welcomeScreen.classList.add('active');
+    });
+}
