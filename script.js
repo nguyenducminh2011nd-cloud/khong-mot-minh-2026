@@ -51,7 +51,6 @@ const baseScenarios = [
     }
 ];
 
-// Ngân hàng chủ đề đa dạng phong phú để sinh 300 câu hỏi không bị lặp nhàm chán
 const richTopics = [
     {
         title: "Bẫy tuyển dụng việc làm online",
@@ -87,7 +86,7 @@ const richTopics = [
         title: "Yêu cầu cung cấp CCCD/Mật khẩu",
         text: "Một người gọi điện tự xưng là cơ quan công an hoặc nhân viên nhà mạng, thông báo số điện thoại của bạn liên quan đến đường dây phạm tội và yêu cầu đọc mã OTP hoặc gửi ảnh CCCD.",
         choices: [
-            { text: "A. Hoảng sợ và đọc ngay mã OTP, gửi ảnh CCCD theo yêu cầu vì sợ rắc rối.", score: 0, feedback: "Cực kỳ nguy hiểm! Cơ quan công an không bao giờ làm việc qua điện thoại hay đòi mã OTP." },
+            { text: "A. Hoảng sợ và đọc ngay mã OTP, gửi ảnh CCCD theo yêu cầu vì sợ rắc rối.", score: 0, feedback: "C cực kỳ nguy hiểm! Cơ quan công an không bao giờ làm việc qua điện thoại hay đòi mã OTP." },
             { text: "B. Lưỡng lự làm theo một nửa vì sợ ảnh hưởng đến bản thân.", score: 5, feedback: "Dễ bị kẻ xấu thao túng tâm lý bằng áp lực quyền lực giả mạo." },
             { text: "C. Cúp máy ngay lập tức, tuyệt đối không cung cấp bất kỳ thông tin cá nhân nào.", score: 25, feedback: "Bảo mật thông tin cá nhân cực kỳ tốt!" },
             { text: "D. Thông báo lại sự việc cho gia đình và cơ quan chức năng địa phương.", score: 30, feedback: "Quá xuất sắc! Xử lý chuẩn xác tình huống lừa đảo mạo danh." }
@@ -97,10 +96,8 @@ const richTopics = [
 
 let scenarios = [...baseScenarios];
 
-// Tự động sinh ngẫu nhiên từ kho chủ đề phong phú để tạo đủ 300 câu hỏi đa dạng
 for (let i = 6; i <= 300; i++) {
     let template = richTopics[(i - 6) % richTopics.length];
-    // Tạo biến thể câu hỏi dựa trên kho mẫu phong phú
     scenarios.push({
         sender: `🛡️ Tình huống An toàn số #${i}: ${template.title}`,
         dialogue: `${template.text} (Phiên bản tình huống #${i}). Bạn sẽ lựa chọn cách xử lý thông minh nào sau đây?`,
@@ -222,13 +219,17 @@ if (startBtn) {
     });
 }
 
+// Bấm tạm dừng: Lưu tiến độ, hiện popup thông tin và tự động đưa về màn hình chính
 if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
         const saveData = { playerName, currentIdx, score, gameMode };
         localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
         
         let currentRank = calculateRank(score);
-        showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nCậu có thể nghỉ ngơi bất cứ lúc nào, tiến độ đã được giữ lại an toàn!`);
+        showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nTiến độ đã được giữ lại an toàn!`, () => {
+            if (gameScreen) gameScreen.classList.remove('active');
+            if (welcomeScreen) welcomeScreen.classList.add('active');
+        });
     });
 }
 
