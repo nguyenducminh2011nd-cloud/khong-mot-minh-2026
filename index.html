@@ -22,6 +22,9 @@
             </div>
             
             <div class="header-controls">
+                <!-- NÚT GỌN GÀNG Ở CẠNH MÀN HÌNH CHÍNH -->
+                <button id="quick-lb-btn" type="button" title="Xem Bảng Xếp Hạng" style="background: rgba(99,102,241,0.2); border: 1px solid var(--accent); color: var(--text-main); padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px;">🏆 BXH & Rank</button>
+
                 <div class="control-group">
                     <label>🎨 Giao diện:</label>
                     <select id="themeSelect">
@@ -68,6 +71,37 @@
             </div>
         </section>
 
+        <!-- Màn hình xem Bảng Xếp Hạng & Mốc Điểm Rank chi tiết -->
+        <section id="leaderboard-screen" class="screen">
+            <div class="result-card">
+                <div style="font-size: 32px; margin-bottom: 5px;">🏆</div>
+                <h2 style="font-size: 20px; color: #6366f1; margin-bottom: 15px;">Hệ Thống Xếp Hạng & Mốc Điểm</h2>
+                
+                <!-- Bảng các mốc điểm rank -->
+                <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left;">
+                    <h3 style="font-size: 13px; color: #f3f4f6; margin-bottom: 8px;">📈 Thang Điểm Thăng Hạng:</h3>
+                    <div style="font-size: 12px; color: #9ca3af; display: flex; flex-direction: column; gap: 4px;">
+                        <div>🥉 <strong>Đồng:</strong> 0 - 199 điểm</div>
+                        <div>🥈 <strong>Bạc:</strong> 200 - 499 điểm</div>
+                        <div>⭐ <strong>Vàng:</strong> 500 - 999 điểm</div>
+                        <div>🏆 <strong>Bạch Kim:</strong> 1000 - 1499 điểm</div>
+                        <div>💎 <strong>Kim Cương:</strong> 1500 - 1999 điểm</div>
+                        <div>👑 <strong>Thách Đấu:</strong> Từ 2000 điểm trở lên</div>
+                    </div>
+                </div>
+
+                <!-- Top cao thủ -->
+                <div class="leaderboard-section">
+                    <h3>👑 Top Cao Thủ Bản Lĩnh Số</h3>
+                    <div class="leaderboard-list" id="global-leaderboard-container"></div>
+                </div>
+
+                <div class="result-actions" style="margin-top: 15px;">
+                    <button id="back-to-home-btn" class="primary-btn" type="button">Quay Lại Trang Chủ ⬅️</button>
+                </div>
+            </div>
+        </section>
+
         <!-- Màn hình 2: Trò chơi tương tác chính -->
         <section id="game-screen" class="screen">
             <div class="game-top-bar">
@@ -76,7 +110,6 @@
                 <div class="stat-badge">Mức cảnh giác: <span id="alert-level">An toàn</span></div>
             </div>
 
-            <!-- THANH TIÊU ĐỀ CHAT CÓ NÚT TẠM DỪNG NỔI BẬT -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 10px;">
                 <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9ca3af;">
                     <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
