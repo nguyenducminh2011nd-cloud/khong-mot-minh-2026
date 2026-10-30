@@ -1,36 +1,36 @@
 :root {
     --bg-primary: #0b0f19;
-    --card-bg: rgba(17, 24, 39, 0.85);
+    --card-bg: rgba(17, 24, 39, 0.9);
     --accent: #6366f1;
     --accent-hover: #4f46e5;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
-    --border: rgba(255, 255, 255, 0.1);
-    --glow: rgba(99, 102, 241, 0.4);
+    --border: rgba(255, 255, 255, 0.12);
+    --glow: rgba(99, 102, 241, 0.25);
 }
 
 [data-theme="neon"] {
     --bg-primary: #0d0221;
-    --card-bg: rgba(26, 11, 46, 0.85);
+    --card-bg: rgba(26, 11, 46, 0.9);
     --accent: #f72585;
     --accent-hover: #b5179e;
-    --glow: rgba(247, 37, 133, 0.5);
+    --glow: rgba(247, 37, 133, 0.3);
 }
 
 [data-theme="emerald"] {
     --bg-primary: #022c22;
-    --card-bg: rgba(6, 78, 59, 0.85);
+    --card-bg: rgba(6, 78, 59, 0.9);
     --accent: #10b981;
     --accent-hover: #059669;
-    --glow: rgba(16, 185, 129, 0.5);
+    --glow: rgba(16, 185, 129, 0.3);
 }
 
 [data-theme="sunset"] {
     --bg-primary: #2b0b0a;
-    --card-bg: rgba(69, 10, 10, 0.85);
+    --card-bg: rgba(69, 10, 10, 0.9);
     --accent: #f97316;
     --accent-hover: #ea580c;
-    --glow: rgba(249, 115, 22, 0.5);
+    --glow: rgba(249, 115, 22, 0.3);
 }
 
 * {
@@ -49,67 +49,32 @@ body {
     align-items: center;
     overflow-x: hidden;
     position: relative;
-    /* Hiệu ứng nền chuyển động nhẹ nhàng */
-    background: linear-gradient(135deg, var(--bg-primary), #111827, #1f2937);
-    background-size: 300% 300%;
-    animation: bgAnimation 10s ease infinite;
-}
-
-@keyframes bgAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    background: radial-gradient(circle at center, #111827 0%, #030712 100%);
 }
 
 .ambient-glow {
     position: absolute;
-    width: 450px;
-    height: 450px;
+    width: 500px;
+    height: 500px;
     background: var(--glow);
-    filter: blur(130px);
+    filter: blur(140px);
     border-radius: 50%;
     z-index: 0;
-    animation: floatGlow 6s ease-in-out infinite alternate;
 }
 
-@keyframes floatGlow {
-    0% { transform: translateY(-20px) scale(0.95); }
-    100% { transform: translateY(20px) scale(1.05); }
-}
-
-/* KHUNG CHÍNH CÓ HIỆU ỨNG VIỀN LED RGB CHẠY QUANH */
+/* KHUNG CHÍNH: Gọn gàng, viền tinh tế, ánh sáng dịu nhẹ */
 .app-container {
     position: relative;
     z-index: 1;
-    width: 94%;
-    max-width: 850px;
+    width: 92%;
+    max-width: 800px;
     background: var(--card-bg);
     backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 25px;
+    padding: 24px;
     margin: 20px auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-    
-    /* Hiệu ứng viền LED RGB chuyển động */
-    border: 2px solid transparent;
-    background-clip: padding-box;
-}
-
-.app-container::before {
-    content: '';
-    position: absolute;
-    top: -2px; bottom: -2px; left: -2px; right: -2px;
-    background: linear-gradient(45deg, var(--accent), #ff007f, #00f2fe, var(--accent));
-    background-size: 400% 400%;
-    border-radius: 22px;
-    z-index: -1;
-    animation: rgbBorder 6s linear infinite;
-}
-
-@keyframes rgbBorder {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow);
 }
 
 /* Header */
@@ -131,19 +96,12 @@ body {
 }
 
 .pulse-icon {
-    font-size: 28px;
-    animation: pulseIcon 2s infinite;
-}
-
-@keyframes pulseIcon {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    font-size: 26px;
 }
 
 .logo-area h1 {
-    font-size: 18px;
-    font-weight: 800;
+    font-size: 17px;
+    font-weight: 750;
 }
 
 .logo-area p {
@@ -172,7 +130,7 @@ select {
     background: rgba(0, 0, 0, 0.4);
     color: var(--text-main);
     border: 1px solid var(--border);
-    padding: 6px 10px;
+    padding: 5px 10px;
     border-radius: 6px;
     font-size: 11px;
     outline: none;
@@ -212,7 +170,7 @@ select {
     font-size: 14px;
     margin-bottom: 15px;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s;
 }
 
 .input-group input:focus {
@@ -220,22 +178,24 @@ select {
 }
 
 .mode-selection h3 {
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: 10px;
+    color: var(--text-muted);
 }
 
+/* KHU VỰC CHỌN CHẾ ĐỘ: HIỆN SONG SONG CÂN ĐỐI */
 .mode-cards {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
     margin-bottom: 20px;
 }
 
 .mode-btn {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 12px;
+    padding: 14px;
     text-align: left;
     cursor: pointer;
     color: var(--text-main);
@@ -247,8 +207,7 @@ select {
 
 .mode-btn.active, .mode-btn:hover {
     border-color: var(--accent);
-    background: rgba(99, 102, 241, 0.15);
-    transform: translateY(-2px);
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .mode-icon {
@@ -267,7 +226,7 @@ select {
     margin: 0;
 }
 
-/* Nút bấm chính */
+/* NÚT BẮT ĐẦU THỬ THÁCH TO RÕ Ở DƯỚI */
 .primary-btn {
     width: 100%;
     padding: 14px;
@@ -278,13 +237,12 @@ select {
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 15px var(--glow);
-    transition: all 0.3s;
+    box-shadow: 0 4px 12px var(--glow);
+    transition: background 0.2s, transform 0.1s;
 }
 
 .primary-btn:hover {
     background: var(--accent-hover);
-    transform: translateY(-2px);
 }
 
 /* Giao diện Game Chat */
@@ -308,6 +266,156 @@ select {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid var(--border);
     border-radius: 12px;
-    height: 200px;
+    height: 190px;
     overflow-y: auto;
-    padding: 1
+    padding: 12px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-header-sim {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    background: #10b981;
+    border-radius: 50%;
+}
+
+.chat-bubble {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.4;
+    max-width: 90%;
+}
+
+.chat-bubble.incoming {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+}
+
+.choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.choice-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    padding: 12px 15px;
+    border-radius: 10px;
+    color: var(--text-main);
+    text-align: left;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.choice-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Khung tự trả lời */
+.custom-answer-box {
+    margin-top: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.custom-answer-box.hidden {
+    display: none;
+}
+
+.custom-answer-box p {
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+.custom-answer-box textarea {
+    width: 100%;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-main);
+    padding: 8px;
+    font-size: 12px;
+    resize: none;
+    outline: none;
+    margin-bottom: 8px;
+}
+
+.secondary-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* Kết quả & Bảng xếp hạng */
+.result-card h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.final-score-box {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+
+.result-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.leaderboard-section {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.leaderboard-section h3 {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
