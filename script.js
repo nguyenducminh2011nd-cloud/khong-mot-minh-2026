@@ -77,7 +77,6 @@ let score = 0;
 let gameMode = 'standard';
 let playerName = '';
 
-// Bảng xếp hạng Leo Rank lưu trữ vĩnh viễn trên trình duyệt
 let leaderboard = JSON.parse(localStorage.getItem('khongmotminh_lb')) || [
     { name: "Thành viên A", score: 1200, rank: "Kim Cương 💎" },
     { name: "Thành viên B", score: 950, rank: "Bạch Kim 🏆" },
@@ -108,21 +107,25 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     });
 });
 
-// Khôi phục tiến độ nếu có
+// Kiểm tra tiến độ đã lưu khi tải trang
 window.addEventListener('DOMContentLoaded', () => {
     const savedGame = localStorage.getItem('khongmotminh_save');
     if (savedGame) {
         const data = JSON.parse(savedGame);
         if (data && data.currentIdx > 0 && data.currentIdx < scenarios.length) {
-            showCustomPopup(`Chào mừng ${data.playerName} trở lại! Phát hiện cậu đang làm dở ở câu hỏi số ${data.currentIdx + 1}. Cậu có muốn tiếp tục leo rank không?`, () => {
-                playerName = data.playerName;
-                currentIdx = data.currentIdx;
-                score = data.score;
-                gameMode = data.gameMode || 'standard';
-                if (welcomeScreen) welcomeScreen.classList.remove('active');
-                if (gameScreen) gameScreen.classList.add('active');
-                loadQuestion();
-            });
+            showCustomPopup(`Chào mừng ${data.playerName} trở lại! Phát hiện tiến độ đang ở câu hỏi số ${data.currentIdx + 1}. Cậu có muốn tiếp tục chơi không?`, (isYes) => {
+                if (isYes) {
+                    playerName = data.playerName;
+                    currentIdx = data.currentIdx;
+                    score = data.score;
+                    gameMode = data.gameMode || 'standard';
+                    if (welcomeScreen) welcomeScreen.classList.remove('active');
+                    if (gameScreen) gameScreen.classList.add('active');
+                    loadQuestion();
+                } else {
+                    localStorage.removeItem('khongmotminh_save');
+                }
+            }, true);
         }
     }
 });
@@ -139,14 +142,12 @@ if (startBtn) {
     });
 }
 
+// Sửa nút Tạm dừng: Lưu lại và GIỮ NGUYÊN MÀN HÌNH CHƠI, không đá về menu chính
 if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
         const saveData = { playerName, currentIdx, score, gameMode };
         localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
-        showCustomPopup(`☕ Đã lưu tiến độ rank tại câu số ${currentIdx + 1}! Cậu có thể nghỉ ngơi và quay lại bất cứ lúc nào.`, () => {
-            if (gameScreen) gameScreen.classList.remove('active');
-            if (welcomeScreen) welcomeScreen.classList.add('active');
-        });
+        showCustomPopup(`☕ Đã lưu thành công tiến độ tại câu số ${currentIdx + 1}! Cậu có thể yên tâm nghỉ ngơi, lần sau vào lại web sẽ tự động khôi phục đúng câu này.`);
     });
 }
 
@@ -208,7 +209,8 @@ function loadQuestion() {
     }
 }
 
-function showCustomPopup(message, callback) {
+// Hỗ trợ popup có 1 hoặc 2 nút (cho phép chọn Tiếp tục hay Hủy)
+function showCustomPopup(message, callback, isConfirm = false) {
     let existingOverlay = document.getElementById('custom-popup-overlay');
     if (existingOverlay) existingOverlay.remove();
 
@@ -228,23 +230,42 @@ function showCustomPopup(message, callback) {
         font-family: 'Plus Jakarta Sans', sans-serif;
     `;
 
+    let buttonsHTML = `<button id="popup-ok-btn" style="width: 100%; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Xác Nhận</button>`;
+    
+    if (isConfirm) {
+        buttonsHTML = `
+            <div style="display: flex; gap: 10px;">
+                <button id="popup-no-btn" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Chơi Mới</button>
+                <button id="popup-yes-btn" style="flex: 1; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Tiếp Tục</button>
+            </div>
+        `;
+    }
+
     box.innerHTML = `
-        <div style="font-size: 28px; margin-bottom: 10px;">🏆</div>
-        <h3 style="font-size: 16px; margin-bottom: 10px; color: #6366f1;">Hệ Thống Leo Rank Số</h3>
+        <div style="font-size: 28px; margin-bottom: 10px;">🛡️</div>
+        <h3 style="font-size: 16px; margin-bottom: 10px; color: #6366f1;">Hệ Thống Bản Lĩnh Số</h3>
         <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 20px;">${message}</p>
-        <button id="popup-ok-btn" style="
-            width: 100%; padding: 10px; background: #6366f1; color: white;
-            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;
-        ">Tiếp Tục Leo Rank</button>
+        ${buttonsHTML}
     `;
 
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
-    document.getElementById('popup-ok-btn').addEventListener('click', () => {
-        overlay.remove();
-        if (callback) callback();
-    });
+    if (isConfirm) {
+        document.getElementById('popup-yes-btn').addEventListener('click', () => {
+            overlay.remove();
+            if (callback) callback(true);
+        });
+        document.getElementById('popup-no-btn').addEventListener('click', () => {
+            overlay.remove();
+            if (callback) callback(false);
+        });
+    } else {
+        document.getElementById('popup-ok-btn').addEventListener('click', () => {
+            overlay.remove();
+            if (callback) callback();
+        });
+    }
 }
 
 function handleChoice(points, feedback) {
@@ -295,10 +316,9 @@ function endGame() {
         resultDesc.innerHTML = `Chúc mừng ${playerName} đã hoàn thành hành trình! Mức rank đạt được: <strong style="color: #6366f1;">${rankTitle}</strong> với tổng điểm tích lũy là <strong>${score}</strong> điểm!`;
     }
 
-    // Cập nhật bảng xếp hạng leo rank
     leaderboard.push({ name: playerName, score: score, rank: rankTitle });
     leaderboard.sort((a, b) => b.score - a.score);
-    leaderboard = leaderboard.slice(0, 5); // Lấy top 5 cao thủ
+    leaderboard = leaderboard.slice(0, 5);
     localStorage.setItem('khongmotminh_lb', JSON.stringify(leaderboard));
 
     const lbContainer = document.getElementById('leaderboard-container');
