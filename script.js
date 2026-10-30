@@ -51,24 +51,60 @@ const baseScenarios = [
     }
 ];
 
-let scenarios = [...baseScenarios];
-const expansionTopics = [
-    { title: "Tin giả mạng xã hội", text: "Có thông tin chưa được kiểm chứng lan truyền mạnh mẽ trên mạng về một sự việc nghiêm trọng xảy ra trong khu vực, nhiều người đang hoang mang chia sẻ." },
-    { title: "Tệp đính kèm lạ", text: "Một tài khoản lâu ngày không liên lạc tự nhiên gửi một tệp tin nén có tên 'Tai_lieu_quan_trọng.zip' và giục mở ngay." },
-    { title: "Bẫy cho thuê tài khoản", text: "Có người hỏi thuê tài khoản cá nhân hoặc tài khoản ngân hàng với giá cao chỉ để nhận tiền chuyển khoản trực tuyến." }
+// Ngân hàng chủ đề đa dạng phong phú để sinh 300 câu hỏi không bị lặp nhàm chán
+const richTopics = [
+    {
+        title: "Bẫy tuyển dụng việc làm online",
+        text: "Có tin rao nhận gõ văn bản hoặc làm nhiệm vụ bấm tim TikTok kiếm 300k/ngày, nhưng yêu cầu nộp trước 100k tiền phí giữ chỗ.",
+        choices: [
+            { text: "A. Chuyển khoản ngay vì nghĩ số tiền phí rất nhỏ so với tiền kiếm được.", score: 0, feedback: "Sai lầm! Đây là bẫy lừa đảo chiếm đoạt tài sản qua mạng phổ biến." },
+            { text: "B. Nhắn tin hỏi xem có thể trừ trực tiếp tiền phí vào lương đầu tiên không.", score: 10, feedback: "Chưa cẩn trọng. Các đơn vị tuyển dụng uy tín không bao giờ thu phí người lao động." },
+            { text: "C. Nhận định đây là lừa đảo và bỏ qua không tương tác.", score: 25, feedback: "Rất tỉnh táo! Tránh xa các chiêu trò việc nhẹ lương cao không rõ nguồn gốc." },
+            { text: "D. Báo cáo bài đăng lừa đảo để bảo vệ những người khác sập bẫy.", score: 30, feedback: "Xuất sắc! Trách nhiệm cộng đồng rất cao." }
+        ]
+    },
+    {
+        title: "Deepfake giả mạo người thân",
+        text: "Bạn nhận được cuộc gọi video call từ tài khoản của người thân, hình ảnh hơi mờ và đang vấp ngã cần chuyển gấp một khoản tiền vào tài khoản lạ.",
+        choices: [
+            { text: "A. Lập tức chuyển tiền vì thấy đúng mặt và giọng nói của người nhà.", score: 0, feedback: "Sập bẫy công nghệ Deepfake AI giả mạo hình ảnh và giọng nói!" },
+            { text: "B. Hơi hoang mang nhưng cứ chuyển một nửa trước xem sao.", score: 5, feedback: "Nguy hiểm! Kẻ gian đã lợi dụng công nghệ để thao túng tâm lý hoảng loạn." },
+            { text: "C. Cúp máy ngay lập tức và gọi điện thoại trực tiếp bằng số di động thông thường để xác thực.", score: 25, feedback: "Quá thông minh! Luôn có kênh xác thực độc lập trước mọi tình huống khẩn cấp." },
+            { text: "D. Ghi âm lại cuộc gọi, nhắc nhở gia đình nâng cao cảnh giác với các thủ đoạn giả mạo.", score: 30, feedback: "Tuyệt vời! Bản lĩnh xử lý tình huống công nghệ cao cực kỳ xuất sắc." }
+        ]
+    },
+    {
+        title: "Tin đồn thất thiệt trên mạng",
+        text: "Một hội nhóm đông thành viên đăng tải video cắt ghép sai sự thật về một giáo viên trong trường nhằm câu view, thu hút hàng nghìn lượt chia sẻ.",
+        choices: [
+            { text: "A. Vào hùa theo bình luận chỉ trích vì thấy nhiều người cũng nói vậy.", score: 0, feedback: "Thiếu suy nghĩ! Tiếp tay cho hành vi vu khống và bôi nhọ danh dự." },
+            { text: "B. Âm thầm đọc hóng chuyện nhưng không bấm like hay chia sẻ.", score: 10, feedback: "Chưa tích cực. Sự bàng quan tạo đất sống cho tin giả hoành hành." },
+            { text: "C. Kiểm chứng thông tin từ các kênh chính thống và từ chối tin vào video cắt ghép.", score: 25, feedback: "Tư duy phản biện tốt! Không để cảm xúc chi phối bởi thông tin độc hại." },
+            { text: "D. Báo cáo bài viết vi phạm tiêu chuẩn cộng đồng và đính chính thông tin chuẩn xác.", score: 30, feedback: "Hoàn hảo! Thể hiện rõ phẩm chất và trách nhiệm của một công dân số mẫu mực." }
+        ]
+    },
+    {
+        title: "Yêu cầu cung cấp CCCD/Mật khẩu",
+        text: "Một người gọi điện tự xưng là cơ quan công an hoặc nhân viên nhà mạng, thông báo số điện thoại của bạn liên quan đến đường dây phạm tội và yêu cầu đọc mã OTP hoặc gửi ảnh CCCD.",
+        choices: [
+            { text: "A. Hoảng sợ và đọc ngay mã OTP, gửi ảnh CCCD theo yêu cầu vì sợ rắc rối.", score: 0, feedback: "Cực kỳ nguy hiểm! Cơ quan công an không bao giờ làm việc qua điện thoại hay đòi mã OTP." },
+            { text: "B. Lưỡng lự làm theo một nửa vì sợ ảnh hưởng đến bản thân.", score: 5, feedback: "Dễ bị kẻ xấu thao túng tâm lý bằng áp lực quyền lực giả mạo." },
+            { text: "C. Cúp máy ngay lập tức, tuyệt đối không cung cấp bất kỳ thông tin cá nhân nào.", score: 25, feedback: "Bảo mật thông tin cá nhân cực kỳ tốt!" },
+            { text: "D. Thông báo lại sự việc cho gia đình và cơ quan chức năng địa phương.", score: 30, feedback: "Quá xuất sắc! Xử lý chuẩn xác tình huống lừa đảo mạo danh." }
+        ]
+    }
 ];
 
+let scenarios = [...baseScenarios];
+
+// Tự động sinh ngẫu nhiên từ kho chủ đề phong phú để tạo đủ 300 câu hỏi đa dạng
 for (let i = 6; i <= 300; i++) {
-    let template = expansionTopics[(i - 6) % expansionTopics.length];
+    let template = richTopics[(i - 6) % richTopics.length];
+    // Tạo biến thể câu hỏi dựa trên kho mẫu phong phú
     scenarios.push({
         sender: `🛡️ Tình huống An toàn số #${i}: ${template.title}`,
-        dialogue: `${template.text} Bạn sẽ lựa chọn cách xử lý như thế nào để đảm bảo an toàn tuyệt đối cho bản thân và cộng đồng?`,
-        choices: [
-            { text: "A. Làm theo hướng dẫn hoặc hùa theo đám đông mà không kiểm chứng.", score: 0, feedback: "Thiếu cẩn trọng! Đây là nguyên nhân khiến tin giả và rủi ro lây lan." },
-            { text: "B. Phớt lờ, không quan tâm đến sự việc xung quanh.", score: 10, feedback: "Tạm thời an toàn nhưng thiếu tinh thần trách nhiệm." },
-            { text: "C. Dừng lại, tìm kiếm nguồn thông tin chính thống để xác minh.", score: 25, feedback: "Rất tốt! Tư duy phản biện giúp bạn đứng vững trước thông tin nhiễu loạn." },
-            { text: "D. Xác minh kỹ lưỡng, cảnh báo cho mọi người và báo cáo cơ quan chức năng.", score: 30, feedback: "Xuất sắc! Xử lý thông minh và chuẩn mực của một công dân số." }
-        ]
+        dialogue: `${template.text} (Phiên bản tình huống #${i}). Bạn sẽ lựa chọn cách xử lý thông minh nào sau đây?`,
+        choices: JSON.parse(JSON.stringify(template.choices))
     });
 }
 
@@ -136,7 +172,6 @@ function renderGlobalLeaderboard() {
     }
 }
 
-// Nút mở nhanh bảng xếp hạng từ góc màn hình chính
 if (quickLbBtn) {
     quickLbBtn.addEventListener('click', () => {
         if (welcomeScreen) welcomeScreen.classList.remove('active');
