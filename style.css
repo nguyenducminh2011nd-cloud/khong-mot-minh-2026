@@ -1,1 +1,226 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
 
+body {
+  background-color: #0f172a;
+  background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding: 20px;
+}
+
+/* Các kiểu hình nền tùy chọn trong kho */
+body.bg-1 { background-image: radial-gradient(circle at 30% 30%, #1e1b4b 0%, #0f172a 100%); }
+body.bg-2 { background-image: linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px); background-size: 30px 30px; }
+body.bg-3 { background-image: linear-gradient(135deg, #0f172a 0%, #312e81 50%, #0f172a 100%); }
+
+/* Thanh công cụ tùy chỉnh góc trên */
+.customizer-bar {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  display: flex;
+  gap: 15px;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+}
+
+.customizer-bar select {
+  background: rgba(15, 23, 42, 0.8);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Khung web mở rộng, rộng rãi thoáng đãng */
+.wide-container {
+  width: 100%;
+  max-width: 750px;
+  height: 620px;
+  background: rgba(30, 41, 59, 0.65);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 2px solid var(--border-color, rgba(56, 189, 248, 0.4));
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+/* Header ứng dụng */
+.app-header {
+  padding: 18px 24px;
+  background: rgba(15, 23, 42, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  font-size: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 50%;
+}
+
+.logo-area h2 {
+  font-size: 18px;
+  color: var(--accent-color, #38bdf8);
+}
+
+.status-dot {
+  font-size: 12px;
+  color: #4ade80;
+}
+
+/* Khung nội dung chat rộng rãi */
+.chat-box {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.message.received {
+  background: rgba(255, 255, 255, 0.08);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.message.sent {
+  background: var(--btn-bg, #0284c7);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.message.system {
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  color: #fef08a;
+  font-size: 13px;
+  text-align: center;
+  align-self: center;
+  max-width: 90%;
+}
+
+/* Khung lựa chọn */
+.options-box {
+  padding: 18px;
+  background: rgba(15, 23, 42, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opt-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-color, #38bdf8);
+  border: 1px solid var(--border-color, rgba(56, 189, 248, 0.4));
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.opt-btn:hover {
+  background: var(--btn-bg, #0284c7);
+  color: #fff;
+}
+
+/* Màn hình kết quả */
+.result-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  text-align: center;
+  gap: 18px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#result-title {
+  font-size: 28px;
+  color: var(--accent-color, #38bdf8);
+}
+
+#result-badge {
+  font-size: 20px;
+  font-weight: bold;
+  color: #facc15;
+}
+
+.btn-restart {
+  background: var(--accent-color, #38bdf8);
+  color: #0f172a;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-restart:hover {
+  opacity: 0.85;
+}
+
+/* Các bộ chủ đề màu sắc tùy chỉnh (Themes) */
+body.theme-neon {
+  --accent-color: #f472b6;
+  --border-color: rgba(244, 114, 182, 0.5);
+  --btn-bg: #db2777;
+}
+
+body.theme-dark {
+  --accent-color: #e2e8f0;
+  --border-color: rgba(226, 232, 240, 0.3);
+  --btn-bg: #475569;
+}
+
+body.theme-matrix {
+  --accent-color: #4ade80;
+  --border-color: rgba(74, 222, 128, 0.5);
+  --btn-bg: #16a34a;
+}
