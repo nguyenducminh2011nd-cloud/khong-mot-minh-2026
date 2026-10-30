@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không Một Minh 2026 - Chuyên Sâu Tâm Lý & An Toàn Số</title>
+    <title>Không Một Minh 2026 - Mô Phỏng Tâm Lý & An Toàn Số</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -17,7 +17,7 @@
                 <div class="pulse-icon">🛡️</div>
                 <div>
                     <h1>Không Một Minh 2026</h1>
-                    <p>THPT Nam Trực • Mô Phỏng Thao Túng Tâm Lý & An Toàn Số</p>
+                    <p>Mô Phỏng Thao Túng Tâm Lý & An Toàn Số</p>
                 </div>
             </div>
             
@@ -31,16 +31,6 @@
                         <option value="sunset">Sunset Cam Hoàng Hôn</option>
                     </select>
                 </div>
-                
-                <div class="control-group">
-                    <label>🖼️ Hình nền:</label>
-                    <select id="bgSelect">
-                        <option value="grid">Lưới Kỹ Thuật Số</option>
-                        <option value="matrix">Mã Trận Đêm</option>
-                        <option value="gradient">Gradient Động</option>
-                        <option value="solid">Tối Giản Tuyệt Đối</option>
-                    </select>
-                </div>
             </div>
         </header>
 
@@ -51,7 +41,7 @@
                 <p>Thế giới mạng không chỉ có màu hồng. Những cái bẫy thao túng tâm lý, bạo lực ẩn giấu và hội nhóm độc hại đang chờ sẵn. Liệu cậu có giữ được tỉnh táo?</p>
                 
                 <div class="input-group">
-                    <input type="text" id="playerName" placeholder="Nhập họ tên hoặc biệt danh của cậu..." autocomplete="off">
+                    <input type="text" id="playerName" placeholder="Nhập biệt danh hoặc tên của cậu..." autocomplete="off">
                 </div>
 
                 <div class="mode-selection">
@@ -68,7 +58,7 @@
                             <span class="mode-icon">🔥</span>
                             <div>
                                 <strong>Cực Hạn Tự Trả Lời</strong>
-                                <p>Tự do gõ ý kiến riêng & chấm điểm công khai.</p>
+                                <p>Tự do gõ ý kiến riêng & nhận điểm đánh giá.</p>
                             </div>
                         </button>
                     </div>
@@ -81,7 +71,7 @@
         <!-- Màn hình 2: Trò chơi tương tác chính -->
         <section id="game-screen" class="screen">
             <div class="game-top-bar">
-                <div class="stat-badge">Câu hỏi: <span id="current-q">1</span>/<span id="total-q">5</span></div>
+                <div class="stat-badge">Câu hỏi: <span id="current-q">1</span>/<span id="total-q">300</span></div>
                 <div class="stat-badge">Điểm bản lĩnh: <span id="current-score">0</span></div>
                 <div class="stat-badge">Mức cảnh giác: <span id="alert-level">An toàn</span></div>
             </div>
@@ -99,7 +89,7 @@
             <div class="custom-answer-box hidden" id="custom-answer-area">
                 <p>💭 Ý kiến cá nhân của cậu trước tình huống này là gì? Hãy viết rõ cách xử lý:</p>
                 <textarea id="custom-input" placeholder="Gõ câu trả lời của cậu ở đây..."></textarea>
-                <button id="submit-custom-btn" class="secondary-btn" type="button">Gửi Đánh Giá Công Khai</button>
+                <button id="submit-custom-btn" class="secondary-btn" type="button">Gửi Đánh Giá</button>
             </div>
         </section>
 
@@ -112,7 +102,7 @@
                 <p id="result-desc">Đang tổng hợp đánh giá tâm lý...</p>
 
                 <div class="leaderboard-section">
-                    <h3>🏆 Bảng Xếp Hạng Bản Lĩnh Số (Top Khối 10)</h3>
+                    <h3>🏆 Bảng Xếp Hạng Bản Lĩnh Số</h3>
                     <div class="leaderboard-list" id="leaderboard-container"></div>
                 </div>
 
