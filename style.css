@@ -6,7 +6,7 @@
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --border: rgba(255, 255, 255, 0.1);
-    --glow: rgba(99, 102, 241, 0.3);
+    --glow: rgba(99, 102, 241, 0.4);
 }
 
 [data-theme="neon"] {
@@ -14,7 +14,7 @@
     --card-bg: rgba(26, 11, 46, 0.85);
     --accent: #f72585;
     --accent-hover: #b5179e;
-    --glow: rgba(247, 37, 133, 0.4);
+    --glow: rgba(247, 37, 133, 0.5);
 }
 
 [data-theme="emerald"] {
@@ -22,7 +22,7 @@
     --card-bg: rgba(6, 78, 59, 0.85);
     --accent: #10b981;
     --accent-hover: #059669;
-    --glow: rgba(16, 185, 129, 0.4);
+    --glow: rgba(16, 185, 129, 0.5);
 }
 
 [data-theme="sunset"] {
@@ -30,7 +30,7 @@
     --card-bg: rgba(69, 10, 10, 0.85);
     --accent: #f97316;
     --accent-hover: #ea580c;
-    --glow: rgba(249, 115, 22, 0.4);
+    --glow: rgba(249, 115, 22, 0.5);
 }
 
 * {
@@ -49,19 +49,35 @@ body {
     align-items: center;
     overflow-x: hidden;
     position: relative;
-    transition: background 0.5s ease;
+    /* Hiệu ứng nền chuyển động nhẹ nhàng */
+    background: linear-gradient(135deg, var(--bg-primary), #111827, #1f2937);
+    background-size: 300% 300%;
+    animation: bgAnimation 10s ease infinite;
+}
+
+@keyframes bgAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .ambient-glow {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    height: 450px;
     background: var(--glow);
-    filter: blur(120px);
+    filter: blur(130px);
     border-radius: 50%;
     z-index: 0;
+    animation: floatGlow 6s ease-in-out infinite alternate;
 }
 
+@keyframes floatGlow {
+    0% { transform: translateY(-20px) scale(0.95); }
+    100% { transform: translateY(20px) scale(1.05); }
+}
+
+/* KHUNG CHÍNH CÓ HIỆU ỨNG VIỀN LED RGB CHẠY QUANH */
 .app-container {
     position: relative;
     z-index: 1;
@@ -69,11 +85,31 @@ body {
     max-width: 850px;
     background: var(--card-bg);
     backdrop-filter: blur(16px);
-    border: 1px solid var(--border);
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     padding: 25px;
     margin: 20px auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    
+    /* Hiệu ứng viền LED RGB chuyển động */
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.app-container::before {
+    content: '';
+    position: absolute;
+    top: -2px; bottom: -2px; left: -2px; right: -2px;
+    background: linear-gradient(45deg, var(--accent), #ff007f, #00f2fe, var(--accent));
+    background-size: 400% 400%;
+    border-radius: 22px;
+    z-index: -1;
+    animation: rgbBorder 6s linear infinite;
+}
+
+@keyframes rgbBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Header */
@@ -96,6 +132,13 @@ body {
 
 .pulse-icon {
     font-size: 28px;
+    animation: pulseIcon 2s infinite;
+}
+
+@keyframes pulseIcon {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 
 .logo-area h1 {
@@ -169,6 +212,11 @@ select {
     font-size: 14px;
     margin-bottom: 15px;
     outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--accent);
 }
 
 .mode-selection h3 {
@@ -176,7 +224,6 @@ select {
     margin-bottom: 10px;
 }
 
-/* KHU VỰC CHỌN CHẾ ĐỘ ĐÃ ĐƯỢC FIX HIỂN THỊ SONG SONG */
 .mode-cards {
     display: flex;
     gap: 12px;
@@ -201,6 +248,7 @@ select {
 .mode-btn.active, .mode-btn:hover {
     border-color: var(--accent);
     background: rgba(99, 102, 241, 0.15);
+    transform: translateY(-2px);
 }
 
 .mode-icon {
@@ -230,11 +278,13 @@ select {
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.3s;
+    box-shadow: 0 4px 15px var(--glow);
+    transition: all 0.3s;
 }
 
 .primary-btn:hover {
     background: var(--accent-hover);
+    transform: translateY(-2px);
 }
 
 /* Giao diện Game Chat */
@@ -260,154 +310,4 @@ select {
     border-radius: 12px;
     height: 200px;
     overflow-y: auto;
-    padding: 12px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.chat-header-sim {
-    font-size: 11px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 6px;
-}
-
-.status-dot {
-    width: 7px;
-    height: 7px;
-    background: #10b981;
-    border-radius: 50%;
-}
-
-.chat-bubble {
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 13px;
-    line-height: 1.4;
-    max-width: 90%;
-}
-
-.chat-bubble.incoming {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--border);
-    align-self: flex-start;
-}
-
-.choices-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.choice-btn {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border);
-    padding: 12px 15px;
-    border-radius: 10px;
-    color: var(--text-main);
-    text-align: left;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.choice-btn:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-/* Khung tự trả lời */
-.custom-answer-box {
-    margin-top: 12px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border);
-    padding: 12px;
-    border-radius: 10px;
-}
-
-.custom-answer-box.hidden {
-    display: none;
-}
-
-.custom-answer-box p {
-    font-size: 12px;
-    margin-bottom: 8px;
-    color: var(--text-muted);
-}
-
-.custom-answer-box textarea {
-    width: 100%;
-    height: 60px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text-main);
-    padding: 8px;
-    font-size: 12px;
-    resize: none;
-    outline: none;
-    margin-bottom: 8px;
-}
-
-.secondary-btn {
-    background: #10b981;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-/* Kết quả & Bảng xếp hạng */
-.result-card h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
-}
-
-.final-score-box {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--accent);
-    margin-bottom: 12px;
-}
-
-.result-card p {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 15px;
-    line-height: 1.5;
-}
-
-.leaderboard-section {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.leaderboard-section h3 {
-    font-size: 13px;
-    margin-bottom: 10px;
-    color: var(--text-main);
-}
-
-.leaderboard-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 8px;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-}
-
-.leaderboard-item:last-child {
-    border-bottom: none;
-}
+    padding: 1
