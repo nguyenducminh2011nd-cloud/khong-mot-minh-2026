@@ -1,6 +1,6 @@
 :root {
     --bg-main: #0b0f19;
-    --card-bg: rgba(17, 24, 39, 0.75);
+    --card-bg: rgba(17, 24, 39, 0.85);
     --accent: #6366f1;
     --accent-hover: #4f46e5;
     --text-main: #f3f4f6;
@@ -10,21 +10,21 @@
 
 [data-theme="neon"] {
     --bg-main: #0f051d;
-    --card-bg: rgba(30, 15, 55, 0.75);
+    --card-bg: rgba(30, 15, 55, 0.85);
     --accent: #ec4899;
     --accent-hover: #db2777;
 }
 
 [data-theme="emerald"] {
     --bg-main: #022c22;
-    --card-bg: rgba(6, 78, 59, 0.75);
+    --card-bg: rgba(6, 78, 59, 0.85);
     --accent: #10b981;
     --accent-hover: #059669;
 }
 
 [data-theme="sunset"] {
     --bg-main: #2b110e;
-    --card-bg: rgba(69, 26, 22, 0.75);
+    --card-bg: rgba(69, 26, 22, 0.85);
     --accent: #f97316;
     --accent-hover: #ea580c;
 }
@@ -57,6 +57,7 @@ body {
     opacity: 0.15;
     border-radius: 50%;
     z-index: 0;
+    pointer-events: none; /* Không chặn chuột */
 }
 
 .app-container {
@@ -69,7 +70,8 @@ body {
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     padding: 24px;
-    z-index: 1;
+    z-index: 10;
+    position: relative;
 }
 
 .app-header {
@@ -134,6 +136,8 @@ body {
     font-size: 11px;
     cursor: pointer;
     outline: none;
+    position: relative;
+    z-index: 20;
 }
 
 .screen {
@@ -177,6 +181,8 @@ body {
     font-size: 13px;
     outline: none;
     transition: 0.2s;
+    position: relative;
+    z-index: 20;
 }
 
 .input-group input:focus {
@@ -212,6 +218,8 @@ body {
     flex-direction: column;
     gap: 6px;
     transition: 0.2s;
+    position: relative;
+    z-index: 20;
 }
 
 .mode-btn:hover {
@@ -238,6 +246,10 @@ body {
     line-height: 1.3;
 }
 
+button, input, select {
+    pointer-events: auto !important; /* Đảm bảo mọi nút bấm đều nhận sự kiện click */
+}
+
 .primary-btn {
     width: 100%;
     background: var(--accent);
@@ -250,6 +262,8 @@ body {
     cursor: pointer;
     transition: 0.2s;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    position: relative;
+    z-index: 20;
 }
 
 .primary-btn:hover {
@@ -313,6 +327,8 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: 0.2s;
+    position: relative;
+    z-index: 20;
 }
 
 .choice-btn:hover {
@@ -344,6 +360,8 @@ body {
     resize: none;
     outline: none;
     margin-bottom: 10px;
+    position: relative;
+    z-index: 20;
 }
 
 .secondary-btn {
@@ -356,6 +374,8 @@ body {
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
+    position: relative;
+    z-index: 20;
 }
 
 .secondary-btn:hover {
@@ -385,7 +405,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Định dạng thẻ BXH hiện đại, gọn gàng và tinh tế */
 .leaderboard-list {
     display: flex;
     flex-direction: column;
