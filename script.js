@@ -1,131 +1,473 @@
-const scenarioData = [
-  {
-    sender: "Tài khoản Clone",
-    text: "Anh ơi, vote giúp em cuộc thi STEM với, nhấp vào link này đăng nhập nick rồi nhập mã OTP nhé!",
-    options: [
-      { text: "Bấm vào link đăng nhập giúp luôn", score: 0, reply: "Em gửi link đi anh bấm cho!" },
-      { text: "Block ngay và báo cáo lừa đảo", score: 25, reply: "Lừa đảo lấy nick à? Báo cáo ngay!" }
-    ]
-  },
-  {
-    sender: "Acc Game Lạ",
-    text: "Nick ông cùi thế, đưa mật khẩu đây tui nạp hộ cho 500k Quân Huy/Sò miễn phí nè!",
-    options: [
-      { text: "Cung cấp tài khoản + mật khẩu", score: 0, reply: "Thật hả ông? Mật khẩu tui là 123456..." },
-      { text: "Từ chối, làm gì có bánh chưng miễn phí", score: 25, reply: "Thôi khỏi, không ai cho không ai cái gì đâu!" }
-    ]
-  },
-  {
-    sender: "Người dùng ẩn danh",
-    text: "Tao có ảnh dìm và thông tin của mày, không chuyển 100k là tao đăng lên Confession trường!",
-    options: [
-      { text: "Hoảng sợ chuyển tiền luôn", score: 0, reply: "Đừng đăng mà, tui chuyển tiền ngay đây..." },
-      { text: "Chụp màn hình lại, báo thầy cô/BGH và gia đình", score: 25, reply: "Tôi đã lưu bằng chứng và báo với Đoàn trường!" }
-    ]
-  },
-  {
-    sender: "Nhóm Chat Lớp",
-    text: "Mấy bạn ơi, thấy bảo bạn X trong lớp bị bóc phốt kìa, vào chửi hùa đi cho xôm!",
-    options: [
-      { text: "Vào comment chửi hùa theo đám đông", score: 0, reply: "Đâu đâu gửi link đây tui vô chửi với!" },
-      { text: "Không tham gia cyberbullying, khuyên các bạn dừng lại", score: 25, reply: "Chưa rõ thực hư thế nào, đừng bắt nạt mạng bạn ấy!" }
-    ]
-  }
-];
-
-let currentIndex = 0;
-let totalScore = 0;
-
-const chatBox = document.getElementById('chat-box');
-const optionsBox = document.getElementById('options-box');
-const resultScreen = document.getElementById('result-screen');
-
-function loadQuestion() {
-  if (currentIndex >= scenarioData.length) {
-    showResult();
-    return;
-  }
-
-  const q = scenarioData[currentIndex];
-  
-  const msgDiv = document.createElement('div');
-  msgDiv.className = 'message received';
-  msgDiv.innerHTML = `<b>${q.sender}:</b> ${q.text}`;
-  chatBox.appendChild(msgDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
-  optionsBox.innerHTML = '';
-  q.options.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.className = 'opt-btn';
-    btn.innerText = opt.text;
-    btn.onclick = () => handleSelect(opt, q);
-    optionsBox.appendChild(btn);
-  });
+:root {
+    --bg-primary: #0b0f19;
+    --card-bg: rgba(17, 24, 39, 0.85);
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border: rgba(255, 255, 255, 0.1);
+    --glow: rgba(99, 102, 241, 0.3);
 }
 
-function handleSelect(option, question) {
-  totalScore += option.score;
-
-  const userDiv = document.createElement('div');
-  userDiv.className = 'message sent';
-  userDiv.innerText = option.reply;
-  chatBox.appendChild(userDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
-  optionsBox.innerHTML = '';
-  currentIndex++;
-
-  setTimeout(loadQuestion, 800);
+[data-theme="neon"] {
+    --bg-primary: #0d0221;
+    --card-bg: rgba(26, 11, 46, 0.85);
+    --accent: #f72585;
+    --accent-hover: #b5179e;
+    --glow: rgba(247, 37, 133, 0.4);
 }
 
-function showResult() {
-  chatBox.classList.add('hidden');
-  optionsBox.classList.add('hidden');
-  resultScreen.classList.remove('hidden');
-
-  const title = document.getElementById('result-title');
-  const badge = document.getElementById('result-badge');
-  const desc = document.getElementById('result-desc');
-
-  badge.innerText = `🏆 Tổng điểm: ${totalScore}/100`;
-
-  if (totalScore >= 75) {
-    title.innerText = "Cáo Già Cyber 🦊";
-    desc.innerText = "Tỉnh táo đỉnh cao! Kẻ xấu hoàn toàn không có cửa thao túng tâm lý bạn.";
-  } else if (totalScore >= 50) {
-    title.innerText = "Cư Dân Mạng Tinh Tế 🛡️";
-    desc.innerText = "Có kỹ năng phòng thủ cơ bản, cần cảnh giác hơn trước các chiêu trò lừa đảo tinh vi.";
-  } else {
-    title.innerText = "Nạn Nhân Mẫu Mực ⚠️";
-    desc.innerText = "Rất dễ bị lừa đảo và thao túng trên mạng. Cần tham gia ngay chiến dịch 'Không Một Mình 2026' để lấy lại bản lĩnh!";
-  }
+[data-theme="emerald"] {
+    --bg-primary: #022c22;
+    --card-bg: rgba(6, 78, 59, 0.85);
+    --accent: #10b981;
+    --accent-hover: #059669;
+    --glow: rgba(16, 185, 129, 0.4);
 }
 
-function restartGame() {
-  currentIndex = 0;
-  totalScore = 0;
-  chatBox.innerHTML = '<div class="message system">Bắt đầu lượt chơi mới!</div>';
-  chatBox.classList.remove('hidden');
-  optionsBox.classList.remove('hidden');
-  resultScreen.classList.add('hidden');
-  loadQuestion();
+[data-theme="sunset"] {
+    --bg-primary: #2b0b0a;
+    --card-bg: rgba(69, 10, 10, 0.85);
+    --accent: #f97316;
+    --accent-hover: #ea580c;
+    --glow: rgba(249, 115, 22, 0.4);
 }
 
-// Hàm đổi giao diện màu sắc
-function changeTheme(themeName) {
-  const body = document.getElementById('page-body');
-  body.className = body.className.replace(/theme-\S+/g, ''); // Xóa theme cũ
-  if (themeName !== 'cyber') {
-    body.classList.add(`theme-${themeName}`);
-  }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-// Hàm đổi kho hình nền
-function changeWallpaper(bgName) {
-  const body = document.getElementById('page-body');
-  body.className = body.className.replace(/bg-\S+/g, ''); // Xóa bg cũ
-  body.classList.add(bgName);
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    transition: background 0.5s ease;
 }
 
-loadQuestion();
+/* Hiệu ứng nền động */
+[data-bg="grid"] body {
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+[data-bg="matrix"] body {
+    background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+}
+
+[data-bg="gradient"] body {
+    background: linear-gradient(135deg, var(--bg-primary), #1f2937, #111827);
+    background-size: 400% 400%;
+    animation: gradientBG 12s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.ambient-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: var(--glow);
+    filter: blur(120px);
+    border-radius: 50%;
+    z-index: 0;
+    animation: floatGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes floatGlow {
+    0% { transform: translateY(-30px) scale(0.9); }
+    100% { transform: translateY(30px) scale(1.1); }
+}
+
+.app-container {
+    position: relative;
+    z-index: 1;
+    width: 92%;
+    max-width: 900px;
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    padding: 30px;
+    margin: 20px 0;
+}
+
+/* Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pulse-icon {
+    font-size: 32px;
+    animation: pulseIcon 2s infinite;
+}
+
+@keyframes pulseIcon {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.logo-area h1 {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.logo-area p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.header-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.control-group label {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+select {
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Màn hình */
+.screen {
+    display: none;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Welcome Card */
+.welcome-card h2 {
+    font-size: 26px;
+    margin-bottom: 12px;
+    color: var(--accent);
+}
+
+.welcome-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 15px;
+    margin-bottom: 20px;
+    outline: none;
+}
+
+.mode-selection h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.mode-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.mode-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: left;
+    cursor: pointer;
+    color: var(--text-main);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.mode-btn.active, .mode-btn:hover {
+    border-color: var(--accent);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.mode-icon {
+    font-size: 26px;
+}
+
+.mode-btn strong {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.mode-btn p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Nút bấm chính */
+.primary-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 4px 15px var(--glow);
+}
+
+.primary-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+/* Giao diện Game Chat */
+.game-top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.stat-badge {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.chat-container {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    height: 250px;
+    overflow-y: auto;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chat-header-sim {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+.chat-bubble {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 85%;
+}
+
+.chat-bubble.incoming {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    border-top-left-radius: 2px;
+}
+
+.choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.choice-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    border-radius: 12px;
+    color: var(--text-main);
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.choice-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateX(5px);
+}
+
+/* Khung tự trả lời */
+.custom-answer-box {
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 14px;
+}
+
+.custom-answer-box.hidden {
+    display: none;
+}
+
+.custom-answer-box p {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--text-muted);
+}
+
+.custom-answer-box textarea {
+    width: 100%;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-main);
+    padding: 10px;
+    font-size: 13px;
+    resize: none;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.secondary-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* Kết quả & Bảng xếp hạng */
+.result-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.final-score-box {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.result-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.leaderboard-section {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.leaderboard-section h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .mode-cards {
+        grid-template-columns: 1fr;
+    }
+    .app-container {
+        padding: 20px;
+    }
+}
