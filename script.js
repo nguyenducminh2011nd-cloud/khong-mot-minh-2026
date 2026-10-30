@@ -1,4 +1,3 @@
-// Bộ cơ sở dữ liệu mở rộng với các chủ đề an toàn số và tâm lý học đường
 const baseScenarios = [
     {
         sender: "👤 Nick ảo 'Bóc Phốt Nam Trực'",
@@ -52,7 +51,6 @@ const baseScenarios = [
     }
 ];
 
-// Hàm thuật toán tự động nhân bản và mở rộng thông minh lên hơn 300 câu hỏi đa dạng chủ đề cho hệ thống
 let scenarios = [...baseScenarios];
 const expansionTopics = [
     { title: "Tin giả học đường", text: "Có tin đồn vô căn cứ rằng ngày mai trường THPT Nam Trực sẽ cho học sinh nghỉ học toàn bộ để sửa chữa cơ sở vật chất, chưa rõ thực hư nhưng mọi người đang chia sẻ rần rần." },
@@ -60,7 +58,6 @@ const expansionTopics = [
     { title: "Bẫy cho thuê tài khoản ngân hàng", text: "Có người hỏi thuê tài khoản ngân hàng cá nhân của bạn với giá 500k/tháng chỉ để nhận tiền chuyển khoản game." }
 ];
 
-// Tự động sinh mảng phong phú để hệ thống luôn có sẵn ngân hàng câu hỏi lớn
 for (let i = 6; i <= 300; i++) {
     let template = expansionTopics[(i - 6) % expansionTopics.length];
     scenarios.push({
@@ -94,7 +91,6 @@ const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
 const playerNameInput = document.getElementById('playerName');
 const themeSelect = document.getElementById('themeSelect');
-const bgSelect = document.getElementById('bgSelect');
 
 if (themeSelect) {
     themeSelect.addEventListener('change', (e) => {
@@ -122,22 +118,16 @@ if (startBtn) {
 }
 
 function loadQuestion() {
-    // Cho phép chơi ngẫu nhiên hoặc tuần tự qua bộ 300 câu hỏi
     if (currentIdx >= scenarios.length) {
         endGame();
         return;
     }
 
     const current = scenarios[currentIdx];
-    const currentQEl = document.getElementById('current-q');
-    const totalQEl = document.getElementById('total-q');
-    const currentScoreEl = document.getElementById('current-score');
-    const scenarioSenderEl = document.getElementById('scenario-sender');
-
-    if (currentQEl) currentQEl.textContent = currentIdx + 1;
-    if (totalQEl) totalQEl.textContent = scenarios.length;
-    if (currentScoreEl) currentScoreEl.textContent = score;
-    if (scenarioSenderEl) scenarioSenderEl.textContent = current.sender;
+    document.getElementById('current-q').textContent = currentIdx + 1;
+    document.getElementById('total-q').textContent = scenarios.length;
+    document.getElementById('current-score').textContent = score;
+    document.getElementById('scenario-sender').textContent = current.sender;
 
     const alertEl = document.getElementById('alert-level');
     if (alertEl) {
@@ -181,11 +171,52 @@ function loadQuestion() {
     }
 }
 
+// HÀM TẠO POPUP THAY THẾ CHO ALERT() MẶC ĐỊNH CỦA TRÌNH DUYỆT
+function showCustomPopup(message, callback) {
+    let existingOverlay = document.getElementById('custom-popup-overlay');
+    if (existingOverlay) existingOverlay.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'custom-popup-overlay';
+    overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
+        display: flex; justify-content: center; align-items: center; z-index: 9999;
+    `;
+
+    const box = document.createElement('div');
+    box.style.cssText = `
+        background: #111827; border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 20px 25px; border-radius: 16px; width: 90%; max-width: 400px;
+        color: #f3f4f6; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    `;
+
+    box.innerHTML = `
+        <div style="font-size: 28px; margin-bottom: 10px;">🛡️</div>
+        <h3 style="font-size: 16px; margin-bottom: 10px; color: #6366f1;">Đánh Giá Bản Lĩnh Số</h3>
+        <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 20px;">${message}</p>
+        <button id="popup-ok-btn" style="
+            width: 100%; padding: 10px; background: #6366f1; color: white;
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;
+        ">Xác Nhận & Tiếp Tục</button>
+    `;
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    document.getElementById('popup-ok-btn').addEventListener('click', () => {
+        overlay.remove();
+        if (callback) callback();
+    });
+}
+
 function handleChoice(points, feedback) {
     score += points;
-    alert(feedback);
-    currentIdx++;
-    loadQuestion();
+    showCustomPopup(feedback, () => {
+        currentIdx++;
+        loadQuestion();
+    });
 }
 
 const submitCustomBtn = document.getElementById('submit-custom-btn');
@@ -194,15 +225,16 @@ if (submitCustomBtn) {
         const customInput = document.getElementById('custom-input');
         const text = customInput ? customInput.value.trim() : "";
         if (!text) {
-            alert("Cậu hãy nhập ý kiến của mình trước nhé!");
+            showCustomPopup("Cậu hãy nhập ý kiến của mình trước nhé!");
             return;
         }
         let bonus = text.length > 20 ? 25 : 10;
         score += bonus;
-        alert(`💡 AI Phân tích phản hồi công khai: Câu trả lời của cậu thể hiện góc nhìn khá sắc sảo! (+${bonus} điểm bản lĩnh).`);
-        if (customInput) customInput.value = '';
-        currentIdx++;
-        loadQuestion();
+        showCustomPopup(`💡 AI Phân tích phản hồi công khai: Câu trả lời của cậu thể hiện góc nhìn khá sắc sảo! (+${bonus} điểm bản lĩnh).`, () => {
+            if (customInput) customInput.value = '';
+            currentIdx++;
+            loadQuestion();
+        });
     });
 }
 
