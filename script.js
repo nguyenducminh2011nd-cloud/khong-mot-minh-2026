@@ -120,7 +120,6 @@ let score = 0;
 let gameMode = 'standard';
 let playerName = '';
 
-// Khởi tạo danh sách bảng xếp hạng lưu trong localStorage
 let leaderboard = JSON.parse(localStorage.getItem('khongmotminh_lb')) || [
     { name: "Thành viên A", score: 1200, rank: "Kim Cương 💎" },
     { name: "Thành viên B", score: 950, rank: "Bạch Kim 🏆" },
@@ -165,15 +164,12 @@ function calculateRank(currentScore) {
     return "Đồng 🥉";
 }
 
-// Cập nhật và hiển thị bảng xếp hạng chuẩn xác kèm tên người chơi thực tế
 function renderGlobalLeaderboard() {
     const globalContainer = document.getElementById('global-leaderboard-container');
     if (globalContainer) {
-        // Lấy tên hiện tại từ ô input nếu người chơi vừa gõ tên mà chưa bấm bắt đầu
         let currentTypedName = playerNameInput ? playerNameInput.value.trim() : "";
         if (currentTypedName && score > 0) {
             let currentRank = calculateRank(score);
-            // Kiểm tra xem tên đã có trong bảng chưa, nếu có thì cập nhật, chưa thì chèn vào
             let existingIndex = leaderboard.findIndex(item => item.name === currentTypedName);
             if (existingIndex !== -1) {
                 leaderboard[existingIndex].score = score;
@@ -189,9 +185,9 @@ function renderGlobalLeaderboard() {
         globalContainer.innerHTML = '';
         leaderboard.forEach((item, index) => {
             globalContainer.innerHTML += `
-                <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px;">
-                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank || 'Thành viên'})</span>
-                    <span><strong>${item.score}</strong> điểm</span>
+                <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 13px; align-items: center; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 6px;">
+                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank})</span>
+                    <span style="font-weight: 700; color: #6366f1;">${item.score} điểm</span>
                 </div>
             `;
         });
@@ -253,7 +249,6 @@ if (pauseBtn) {
         const saveData = { playerName, currentIdx, score, gameMode };
         localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
         
-        // Cập nhật thẳng vào bảng xếp hạng khi bấm lưu tiến độ
         let currentRank = calculateRank(score);
         let existingIndex = leaderboard.findIndex(item => item.name === playerName);
         if (existingIndex !== -1) {
@@ -338,9 +333,9 @@ function showCustomPopup(message, callback, isConfirm = false) {
     const overlay = document.createElement('div');
     overlay.id = 'custom-popup-overlay';
     overlay.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
         background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
-        display: flex; justify-content: center; align-items: center; z-index: 9999;
+        display: flex; justify-content: center; align-items: center; z-index: 99999;
     `;
 
     const box = document.createElement('div');
@@ -349,15 +344,16 @@ function showCustomPopup(message, callback, isConfirm = false) {
         padding: 20px 25px; border-radius: 16px; width: 90%; max-width: 420px;
         color: #f3f4f6; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         font-family: 'Plus Jakarta Sans', sans-serif; white-space: pre-line;
+        position: relative; z-index: 100000; pointer-events: auto;
     `;
 
-    let buttonsHTML = `<button id="popup-ok-btn" style="width: 100%; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Xác Nhận</button>`;
+    let buttonsHTML = `<button id="popup-ok-btn" type="button" style="width: 100%; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Xác Nhận</button>`;
     
     if (isConfirm) {
         buttonsHTML = `
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button id="popup-no-btn" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Chơi Mới</button>
-                <button id="popup-yes-btn" style="flex: 1; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Tiếp Tục</button>
+                <button id="popup-no-btn" type="button" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Chơi Mới</button>
+                <button id="popup-yes-btn" type="button" style="flex: 1; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Tiếp Tục</button>
             </div>
         `;
     }
@@ -373,16 +369,19 @@ function showCustomPopup(message, callback, isConfirm = false) {
     document.body.appendChild(overlay);
 
     if (isConfirm) {
-        document.getElementById('popup-yes-btn').addEventListener('click', () => {
+        document.getElementById('popup-yes-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
             overlay.remove();
             if (callback) callback(true);
         });
-        document.getElementById('popup-no-btn').addEventListener('click', () => {
+        document.getElementById('popup-no-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
             overlay.remove();
             if (callback) callback(false);
         });
     } else {
-        document.getElementById('popup-ok-btn').addEventListener('click', () => {
+        document.getElementById('popup-ok-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
             overlay.remove();
             if (callback) callback();
         });
@@ -443,8 +442,8 @@ function endGame() {
         leaderboard.forEach((item, index) => {
             lbContainer.innerHTML += `
                 <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank || 'Thành viên'})</span>
-                    <span><strong>${item.score}</strong> điểm</span>
+                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank})</span>
+                    <span><strong>${item.score} điểm</strong></span>
                 </div>
             `;
         });
