@@ -1,67 +1,64 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Check-in An Toàn Mạng - Không Một Mình 2026</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Không Một Minh 2026 - Chuyên Sâu Tâm Lý & An Toàn Số</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body id="page-body">
-  <!-- Thanh công cụ tùy chỉnh góc trên -->
-  <div class="customizer-bar">
-    <div class="theme-select">
-      <span>🎨 Giao diện:</span>
-      <select id="theme-picker" onchange="changeTheme(this.value)">
-        <option value="cyber">Xanh Cyber (Mặc định)</option>
-        <option value="neon">Hồng Neon Gen Z</option>
-        <option value="dark">Tối Giản / Đen Tuyền</option>
-        <option value="matrix">Xanh Lá Hacker</option>
-      </select>
-    </div>
-    <div class="wallpaper-select">
-      <span>🖼️ Hình nền:</span>
-      <select id="wallpaper-picker" onchange="changeWallpaper(this.value)">
-        <option value="bg-1">Đêm Đầy Sao</option>
-        <option value="bg-2">Lưới Không Gian (Grid)</option>
-        <option value="bg-3">Gradient Sáng Tạo</option>
-      </select>
-    </div>
-  </div>
+<body>
+    <div class="ambient-glow"></div>
+    
+    <div class="app-container">
+        <!-- Header chính -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="pulse-icon">🛡️</div>
+                <div>
+                    <h1>Không Một Minh 2026</h1>
+                    <p>THPT Nam Trực • Mô Phỏng Thao Túng Tâm Lý & An Toàn Số</p>
+                </div>
+            </div>
+            
+            <div class="header-controls">
+                <div class="control-group">
+                    <label>🎨 Giao diện:</label>
+                    <select id="themeSelect">
+                        <option value="cyber">Cyberpunk Đêm</option>
+                        <option value="neon">Neon Hồng Tím</option>
+                        <option value="emerald">Emerald Xanh Lục</option>
+                        <option value="sunset">Sunset Cam Hoàng Hôn</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label>🖼️ Hình nền:</label>
+                    <select id="bgSelect">
+                        <option value="grid">Lưới Kỹ Thuật Số</option>
+                        <option value="matrix">Mã Trận Đêm</option>
+                        <option value="gradient">Gradient Động</option>
+                        <option value="solid">Tối Giản Tuyệt Đối</option>
+                    </select>
+                </div>
+            </div>
+        </header>
 
-  <!-- Khung web mở rộng, thoáng đãng -->
-  <main class="wide-container">
-    <!-- Header trò chơi -->
-    <header class="app-header">
-      <div class="logo-area">
-        <span class="avatar">🛡️</span>
-        <div>
-          <h2>Chiến dịch "Không Một Mình 2026"</h2>
-          <span class="status-dot">● THPT Nam Trực - An toàn trực tuyến</span>
-        </div>
-      </div>
-    </header>
+        <!-- Màn hình 1: Đăng nhập / Chọn chế độ -->
+        <section id="welcome-screen" class="screen active">
+            <div class="welcome-card">
+                <h2>Cạm Bẫy Mạng & Bản Lĩnh Số</h2>
+                <p>Thế giới mạng không chỉ có màu hồng. Những cái bẫy thao túng tâm lý (gaslighting), bạo lực ẩn giấu và hội nhóm độc hại đang chờ sẵn. Liệu cậu có giữ được tỉnh táo?</p>
+                
+                <div class="input-group">
+                    <input type="text" id="playerName" placeholder="Nhập họ tên hoặc biệt danh của cậu..." autocomplete="off">
+                </div>
 
-    <!-- Màn hình Chat tương tác -->
-    <section id="chat-box" class="chat-box">
-      <div class="message system">
-        Chào mừng bạn đến với mô phỏng tương tác an toàn mạng! Hãy lựa chọn cách ứng xử thông minh nhất trong các tình huống dưới đây.
-      </div>
-    </section>
-
-    <!-- Màn hình Kết quả (Mặc định ẩn) -->
-    <section id="result-screen" class="result-screen hidden">
-      <h2 id="result-title">Cáo Già Cyber</h2>
-      <p id="result-badge">🏆 Score: 100/100</p>
-      <p id="result-desc">Tỉnh táo lắm! Lừa đảo tuổi gì chọc tới bạn.</p>
-      <button class="btn-restart" onclick="restartGame()">Chơi lại từ đầu</button>
-    </section>
-
-    <!-- Khung lựa chọn trả lời -->
-    <footer id="options-box" class="options-box">
-      <!-- Các nút bấm lựa chọn sẽ hiển thị ở đây -->
-    </footer>
-  </main>
-
-  <script src="script.js"></script>
-</body>
-</html>
+                <div class="mode-selection">
+                    <h3>Chọn Chế Độ Thử Thách:</h3>
+                    <div class="mode-cards">
+                        <button class="mode-btn active" data-mode="standard">
+                            <span class="mode-icon">🧠</span>
+                            <div>
+                                <strong>Tiêu Chuẩn Hack Não</strong>
+                                <p>Nhiều đáp án
