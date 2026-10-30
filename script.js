@@ -440,4 +440,21 @@ function endGame() {
     const lbContainer = document.getElementById('leaderboard-container');
     if (lbContainer) {
         lbContainer.innerHTML = '';
-        leaderboard.forEach
+        leaderboard.forEach((item, index) => {
+            lbContainer.innerHTML += `
+                <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank || 'Thành viên'})</span>
+                    <span><strong>${item.score}</strong> điểm</span>
+                </div>
+            `;
+        });
+    }
+}
+
+if (restartBtn) {
+    restartBtn.addEventListener('click', () => {
+        localStorage.removeItem('khongmotminh_save');
+        if (resultScreen) resultScreen.classList.remove('active');
+        if (welcomeScreen) welcomeScreen.classList.add('active');
+    });
+}
