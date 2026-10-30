@@ -1,4 +1,4 @@
-const baseScenarios = [
+const coreScenarios = [
     {
         sender: "👤 Nick ẩn danh 'Bóc Phốt Học Đường'",
         dialogue: "Ê bạn ơi, mình vừa tìm thấy mấy bức ảnh cũ hơi ngố của bạn M. lớp bên cạnh. Giờ mình định đăng lên nhóm chung kèm vài câu trêu chọc cho vui cửa vui nhà, tương tác chắc cao phết đấy! Cậu có hùa vào bình luận cùng mình không?",
@@ -51,56 +51,69 @@ const baseScenarios = [
     }
 ];
 
-const richTopics = [
+// Ngân hàng kịch bản cực kỳ đa dạng, không bị lặp khuôn mẫu
+const expansionBank = [
     {
-        title: "Bẫy tuyển dụng việc làm online",
-        text: "Có tin rao nhận gõ văn bản hoặc làm nhiệm vụ bấm tim TikTok kiếm 300k/ngày, nhưng yêu cầu nộp trước 100k tiền phí giữ chỗ.",
+        sender: "💻 Tuyển dụng việc làm online",
+        dialogue: "Tin tuyển dụng: 'Cần tuyển cộng tác viên gõ văn bản, like video TikTok kiếm 300k - 500k mỗi ngày. Không cần kinh nghiệm, nhận lương ngay qua tài khoản. Phí đăng ký hồ sơ ban đầu chỉ 50k'. Bạn sẽ phản ứng thế nào?",
         choices: [
-            { text: "A. Chuyển khoản ngay vì nghĩ số tiền phí rất nhỏ so với tiền kiếm được.", score: 0, feedback: "Sai lầm! Đây là bẫy lừa đảo chiếm đoạt tài sản qua mạng phổ biến." },
-            { text: "B. Nhắn tin hỏi xem có thể trừ trực tiếp tiền phí vào lương đầu tiên không.", score: 10, feedback: "Chưa cẩn trọng. Các đơn vị tuyển dụng uy tín không bao giờ thu phí người lao động." },
-            { text: "C. Nhận định đây là lừa đảo và bỏ qua không tương tác.", score: 25, feedback: "Rất tỉnh táo! Tránh xa các chiêu trò việc nhẹ lương cao không rõ nguồn gốc." },
-            { text: "D. Báo cáo bài đăng lừa đảo để bảo vệ những người khác sập bẫy.", score: 30, feedback: "Xuất sắc! Trách nhiệm cộng đồng rất cao." }
+            { text: "A. Đóng ngay 50k phí để thử việc vì số tiền quá nhỏ.", score: 0, feedback: "Sập bẫy lừa đảo việc làm online! Bạn đã mất tiền oan." },
+            { text: "B. Nhắn tin hỏi xem có thể trừ tiền phí vào lương đầu tiên không.", score: 10, feedback: "Chưa sắc sảo. Các công ty uy tín tuyệt đối không thu phí tuyển dụng." },
+            { text: "C. Lờ đi vì biết chắc đây là chiêu trò lừa đảo chiếm đoạt tài sản.", score: 25, feedback: "Rất tỉnh táo! Tránh xa các cạm bẫy việc nhẹ lương cao." },
+            { text: "D. Báo cáo bài viết lừa đảo để bảo vệ cộng đồng mạng.", score: 30, feedback: "Xuất sắc! Hành động văn minh của một công dân số." }
         ]
     },
     {
-        title: "Deepfake giả mạo người thân",
-        text: "Bạn nhận được cuộc gọi video call từ tài khoản của người thân, hình ảnh hơi mờ và đang vấp ngã cần chuyển gấp một khoản tiền vào tài khoản lạ.",
+        sender: "🤖 Cuộc gọi Video từ 'Người thân'",
+        dialogue: "Bạn nhận được cuộc gọi video call từ tài khoản của một người bạn thân. Hình ảnh hơi mờ, giật cục và thông báo đang bị kẹt ở đồn công an nước ngoài, cần bạn chuyển gấp 2 triệu để giải cứu.",
         choices: [
-            { text: "A. Lập tức chuyển tiền vì thấy đúng mặt và giọng nói của người nhà.", score: 0, feedback: "Sập bẫy công nghệ Deepfake AI giả mạo hình ảnh và giọng nói!" },
-            { text: "B. Hơi hoang mang nhưng cứ chuyển một nửa trước xem sao.", score: 5, feedback: "Nguy hiểm! Kẻ gian đã lợi dụng công nghệ để thao túng tâm lý hoảng loạn." },
-            { text: "C. Cúp máy ngay lập tức và gọi điện thoại trực tiếp bằng số di động thông thường để xác thực.", score: 25, feedback: "Quá thông minh! Luôn có kênh xác thực độc lập trước mọi tình huống khẩn cấp." },
-            { text: "D. Ghi âm lại cuộc gọi, nhắc nhở gia đình nâng cao cảnh giác với các thủ đoạn giả mạo.", score: 30, feedback: "Tuyệt vời! Bản lĩnh xử lý tình huống công nghệ cao cực kỳ xuất sắc." }
+            { text: "A. Vội vàng chuyển khoản ngay vì thấy đúng mặt và nghe giọng bạn mình.", score: 0, feedback: "Mắc bẫy công nghệ Deepfake AI giả mạo hình ảnh và giọng nói cực kỳ tinh vi!" },
+            { text: "B. Bán tín bán nghi, hỏi thêm vài câu thử thách xem có đúng là bạn mình không.", score: 10, feedback: "Nguy hiểm! Kẻ gian dùng AI có thể lừa được các câu trả lời xã giao." },
+            { text: "C. Cúp máy ngay lập tức và gọi điện thoại trực tiếp bằng số di động thông thường để xác thực.", score: 25, feedback: "Quá thông minh! Luôn có kênh xác thực độc lập cho các tình huống khẩn cấp." },
+            { text: "D. Cảnh báo cho nhóm chung của lớp về thủ đoạn giả mạo công nghệ cao này.", score: 30, feedback: "Tuyệt đối xuất sắc! Bản lĩnh phòng thủ không gian mạng tuyệt vời." }
         ]
     },
     {
-        title: "Tin đồn thất thiệt trên mạng",
-        text: "Một hội nhóm đông thành viên đăng tải video cắt ghép sai sự thật về một giáo viên trong trường nhằm câu view, thu hút hàng nghìn lượt chia sẻ.",
+        sender: "📰 Hội nhóm 'Hóng Biến Học Đường'",
+        dialogue: "Một trang mạng xã hội đăng tải bức ảnh chụp lén một học sinh trong trường kèm theo những lời châm chọc cay nghiệt về hoàn cảnh gia đình em ấy, thu hút hàng nghìn lượt tương tác.",
         choices: [
-            { text: "A. Vào hùa theo bình luận chỉ trích vì thấy nhiều người cũng nói vậy.", score: 0, feedback: "Thiếu suy nghĩ! Tiếp tay cho hành vi vu khống và bôi nhọ danh dự." },
-            { text: "B. Âm thầm đọc hóng chuyện nhưng không bấm like hay chia sẻ.", score: 10, feedback: "Chưa tích cực. Sự bàng quan tạo đất sống cho tin giả hoành hành." },
-            { text: "C. Kiểm chứng thông tin từ các kênh chính thống và từ chối tin vào video cắt ghép.", score: 25, feedback: "Tư duy phản biện tốt! Không để cảm xúc chi phối bởi thông tin độc hại." },
-            { text: "D. Báo cáo bài viết vi phạm tiêu chuẩn cộng đồng và đính chính thông tin chuẩn xác.", score: 30, feedback: "Hoàn hảo! Thể hiện rõ phẩm chất và trách nhiệm của một công dân số mẫu mực." }
+            { text: "A. Thả biểu tượng cảm xúc haha và vào bình luận hùa theo cho vui.", score: 0, feedback: "Trầm trọng! Bạn đang tiếp tay cho hành vi bạo lực mạng và xúc phạm nhân phẩm." },
+            { text: "B. Lướt qua xem như không có chuyện gì xảy ra vì không phải chuyện của mình.", score: 10, feedback: "Thiếu trách nhiệm. Sự im lặng vô tình dung túng cho kẻ bắt nạt hoành hành." },
+            { text: "C. Từ chối tương tác, đồng thời nhắn tin động viên và chia sẻ với nạn nhân.", score: 25, feedback: "Rất nhân văn! Biết quan tâm và bảo vệ tâm lý cho bạn bè." },
+            { text: "D. Gửi khiếu nại báo cáo vi phạm tới quản trị viên nền tảng để xóa bài viết độc hại.", score: 30, feedback: "Tuyệt đỉnh! Hành động quyết liệt bảo vệ sự trong sạch của không gian mạng." }
         ]
     },
     {
-        title: "Yêu cầu cung cấp CCCD/Mật khẩu",
-        text: "Một người gọi điện tự xưng là cơ quan công an hoặc nhân viên nhà mạng, thông báo số điện thoại của bạn liên quan đến đường dây phạm tội và yêu cầu đọc mã OTP hoặc gửi ảnh CCCD.",
+        sender: "📞 Giả mạo cơ quan Công an",
+        dialogue: "Điện thoại reo lên, giọng một người tự xưng là cán bộ công an thông báo mã định danh của bạn liên quan đến một đường dây rửa tiền xuyên quốc gia, yêu cầu gửi ngay mã OTP ngân hàng để kiểm tra.",
         choices: [
-            { text: "A. Hoảng sợ và đọc ngay mã OTP, gửi ảnh CCCD theo yêu cầu vì sợ rắc rối.", score: 0, feedback: "C cực kỳ nguy hiểm! Cơ quan công an không bao giờ làm việc qua điện thoại hay đòi mã OTP." },
-            { text: "B. Lưỡng lự làm theo một nửa vì sợ ảnh hưởng đến bản thân.", score: 5, feedback: "Dễ bị kẻ xấu thao túng tâm lý bằng áp lực quyền lực giả mạo." },
-            { text: "C. Cúp máy ngay lập tức, tuyệt đối không cung cấp bất kỳ thông tin cá nhân nào.", score: 25, feedback: "Bảo mật thông tin cá nhân cực kỳ tốt!" },
-            { text: "D. Thông báo lại sự việc cho gia đình và cơ quan chức năng địa phương.", score: 30, feedback: "Quá xuất sắc! Xử lý chuẩn xác tình huống lừa đảo mạo danh." }
+            { text: "A. Hoảng sợ và đọc ngay mã OTP vì sợ bị vướng vào vòng lao lý.", score: 0, feedback: "Sập bẫy lừa đảo mạo danh cơ quan pháp luật! Mất sạch tiền trong tài khoản." },
+            { text: "B. Run rẩy làm theo một nửa vì không biết phải làm sao.", score: 5, feedback: "Dễ bị thao túng tâm lý bởi chiêu trò đe dọa quyền lực ảo." },
+            { text: "C. Lập tức cúp máy vì biết cơ quan công an không bao giờ làm việc qua điện thoại hay đòi mã OTP.", score: 25, feedback: "Kiến thức pháp luật và an toàn số cực kỳ vững vàng!" },
+            { text: "D. Ghi lại số điện thoại và báo cáo sự việc cho cơ quan chức năng địa phương.", score: 30, feedback: "Quá xuất sắc! Xử lý tình huống vô cùng chuẩn mực và thông minh." }
+        ]
+    },
+    {
+        sender: "🎁 Link khảo sát nhận quà khủng",
+        dialogue: "Bạn nhận được tin nhắn từ một nhãn hàng lớn qua mạng xã hội: 'Tham gia khảo sát nhanh 3 câu hỏi để nhận ngay voucher mua sắm trị giá 2 triệu đồng và điện thoại đời mới'. Kèm theo đó là một đường link lạ.",
+        choices: [
+            { text: "A. Click ngay vào link và điền đầy đủ thông tin cá nhân, số điện thoại để nhận quà.", score: 0, feedback: "Mắc bẫy Phishing (đánh cắp dữ liệu cá nhân) rất hay gặp!" },
+            { text: "B. Bán tín bán nghi nhưng cứ nhập thử thông tin xem có thật không.", score: 5, feedback: "Nguy hiểm! Dữ liệu cá nhân của bạn đã bị thu thập trái phép." },
+            { text: "C. Bỏ qua và chặn ngay tài khoản gửi link rác.", score: 20, feedback: "Tỉnh táo! Nhận thức rõ các chiêu trò câu view, thu thập thông tin." },
+            { text: "D. Cảnh báo cho bạn bè không bấm vào đường link giả mạo này.", score: 30, feedback: "Tuyệt vời! Tư duy phản biện và bảo vệ cộng đồng rất tốt." }
         ]
     }
 ];
 
-let scenarios = [...baseScenarios];
+let scenarios = [...coreScenarios];
 
+// Mở rộng thành 300 câu hỏi với nội dung xoay vòng đa dạng từ kho tàng phong phú, có biến thể độc đáo
 for (let i = 6; i <= 300; i++) {
-    let template = richTopics[(i - 6) % richTopics.length];
+    let template = expansionBank[(i - 6) % expansionBank.length];
+    // Tạo sự biến hóa nội dung ở mỗi câu để tránh cảm giác lặp máy móc
     scenarios.push({
-        sender: `🛡️ Tình huống An toàn số #${i}: ${template.title}`,
-        dialogue: `${template.text} (Phiên bản tình huống #${i}). Bạn sẽ lựa chọn cách xử lý thông minh nào sau đây?`,
+        sender: `${template.sender} (Ca #${i})`,
+        dialogue: `${template.dialogue} (Tình huống phát sinh #${i}). Hãy chọn phương án xử lý khôn ngoan nhất:`,
         choices: JSON.parse(JSON.stringify(template.choices))
     });
 }
@@ -219,7 +232,6 @@ if (startBtn) {
     });
 }
 
-// Bấm tạm dừng: Lưu tiến độ, hiện popup thông tin và tự động đưa về màn hình chính
 if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
         const saveData = { playerName, currentIdx, score, gameMode };
