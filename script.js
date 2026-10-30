@@ -51,7 +51,6 @@ const coreScenarios = [
     }
 ];
 
-// Ngân hàng kịch bản cực kỳ đa dạng, không bị lặp khuôn mẫu
 const expansionBank = [
     {
         sender: "💻 Tuyển dụng việc làm online",
@@ -107,10 +106,8 @@ const expansionBank = [
 
 let scenarios = [...coreScenarios];
 
-// Mở rộng thành 300 câu hỏi với nội dung xoay vòng đa dạng từ kho tàng phong phú, có biến thể độc đáo
 for (let i = 6; i <= 300; i++) {
     let template = expansionBank[(i - 6) % expansionBank.length];
-    // Tạo sự biến hóa nội dung ở mỗi câu để tránh cảm giác lặp máy móc
     scenarios.push({
         sender: `${template.sender} (Ca #${i})`,
         dialogue: `${template.dialogue} (Tình huống phát sinh #${i}). Hãy chọn phương án xử lý khôn ngoan nhất:`,
@@ -123,6 +120,7 @@ let score = 0;
 let gameMode = 'standard';
 let playerName = '';
 
+// Khởi tạo danh sách bảng xếp hạng lưu trong localStorage
 let leaderboard = JSON.parse(localStorage.getItem('khongmotminh_lb')) || [
     { name: "Thành viên A", score: 1200, rank: "Kim Cương 💎" },
     { name: "Thành viên B", score: 950, rank: "Bạch Kim 🏆" },
@@ -167,9 +165,27 @@ function calculateRank(currentScore) {
     return "Đồng 🥉";
 }
 
+// Cập nhật và hiển thị bảng xếp hạng chuẩn xác kèm tên người chơi thực tế
 function renderGlobalLeaderboard() {
     const globalContainer = document.getElementById('global-leaderboard-container');
     if (globalContainer) {
+        // Lấy tên hiện tại từ ô input nếu người chơi vừa gõ tên mà chưa bấm bắt đầu
+        let currentTypedName = playerNameInput ? playerNameInput.value.trim() : "";
+        if (currentTypedName && score > 0) {
+            let currentRank = calculateRank(score);
+            // Kiểm tra xem tên đã có trong bảng chưa, nếu có thì cập nhật, chưa thì chèn vào
+            let existingIndex = leaderboard.findIndex(item => item.name === currentTypedName);
+            if (existingIndex !== -1) {
+                leaderboard[existingIndex].score = score;
+                leaderboard[existingIndex].rank = currentRank;
+            } else {
+                leaderboard.push({ name: currentTypedName, score: score, rank: currentRank });
+            }
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 5);
+            localStorage.setItem('khongmotminh_lb', JSON.stringify(leaderboard));
+        }
+
         globalContainer.innerHTML = '';
         leaderboard.forEach((item, index) => {
             globalContainer.innerHTML += `
@@ -237,7 +253,19 @@ if (pauseBtn) {
         const saveData = { playerName, currentIdx, score, gameMode };
         localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
         
+        // Cập nhật thẳng vào bảng xếp hạng khi bấm lưu tiến độ
         let currentRank = calculateRank(score);
+        let existingIndex = leaderboard.findIndex(item => item.name === playerName);
+        if (existingIndex !== -1) {
+            leaderboard[existingIndex].score = score;
+            leaderboard[existingIndex].rank = currentRank;
+        } else {
+            leaderboard.push({ name: playerName, score: score, rank: currentRank });
+        }
+        leaderboard.sort((a, b) => b.score - a.score);
+        leaderboard = leaderboard.slice(0, 5);
+        localStorage.setItem('khongmotminh_lb', JSON.stringify(leaderboard));
+
         showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nTiến độ đã được giữ lại an toàn!`, () => {
             if (gameScreen) gameScreen.classList.remove('active');
             if (welcomeScreen) welcomeScreen.classList.add('active');
@@ -412,21 +440,4 @@ function endGame() {
     const lbContainer = document.getElementById('leaderboard-container');
     if (lbContainer) {
         lbContainer.innerHTML = '';
-        leaderboard.forEach((item, index) => {
-            lbContainer.innerHTML += `
-                <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank || 'Thành viên'})</span>
-                    <span><strong>${item.score}</strong> điểm</span>
-                </div>
-            `;
-        });
-    }
-}
-
-if (restartBtn) {
-    restartBtn.addEventListener('click', () => {
-        localStorage.removeItem('khongmotminh_save');
-        if (resultScreen) resultScreen.classList.remove('active');
-        if (welcomeScreen) welcomeScreen.classList.add('active');
-    });
-}
+        leaderboard.forEach
