@@ -6,31 +6,7 @@
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --border: rgba(255, 255, 255, 0.15);
-    --glow: rgba(99, 102, 241, 0.25);
-}
-
-[data-theme="neon"] {
-    --bg-primary: #0d0221;
-    --card-bg: #1a0b2e;
-    --accent: #f72585;
-    --accent-hover: #b5179e;
-    --glow: rgba(247, 37, 133, 0.25);
-}
-
-[data-theme="emerald"] {
-    --bg-primary: #022c22;
-    --card-bg: #064e3b;
-    --accent: #10b981;
-    --accent-hover: #059669;
-    --glow: rgba(16, 185, 129, 0.25);
-}
-
-[data-theme="sunset"] {
-    --bg-primary: #2b0b0a;
-    --card-bg: #450a0a;
-    --accent: #f97316;
-    --accent-hover: #ea580c;
-    --glow: rgba(249, 115, 22, 0.25);
+    --glow: rgba(99, 102, 241, 0.2);
 }
 
 * {
@@ -62,7 +38,7 @@ body {
     z-index: 0;
 }
 
-/* KHUNG CHÍNH: Kính mờ sang trọng, viền thanh lịch, rõ nét chữ hoàn toàn */
+/* KHUNG CHÍNH: Tối giản, sang trọng, màu chuẩn cố định */
 .app-container {
     position: relative;
     z-index: 1;
@@ -73,7 +49,7 @@ body {
     border-radius: 20px;
     padding: 24px;
     margin: 20px auto;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px var(--glow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
 /* Header */
