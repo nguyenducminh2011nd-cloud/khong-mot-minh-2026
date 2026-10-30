@@ -44,7 +44,6 @@
                     <input type="text" id="playerName" placeholder="Nhập biệt danh hoặc tên của cậu..." autocomplete="off">
                 </div>
 
-                <!-- NÚT XEM BXH & MỐC RANK RÕ RÀNG NGAY NGOÀI MÀN HÌNH CHÍNH -->
                 <div style="margin-bottom: 15px;">
                     <button id="quick-lb-btn" type="button" style="width: 100%; background: rgba(99, 102, 241, 0.15); border: 1px solid var(--accent); color: var(--text-main); padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;">🏆 Xem Bảng Xếp Hạng & Thang Điểm Rank</button>
                 </div>
@@ -73,32 +72,32 @@
             </div>
         </section>
 
-        <!-- Màn hình xem Bảng Xếp Hạng & Mốc Điểm Rank chi tiết -->
+        <!-- Màn hình xem Bảng Xếp Hạng & Mốc Điểm Rank chuẩn hiện đại, tinh tế -->
         <section id="leaderboard-screen" class="screen">
-            <div class="result-card">
-                <div style="font-size: 32px; margin-bottom: 5px;">🏆</div>
-                <h2 style="font-size: 20px; color: #6366f1; margin-bottom: 15px;">Hệ Thống Xếp Hạng & Mốc Điểm</h2>
+            <div class="result-card" style="max-width: 480px;">
+                <div style="font-size: 36px; margin-bottom: 5px;">👑</div>
+                <h2 style="font-size: 20px; color: #6366f1; margin-bottom: 15px; font-weight: 800;">BẢNG XẾP HẠNG & MỐC RANK</h2>
                 
-                <!-- Bảng các mốc điểm rank -->
-                <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: left;">
-                    <h3 style="font-size: 13px; color: #f3f4f6; margin-bottom: 8px;">📈 Thang Điểm Thăng Hạng:</h3>
-                    <div style="font-size: 12px; color: #9ca3af; display: flex; flex-direction: column; gap: 4px;">
-                        <div>🥉 <strong>Đồng:</strong> 0 - 199 điểm</div>
-                        <div>🥈 <strong>Bạc:</strong> 200 - 499 điểm</div>
-                        <div>⭐ <strong>Vàng:</strong> 500 - 999 điểm</div>
-                        <div>🏆 <strong>Bạch Kim:</strong> 1000 - 1499 điểm</div>
-                        <div>💎 <strong>Kim Cương:</strong> 1500 - 1999 điểm</div>
-                        <div>👑 <strong>Thách Đấu:</strong> Từ 2000 điểm trở lên</div>
+                <!-- Bảng các mốc điểm rank gọn gàng -->
+                <div style="background: rgba(17, 24, 39, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; text-align: left;">
+                    <h3 style="font-size: 13px; color: #f3f4f6; margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 6px;">📈 Thang Điểm Thăng Hạng</h3>
+                    <div style="font-size: 12px; color: #9ca3af; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                        <div>🥉 <strong>Đồng:</strong> 0 - 199</div>
+                        <div>🥈 <strong>Bạc:</strong> 200 - 499</div>
+                        <div>⭐ <strong>Vàng:</strong> 500 - 999</div>
+                        <div>🏆 <strong>Bạch Kim:</strong> 1000 - 1499</div>
+                        <div>💎 <strong>Kim Cương:</strong> 1500 - 1999</div>
+                        <div>👑 <strong>Thách Đấu:</strong> 2000+</div>
                     </div>
                 </div>
 
-                <!-- Top cao thủ -->
+                <!-- Top cao thủ thiết kế dạng thẻ hiện đại -->
                 <div class="leaderboard-section">
-                    <h3>👑 Top Cao Thủ Bản Lĩnh Số</h3>
-                    <div class="leaderboard-list" id="global-leaderboard-container"></div>
+                    <h3 style="font-size: 14px; margin-bottom: 10px; color: #f3f4f6; text-align: left;">🌟 Top Cao Thủ Xuất Sắc Nhất</h3>
+                    <div class="leaderboard-list" id="global-leaderboard-container" style="display: flex; flex-direction: column; gap: 8px;"></div>
                 </div>
 
-                <div class="result-actions" style="margin-top: 15px;">
+                <div class="result-actions" style="margin-top: 20px;">
                     <button id="back-to-home-btn" class="primary-btn" type="button">Quay Lại Trang Chủ ⬅️</button>
                 </div>
             </div>
@@ -113,46 +112,4 @@
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 10px;">
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9ca3af;">
-                    <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
-                    <span id="scenario-sender">Hệ thống mô phỏng tình huống</span>
-                </div>
-                <button id="pause-btn" type="button" style="background: #6366f1; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(99,102,241,0.4);">☕ Nghỉ Ngơi & Lưu Lại</button>
-            </div>
-
-            <div class="chat-container" style="margin-top: 0;">
-                <div id="chat-messages" class="chat-messages"></div>
-            </div>
-
-            <div class="choices-container" id="choices-box"></div>
-
-            <div class="custom-answer-box hidden" id="custom-answer-area">
-                <p>💭 Ý kiến cá nhân của cậu trước tình huống này là gì? Hãy viết rõ cách xử lý:</p>
-                <textarea id="custom-input" placeholder="Gõ câu trả lời của cậu ở đây..."></textarea>
-                <button id="submit-custom-btn" class="secondary-btn" type="button">Gửi Đánh Giá</button>
-            </div>
-        </section>
-
-        <!-- Màn hình 3: Kết quả & Bảng xếp hạng -->
-        <section id="result-screen" class="screen">
-            <div class="result-card">
-                <div class="result-badge-icon" id="result-icon">🏆</div>
-                <h2 id="result-title">Kết Quả Đánh Giá Bản Lĩnh</h2>
-                <div class="final-score-box">Tổng điểm: <span id="final-score">0</span>/100</div>
-                <p id="result-desc">Đang tổng hợp đánh giá tâm lý...</p>
-
-                <div class="leaderboard-section">
-                    <h3>🏆 Bảng Xếp Hạng Bản Lĩnh Số</h3>
-                    <div class="leaderboard-list" id="leaderboard-container"></div>
-                </div>
-
-                <div class="result-actions">
-                    <button id="restart-btn" class="primary-btn" type="button">Chơi Lại Thử Thách 🔄</button>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                <div style="display: flex; align-items: center; gap: 8
