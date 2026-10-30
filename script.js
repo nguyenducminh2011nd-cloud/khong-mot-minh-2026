@@ -107,7 +107,7 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     });
 });
 
-// Hàm tính rank dựa trên điểm số hiện tại
+// Hàm tính rank chuẩn xác
 function calculateRank(currentScore) {
     if (currentScore >= 2000) return "Thách Đấu 👑";
     if (currentScore >= 1500) return "Kim Cương 💎";
@@ -117,14 +117,14 @@ function calculateRank(currentScore) {
     return "Đồng 🥉";
 }
 
-// Kiểm tra tiến độ đã lưu khi tải trang
+// Kiểm tra tiến độ và hiển thị đầy đủ thông tin rank khi tải lại trang
 window.addEventListener('DOMContentLoaded', () => {
     const savedGame = localStorage.getItem('khongmotminh_save');
     if (savedGame) {
         const data = JSON.parse(savedGame);
         if (data && data.currentIdx > 0 && data.currentIdx < scenarios.length) {
             let savedRank = calculateRank(data.score);
-            showCustomPopup(`Chào mừng ${data.playerName} trở lại!\nTiến độ đang ở câu: ${data.currentIdx + 1}/300\nĐiểm tích lũy: ${data.score} | Mức Rank: ${savedRank}\n\nCậu có muốn tiếp tục hành trình không?`, (isYes) => {
+            showCustomPopup(`Chào mừng ${data.playerName} trở lại!\n\n📊 Tiến độ hiện tại:\n- Đang ở câu hỏi số: ${data.currentIdx + 1}/300\n- Tổng điểm tích lũy: ${data.score}\n- Mức Rank hiện tại: ${savedRank}\n\nCậu có muốn tiếp tục chinh phục không?`, (isYes) => {
                 if (isYes) {
                     playerName = data.playerName;
                     currentIdx = data.currentIdx;
@@ -153,14 +153,14 @@ if (startBtn) {
     });
 }
 
-// Khi bấm tạm dừng: Lưu lại và hiển thị rõ mức rank, điểm số hiện tại
+// Nút tạm dừng hiển thị chi tiết điểm và rank
 if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
         const saveData = { playerName, currentIdx, score, gameMode };
         localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
         
         let currentRank = calculateRank(score);
-        showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nCậu có thể yên tâm nghỉ ngơi, lần sau vào lại web sẽ tự động khôi phục đúng tiến độ này!`);
+        showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nCậu có thể nghỉ ngơi bất cứ lúc nào, lần sau vào lại web sẽ hiển thị đầy đủ thông số này!`);
     });
 }
 
@@ -256,7 +256,7 @@ function showCustomPopup(message, callback, isConfirm = false) {
     box.innerHTML = `
         <div style="font-size: 28px; margin-bottom: 8px;">🏆</div>
         <h3 style="font-size: 16px; margin-bottom: 8px; color: #6366f1;">Hệ Thống Bản Lĩnh Số</h3>
-        <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 10px;">${message}</p>
+        <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 10px; text-align: left; padding: 0 10px;">${message}</p>
         ${buttonsHTML}
     `;
 
