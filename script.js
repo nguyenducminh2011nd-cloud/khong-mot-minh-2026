@@ -41,9 +41,9 @@ const scenarios = [
     },
     {
         sender: "👥 Lời mời kết bạn từ người lạ",
-        dialogue: "Một người không quen biết, để avatar hình đại diện lung linh gửi lời kết bạn và liên tục nhắn tin ganya gạ gẫm hỏi chuyện riêng tư, đòi gửi ảnh cá nhân nhạy cảm để đổi lại ảnh đẹp.",
+        dialogue: "Một người không quen biết, để avatar hình đại diện lung linh gửi lời kết bạn và liên tục nhắn tin gạ gẫm hỏi chuyện riêng tư, đòi gửi ảnh cá nhân nhạy cảm để đổi lại ảnh đẹp.",
         choices: [
-            { text: "A. Thoải mái trò chuyện và gửi ảnh cá nhân cho người lạ vì nghĩ kết bạn bốn phương.", score: 0, feedback: "C cực kỳ nguy hiểm! Rất dễ rơi vào bẫy tống tiền ảo (sextortion)." },
+            { text: "A. Thoải mái trò chuyện và gửi ảnh cá nhân cho người lạ vì nghĩ kết bạn bốn phương.", score: 0, feedback: "Cực kỳ nguy hiểm! Rất dễ rơi vào bẫy tống tiền ảo (sextortion)." },
             { text: "B. Nhắn qua lại vài câu xã giao nhưng giấu thông tin cá nhân thật.", score: 10, feedback: "Vẫn tiềm ẩn rủi ro lộ lọt thông tin cá nhân cho kẻ xấu." },
             { text: "C. Chặn ngay lập tức và cài đặt lại quyền riêng tư tài khoản mạng xã hội.", score: 25, feedback: "Bảo mật tốt! Biết cách tự bảo vệ bản thân trước các nguy cơ ẩn giấu." },
             { text: "D. Khuyên can hoặc cảnh báo nhẹ nhàng rồi block, bảo vệ không gian số sạch sẽ.", score: 30, feedback: "Quá xuất sắc! Ý thức an toàn số và bản lĩnh ứng phó hoàn hảo." }
@@ -74,10 +74,6 @@ const bgSelect = document.getElementById('bgSelect');
 
 themeSelect.addEventListener('change', (e) => {
     document.documentElement.setAttribute('data-theme', e.target.value);
-});
-
-bgSelect.addEventListener('change', (e) => {
-    document.documentElement.setAttribute('data-bg', e.target.value);
 });
 
 document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -150,19 +146,22 @@ function handleChoice(points, feedback) {
     loadQuestion();
 }
 
-document.getElementById('submit-custom-btn').addEventListener('click', () => {
-    const text = document.getElementById('custom-input').value.trim();
-    if (!text) {
-        alert("Cậu hãy nhập ý kiến của mình trước nhé!");
-        return;
-    }
-    let bonus = text.length > 20 ? 25 : 10;
-    score += bonus;
-    alert(`💡 AI Phân tích phản hồi công khai: Câu trả lời của cậu thể hiện góc nhìn khá sắc sảo! (+${bonus} điểm bản lĩnh).`);
-    document.getElementById('custom-input').value = '';
-    currentIdx++;
-    loadQuestion();
-});
+const submitCustomBtn = document.getElementById('submit-custom-btn');
+if (submitCustomBtn) {
+    submitCustomBtn.addEventListener('click', () => {
+        const text = document.getElementById('custom-input').value.trim();
+        if (!text) {
+            alert("Cậu hãy nhập ý kiến của mình trước nhé!");
+            return;
+        }
+        let bonus = text.length > 20 ? 25 : 10;
+        score += bonus;
+        alert(`💡 AI Phân tích phản hồi công khai: Câu trả lời của cậu thể hiện góc nhìn khá sắc sảo! (+${bonus} điểm bản lĩnh).`);
+        document.getElementById('custom-input').value = '';
+        currentIdx++;
+        loadQuestion();
+    });
+}
 
 function endGame() {
     gameScreen.classList.remove('active');
