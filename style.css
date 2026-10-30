@@ -5,7 +5,8 @@
     --accent-hover: #4f46e5;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
-    --border: rgba(255, 255, 255, 0.12);
+    --border: rgba(255, 255, 255, 0.15);
+    --glow: rgba(99, 102, 241, 0.25);
 }
 
 [data-theme="neon"] {
@@ -13,6 +14,7 @@
     --card-bg: #1a0b2e;
     --accent: #f72585;
     --accent-hover: #b5179e;
+    --glow: rgba(247, 37, 133, 0.25);
 }
 
 [data-theme="emerald"] {
@@ -20,6 +22,7 @@
     --card-bg: #064e3b;
     --accent: #10b981;
     --accent-hover: #059669;
+    --glow: rgba(16, 185, 129, 0.25);
 }
 
 [data-theme="sunset"] {
@@ -27,6 +30,7 @@
     --card-bg: #450a0a;
     --accent: #f97316;
     --accent-hover: #ea580c;
+    --glow: rgba(249, 115, 22, 0.25);
 }
 
 * {
@@ -48,38 +52,28 @@ body {
     background: radial-gradient(circle at center, #111827 0%, #030712 100%);
 }
 
-/* KHUNG CHÍNH VỚI VIỀN LED RGB CHẠY QUANH TINH TẾ */
+.ambient-glow {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    background: var(--glow);
+    filter: blur(130px);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* KHUNG CHÍNH: Kính mờ sang trọng, viền thanh lịch, rõ nét chữ hoàn toàn */
 .app-container {
     position: relative;
     z-index: 1;
     width: 92%;
     max-width: 800px;
     background: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: 20px;
     padding: 24px;
     margin: 20px auto;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    
-    /* Hiệu ứng viền LED RGB chạy quanh */
-    border: 2px solid transparent;
-    background-clip: padding-box;
-}
-
-.app-container::before {
-    content: '';
-    position: absolute;
-    top: -2px; bottom: -2px; left: -2px; right: -2px;
-    background: linear-gradient(45deg, var(--accent), #ff007f, #00f2fe, var(--accent));
-    background-size: 400% 400%;
-    border-radius: 22px;
-    z-index: -1;
-    animation: rgbBorder 6s linear infinite;
-}
-
-@keyframes rgbBorder {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px var(--glow);
 }
 
 /* Header */
@@ -107,6 +101,7 @@ body {
 .logo-area h1 {
     font-size: 17px;
     font-weight: 750;
+    color: var(--text-main);
 }
 
 .logo-area p {
@@ -239,6 +234,7 @@ select {
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
+    box-shadow: 0 4px 12px var(--glow);
     transition: background 0.2s;
 }
 
