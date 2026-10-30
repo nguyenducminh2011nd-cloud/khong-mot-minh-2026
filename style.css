@@ -1,36 +1,32 @@
 :root {
     --bg-primary: #0b0f19;
-    --card-bg: rgba(17, 24, 39, 0.9);
+    --card-bg: #111827;
     --accent: #6366f1;
     --accent-hover: #4f46e5;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --border: rgba(255, 255, 255, 0.12);
-    --glow: rgba(99, 102, 241, 0.25);
 }
 
 [data-theme="neon"] {
     --bg-primary: #0d0221;
-    --card-bg: rgba(26, 11, 46, 0.9);
+    --card-bg: #1a0b2e;
     --accent: #f72585;
     --accent-hover: #b5179e;
-    --glow: rgba(247, 37, 133, 0.3);
 }
 
 [data-theme="emerald"] {
     --bg-primary: #022c22;
-    --card-bg: rgba(6, 78, 59, 0.9);
+    --card-bg: #064e3b;
     --accent: #10b981;
     --accent-hover: #059669;
-    --glow: rgba(16, 185, 129, 0.3);
 }
 
 [data-theme="sunset"] {
     --bg-primary: #2b0b0a;
-    --card-bg: rgba(69, 10, 10, 0.9);
+    --card-bg: #450a0a;
     --accent: #f97316;
     --accent-hover: #ea580c;
-    --glow: rgba(249, 115, 22, 0.3);
 }
 
 * {
@@ -52,29 +48,38 @@ body {
     background: radial-gradient(circle at center, #111827 0%, #030712 100%);
 }
 
-.ambient-glow {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    background: var(--glow);
-    filter: blur(140px);
-    border-radius: 50%;
-    z-index: 0;
-}
-
-/* KHUNG CHÍNH: Gọn gàng, viền tinh tế, ánh sáng dịu nhẹ */
+/* KHUNG CHÍNH VỚI VIỀN LED RGB CHẠY QUANH TINH TẾ */
 .app-container {
     position: relative;
     z-index: 1;
     width: 92%;
     max-width: 800px;
     background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border);
     border-radius: 20px;
     padding: 24px;
     margin: 20px auto;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    
+    /* Hiệu ứng viền LED RGB chạy quanh */
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.app-container::before {
+    content: '';
+    position: absolute;
+    top: -2px; bottom: -2px; left: -2px; right: -2px;
+    background: linear-gradient(45deg, var(--accent), #ff007f, #00f2fe, var(--accent));
+    background-size: 400% 400%;
+    border-radius: 22px;
+    z-index: -1;
+    animation: rgbBorder 6s linear infinite;
+}
+
+@keyframes rgbBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Header */
@@ -170,7 +175,6 @@ select {
     font-size: 14px;
     margin-bottom: 15px;
     outline: none;
-    transition: border-color 0.2s;
 }
 
 .input-group input:focus {
@@ -183,7 +187,6 @@ select {
     color: var(--text-muted);
 }
 
-/* KHU VỰC CHỌN CHẾ ĐỘ: HIỆN SONG SONG CÂN ĐỐI */
 .mode-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -207,7 +210,7 @@ select {
 
 .mode-btn.active, .mode-btn:hover {
     border-color: var(--accent);
-    background: rgba(99, 102, 241, 0.1);
+    background: rgba(99, 102, 241, 0.15);
 }
 
 .mode-icon {
@@ -226,7 +229,6 @@ select {
     margin: 0;
 }
 
-/* NÚT BẮT ĐẦU THỬ THÁCH TO RÕ Ở DƯỚI */
 .primary-btn {
     width: 100%;
     padding: 14px;
@@ -237,8 +239,7 @@ select {
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 12px var(--glow);
-    transition: background 0.2s, transform 0.1s;
+    transition: background 0.2s;
 }
 
 .primary-btn:hover {
@@ -329,7 +330,6 @@ select {
     border-color: var(--accent);
 }
 
-/* Khung tự trả lời */
 .custom-answer-box {
     margin-top: 12px;
     background: rgba(0, 0, 0, 0.3);
@@ -373,7 +373,6 @@ select {
     font-size: 12px;
 }
 
-/* Kết quả & Bảng xếp hạng */
 .result-card h2 {
     font-size: 22px;
     margin-bottom: 8px;
