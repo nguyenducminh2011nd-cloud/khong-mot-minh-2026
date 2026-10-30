@@ -48,7 +48,7 @@
         <section id="welcome-screen" class="screen active">
             <div class="welcome-card">
                 <h2>Cạm Bẫy Mạng & Bản Lĩnh Số</h2>
-                <p>Thế giới mạng không chỉ có màu hồng. Những cái bẫy thao túng tâm lý (gaslighting), bạo lực ẩn giấu và hội nhóm độc hại đang chờ sẵn. Liệu cậu có giữ được tỉnh táo?</p>
+                <p>Thế giới mạng không chỉ có màu hồng. Những cái bẫy thao túng tâm lý, bạo lực ẩn giấu và hội nhóm độc hại đang chờ sẵn. Liệu cậu có giữ được tỉnh táo?</p>
                 
                 <div class="input-group">
                     <input type="text" id="playerName" placeholder="Nhập họ tên hoặc biệt danh của cậu..." autocomplete="off">
@@ -61,4 +61,40 @@
                             <span class="mode-icon">🧠</span>
                             <div>
                                 <strong>Tiêu Chuẩn Hack Não</strong>
-                                <p>Nhiều đáp án
+                                <p>Nhiều đáp án nhiễu & tình huống phức tạp.</p>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-mode="expert">
+                            <span class="mode-icon">🔥</span>
+                            <div>
+                                <strong>Cực Hạn Tự Trả Lời</strong>
+                                <p>Tự do gõ ý kiến riêng & chấm điểm công khai.</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="primary-btn">Bắt Đầu Thử Thách 🚀</button>
+            </div>
+        </section>
+
+        <!-- Màn hình 2: Trò chơi tương tác chính -->
+        <section id="game-screen" class="screen">
+            <div class="game-top-bar">
+                <div class="stat-badge">Câu hỏi: <span id="current-q">1</span>/<span id="total-q">5</span></div>
+                <div class="stat-badge">Điểm bản lĩnh: <span id="current-score">0</span></div>
+                <div class="stat-badge">Mức cảnh giác: <span id="alert-level">An toàn</span></div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-header-sim">
+                    <span class="status-dot"></span>
+                    <span id="scenario-sender">Hệ thống mô phỏng tình huống</span>
+                </div>
+                <div id="chat-messages" class="chat-messages"></div>
+            </div>
+
+            <div class="choices-container" id="choices-box"></div>
+
+            <div class="custom-answer-box hidden" id="custom-answer-area">
+                <p>💭 Ý kiến cá nhân của cậu trước tình huống này là gì
