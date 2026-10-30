@@ -77,11 +77,12 @@ let score = 0;
 let gameMode = 'standard';
 let playerName = '';
 
+// Bảng xếp hạng Leo Rank lưu trữ vĩnh viễn trên trình duyệt
 let leaderboard = JSON.parse(localStorage.getItem('khongmotminh_lb')) || [
-    { name: "Thành viên A", score: 100 },
-    { name: "Thành viên B", score: 95 },
-    { name: "Thành viên C", score: 90 },
-    { name: "Thành viên D", score: 85 }
+    { name: "Thành viên A", score: 1200, rank: "Kim Cương 💎" },
+    { name: "Thành viên B", score: 950, rank: "Bạch Kim 🏆" },
+    { name: "Thành viên C", score: 800, rank: "Vàng ⭐" },
+    { name: "Thành viên D", score: 500, rank: "Bạc 🛡️" }
 ];
 
 const welcomeScreen = document.getElementById('welcome-screen');
@@ -89,6 +90,7 @@ const gameScreen = document.getElementById('game-screen');
 const resultScreen = document.getElementById('result-screen');
 const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
+const pauseBtn = document.getElementById('pause-btn');
 const playerNameInput = document.getElementById('playerName');
 const themeSelect = document.getElementById('themeSelect');
 
@@ -106,22 +108,57 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     });
 });
 
+// Khôi phục tiến độ nếu có
+window.addEventListener('DOMContentLoaded', () => {
+    const savedGame = localStorage.getItem('khongmotminh_save');
+    if (savedGame) {
+        const data = JSON.parse(savedGame);
+        if (data && data.currentIdx > 0 && data.currentIdx < scenarios.length) {
+            showCustomPopup(`Chào mừng ${data.playerName} trở lại! Phát hiện cậu đang làm dở ở câu hỏi số ${data.currentIdx + 1}. Cậu có muốn tiếp tục leo rank không?`, () => {
+                playerName = data.playerName;
+                currentIdx = data.currentIdx;
+                score = data.score;
+                gameMode = data.gameMode || 'standard';
+                if (welcomeScreen) welcomeScreen.classList.remove('active');
+                if (gameScreen) gameScreen.classList.add('active');
+                loadQuestion();
+            });
+        }
+    }
+});
+
 if (startBtn) {
     startBtn.addEventListener('click', () => {
         playerName = playerNameInput.value.trim() || "Thành viên ẩn danh";
         currentIdx = 0;
         score = 0;
+        localStorage.removeItem('khongmotminh_save');
         if (welcomeScreen) welcomeScreen.classList.remove('active');
         if (gameScreen) gameScreen.classList.add('active');
         loadQuestion();
     });
 }
 
+if (pauseBtn) {
+    pauseBtn.addEventListener('click', () => {
+        const saveData = { playerName, currentIdx, score, gameMode };
+        localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
+        showCustomPopup(`☕ Đã lưu tiến độ rank tại câu số ${currentIdx + 1}! Cậu có thể nghỉ ngơi và quay lại bất cứ lúc nào.`, () => {
+            if (gameScreen) gameScreen.classList.remove('active');
+            if (welcomeScreen) welcomeScreen.classList.add('active');
+        });
+    });
+}
+
 function loadQuestion() {
     if (currentIdx >= scenarios.length) {
+        localStorage.removeItem('khongmotminh_save');
         endGame();
         return;
     }
+
+    const saveData = { playerName, currentIdx, score, gameMode };
+    localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
 
     const current = scenarios[currentIdx];
     document.getElementById('current-q').textContent = currentIdx + 1;
@@ -171,7 +208,6 @@ function loadQuestion() {
     }
 }
 
-// HÀM POPUP KÍNH MỜ XỊN XÒ THAY THẾ HOÀN TOÀN ALERT()
 function showCustomPopup(message, callback) {
     let existingOverlay = document.getElementById('custom-popup-overlay');
     if (existingOverlay) existingOverlay.remove();
@@ -193,13 +229,13 @@ function showCustomPopup(message, callback) {
     `;
 
     box.innerHTML = `
-        <div style="font-size: 28px; margin-bottom: 10px;">🛡️</div>
-        <h3 style="font-size: 16px; margin-bottom: 10px; color: #6366f1;">Đánh Giá Bản Lĩnh Số</h3>
+        <div style="font-size: 28px; margin-bottom: 10px;">🏆</div>
+        <h3 style="font-size: 16px; margin-bottom: 10px; color: #6366f1;">Hệ Thống Leo Rank Số</h3>
         <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 20px;">${message}</p>
         <button id="popup-ok-btn" style="
             width: 100%; padding: 10px; background: #6366f1; color: white;
             border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;
-        ">Xác Nhận & Tiếp Tục</button>
+        ">Tiếp Tục Leo Rank</button>
     `;
 
     overlay.appendChild(box);
@@ -230,7 +266,7 @@ if (submitCustomBtn) {
         }
         let bonus = text.length > 20 ? 25 : 10;
         score += bonus;
-        showCustomPopup(`💡 AI Phân tích phản hồi: Câu trả lời của cậu thể hiện góc nhìn khá sắc sảo! (+${bonus} điểm bản lĩnh).`, () => {
+        showCustomPopup(`💡 Đánh giá từ chuyên gia: Câu trả lời rất sắc sảo! (+${bonus} điểm vào BXH).`, () => {
             if (customInput) customInput.value = '';
             currentIdx++;
             loadQuestion();
@@ -245,25 +281,24 @@ function endGame() {
     const finalScoreEl = document.getElementById('final-score');
     if (finalScoreEl) finalScoreEl.textContent = score;
 
+    let rankTitle = "Đồng 🥉";
+    if (score >= 2000) rankTitle = "Thách Đấu 👑";
+    else if (score >= 1500) rankTitle = "Kim Cương 💎";
+    else if (score >= 1000) rankTitle = "Bạch Kim 🏆";
+    else if (score >= 500) rankTitle = "Vàng ⭐";
+
     const resultDesc = document.getElementById('result-desc');
     const resultIcon = document.getElementById('result-icon');
 
     if (resultDesc && resultIcon) {
-        if (score >= 130) {
-            resultIcon.textContent = "👑";
-            resultDesc.innerHTML = `Xuất sắc! ${playerName} sở hữu bản lĩnh số tuyệt vời, tư duy phản biện sắc bén, hoàn thành xuất sắc thử thách an toàn số!`;
-        } else if (score >= 70) {
-            resultIcon.textContent = "🛡️";
-            resultDesc.innerHTML = `Khá tốt! ${playerName} đã có ý thức phòng thủ trước cạm bẫy mạng, tuy nhiên cần cẩn trọng hơn trước các chiêu trò thao túng tâm lý.`;
-        } else {
-            resultIcon.textContent = "⚠️";
-            resultDesc.innerHTML = `Cảnh báo! ${playerName} cần trau dồi thêm kỹ năng an toàn số để bảo vệ bản thân tốt hơn trên không gian mạng.`;
-        }
+        resultIcon.textContent = "🏆";
+        resultDesc.innerHTML = `Chúc mừng ${playerName} đã hoàn thành hành trình! Mức rank đạt được: <strong style="color: #6366f1;">${rankTitle}</strong> với tổng điểm tích lũy là <strong>${score}</strong> điểm!`;
     }
 
-    leaderboard.push({ name: playerName, score: score });
+    // Cập nhật bảng xếp hạng leo rank
+    leaderboard.push({ name: playerName, score: score, rank: rankTitle });
     leaderboard.sort((a, b) => b.score - a.score);
-    leaderboard = leaderboard.slice(0, 5);
+    leaderboard = leaderboard.slice(0, 5); // Lấy top 5 cao thủ
     localStorage.setItem('khongmotminh_lb', JSON.stringify(leaderboard));
 
     const lbContainer = document.getElementById('leaderboard-container');
@@ -271,8 +306,8 @@ function endGame() {
         lbContainer.innerHTML = '';
         leaderboard.forEach((item, index) => {
             lbContainer.innerHTML += `
-                <div class="leaderboard-item">
-                    <span>#${index + 1} - <strong>${item.name}</strong></span>
+                <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank || 'Thành viên'})</span>
                     <span><strong>${item.score}</strong> điểm</span>
                 </div>
             `;
@@ -282,6 +317,7 @@ function endGame() {
 
 if (restartBtn) {
     restartBtn.addEventListener('click', () => {
+        localStorage.removeItem('khongmotminh_save');
         if (resultScreen) resultScreen.classList.remove('active');
         if (welcomeScreen) welcomeScreen.classList.add('active');
     });
