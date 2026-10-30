@@ -77,9 +77,13 @@
             </div>
 
             <div class="chat-container">
-                <div class="chat-header-sim">
-                    <span class="status-dot"></span>
-                    <span id="scenario-sender">Hệ thống mô phỏng tình huống</span>
+                <div class="chat-header-sim" style="justify-content: space-between; display: flex; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="status-dot"></span>
+                        <span id="scenario-sender">Hệ thống mô phỏng tình huống</span>
+                    </div>
+                    <!-- Nút dừng lại nghỉ ngơi -->
+                    <button id="pause-btn" type="button" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #f3f4f6; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer;">☕ Nghỉ Ngơi & Lưu Lại</button>
                 </div>
                 <div id="chat-messages" class="chat-messages"></div>
             </div>
