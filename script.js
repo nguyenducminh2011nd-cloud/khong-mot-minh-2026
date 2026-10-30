@@ -87,9 +87,14 @@ let leaderboard = JSON.parse(localStorage.getItem('khongmotminh_lb')) || [
 const welcomeScreen = document.getElementById('welcome-screen');
 const gameScreen = document.getElementById('game-screen');
 const resultScreen = document.getElementById('result-screen');
+const leaderboardScreen = document.getElementById('leaderboard-screen');
+
 const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
 const pauseBtn = document.getElementById('pause-btn');
+const quickLbBtn = document.getElementById('quick-lb-btn');
+const backToHomeBtn = document.getElementById('back-to-home-btn');
+
 const playerNameInput = document.getElementById('playerName');
 const themeSelect = document.getElementById('themeSelect');
 
@@ -107,7 +112,6 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     });
 });
 
-// Hàm tính rank chuẩn xác
 function calculateRank(currentScore) {
     if (currentScore >= 2000) return "Thách Đấu 👑";
     if (currentScore >= 1500) return "Kim Cương 💎";
@@ -117,7 +121,37 @@ function calculateRank(currentScore) {
     return "Đồng 🥉";
 }
 
-// Kiểm tra tiến độ và hiển thị đầy đủ thông tin rank khi tải lại trang
+function renderGlobalLeaderboard() {
+    const globalContainer = document.getElementById('global-leaderboard-container');
+    if (globalContainer) {
+        globalContainer.innerHTML = '';
+        leaderboard.forEach((item, index) => {
+            globalContainer.innerHTML += `
+                <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px;">
+                    <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank || 'Thành viên'})</span>
+                    <span><strong>${item.score}</strong> điểm</span>
+                </div>
+            `;
+        });
+    }
+}
+
+// Nút mở nhanh bảng xếp hạng từ góc màn hình chính
+if (quickLbBtn) {
+    quickLbBtn.addEventListener('click', () => {
+        if (welcomeScreen) welcomeScreen.classList.remove('active');
+        if (leaderboardScreen) leaderboardScreen.classList.add('active');
+        renderGlobalLeaderboard();
+    });
+}
+
+if (backToHomeBtn) {
+    backToHomeBtn.addEventListener('click', () => {
+        if (leaderboardScreen) leaderboardScreen.classList.remove('active');
+        if (welcomeScreen) welcomeScreen.classList.add('active');
+    });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     const savedGame = localStorage.getItem('khongmotminh_save');
     if (savedGame) {
@@ -153,14 +187,13 @@ if (startBtn) {
     });
 }
 
-// Nút tạm dừng hiển thị chi tiết điểm và rank
 if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
         const saveData = { playerName, currentIdx, score, gameMode };
         localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
         
         let currentRank = calculateRank(score);
-        showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nCậu có thể nghỉ ngơi bất cứ lúc nào, lần sau vào lại web sẽ hiển thị đầy đủ thông số này!`);
+        showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nCậu có thể nghỉ ngơi bất cứ lúc nào, tiến độ đã được giữ lại an toàn!`);
     });
 }
 
