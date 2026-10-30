@@ -57,14 +57,14 @@
                 <div class="mode-selection">
                     <h3>Chọn Chế Độ Thử Thách:</h3>
                     <div class="mode-cards">
-                        <button class="mode-btn active" data-mode="standard">
+                        <button class="mode-btn active" data-mode="standard" type="button">
                             <span class="mode-icon">🧠</span>
                             <div>
                                 <strong>Tiêu Chuẩn Hack Não</strong>
                                 <p>Nhiều đáp án nhiễu & tình huống phức tạp.</p>
                             </div>
                         </button>
-                        <button class="mode-btn" data-mode="expert">
+                        <button class="mode-btn" data-mode="expert" type="button">
                             <span class="mode-icon">🔥</span>
                             <div>
                                 <strong>Cực Hạn Tự Trả Lời</strong>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
 
-                <button id="start-btn" class="primary-btn">Bắt Đầu Thử Thách 🚀</button>
+                <button id="start-btn" class="primary-btn" type="button">Bắt Đầu Thử Thách 🚀</button>
             </div>
         </section>
 
@@ -97,4 +97,32 @@
             <div class="choices-container" id="choices-box"></div>
 
             <div class="custom-answer-box hidden" id="custom-answer-area">
-                <p>💭 Ý kiến cá nhân của cậu trước tình huống này là gì
+                <p>💭 Ý kiến cá nhân của cậu trước tình huống này là gì? Hãy viết rõ cách xử lý:</p>
+                <textarea id="custom-input" placeholder="Gõ câu trả lời của cậu ở đây..."></textarea>
+                <button id="submit-custom-btn" class="secondary-btn" type="button">Gửi Đánh Giá Công Khai</button>
+            </div>
+        </section>
+
+        <!-- Màn hình 3: Kết quả & Bảng xếp hạng -->
+        <section id="result-screen" class="screen">
+            <div class="result-card">
+                <div class="result-badge-icon" id="result-icon">🏆</div>
+                <h2 id="result-title">Kết Quả Đánh Giá Bản Lĩnh</h2>
+                <div class="final-score-box">Tổng điểm: <span id="final-score">0</span>/100</div>
+                <p id="result-desc">Đang tổng hợp đánh giá tâm lý...</p>
+
+                <div class="leaderboard-section">
+                    <h3>🏆 Bảng Xếp Hạng Bản Lĩnh Số (Top Khối 10)</h3>
+                    <div class="leaderboard-list" id="leaderboard-container"></div>
+                </div>
+
+                <div class="result-actions">
+                    <button id="restart-btn" class="primary-btn" type="button">Chơi Lại Thử Thách 🔄</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
