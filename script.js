@@ -107,13 +107,24 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     });
 });
 
+// Hàm tính rank dựa trên điểm số hiện tại
+function calculateRank(currentScore) {
+    if (currentScore >= 2000) return "Thách Đấu 👑";
+    if (currentScore >= 1500) return "Kim Cương 💎";
+    if (currentScore >= 1000) return "Bạch Kim 🏆";
+    if (currentScore >= 500) return "Vàng ⭐";
+    if (currentScore >= 200) return "Bạc 🛡️";
+    return "Đồng 🥉";
+}
+
 // Kiểm tra tiến độ đã lưu khi tải trang
 window.addEventListener('DOMContentLoaded', () => {
     const savedGame = localStorage.getItem('khongmotminh_save');
     if (savedGame) {
         const data = JSON.parse(savedGame);
         if (data && data.currentIdx > 0 && data.currentIdx < scenarios.length) {
-            showCustomPopup(`Chào mừng ${data.playerName} trở lại! Phát hiện tiến độ đang ở câu hỏi số ${data.currentIdx + 1}. Cậu có muốn tiếp tục chơi không?`, (isYes) => {
+            let savedRank = calculateRank(data.score);
+            showCustomPopup(`Chào mừng ${data.playerName} trở lại!\nTiến độ đang ở câu: ${data.currentIdx + 1}/300\nĐiểm tích lũy: ${data.score} | Mức Rank: ${savedRank}\n\nCậu có muốn tiếp tục hành trình không?`, (isYes) => {
                 if (isYes) {
                     playerName = data.playerName;
                     currentIdx = data.currentIdx;
@@ -142,12 +153,14 @@ if (startBtn) {
     });
 }
 
-// Sửa nút Tạm dừng: Lưu lại và GIỮ NGUYÊN MÀN HÌNH CHƠI, không đá về menu chính
+// Khi bấm tạm dừng: Lưu lại và hiển thị rõ mức rank, điểm số hiện tại
 if (pauseBtn) {
     pauseBtn.addEventListener('click', () => {
         const saveData = { playerName, currentIdx, score, gameMode };
         localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
-        showCustomPopup(`☕ Đã lưu thành công tiến độ tại câu số ${currentIdx + 1}! Cậu có thể yên tâm nghỉ ngơi, lần sau vào lại web sẽ tự động khôi phục đúng câu này.`);
+        
+        let currentRank = calculateRank(score);
+        showCustomPopup(`☕ Đã lưu tiến độ thành công tại câu số ${currentIdx + 1}!\n\n📊 Phong độ hiện tại của cậu:\n- Tổng điểm: ${score}\n- Mức Rank: ${currentRank}\n\nCậu có thể yên tâm nghỉ ngơi, lần sau vào lại web sẽ tự động khôi phục đúng tiến độ này!`);
     });
 }
 
@@ -209,7 +222,6 @@ function loadQuestion() {
     }
 }
 
-// Hỗ trợ popup có 1 hoặc 2 nút (cho phép chọn Tiếp tục hay Hủy)
 function showCustomPopup(message, callback, isConfirm = false) {
     let existingOverlay = document.getElementById('custom-popup-overlay');
     if (existingOverlay) existingOverlay.remove();
@@ -225,16 +237,16 @@ function showCustomPopup(message, callback, isConfirm = false) {
     const box = document.createElement('div');
     box.style.cssText = `
         background: #111827; border: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 20px 25px; border-radius: 16px; width: 90%; max-width: 400px;
+        padding: 20px 25px; border-radius: 16px; width: 90%; max-width: 420px;
         color: #f3f4f6; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: 'Plus Jakarta Sans', sans-serif; white-space: pre-line;
     `;
 
-    let buttonsHTML = `<button id="popup-ok-btn" style="width: 100%; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Xác Nhận</button>`;
+    let buttonsHTML = `<button id="popup-ok-btn" style="width: 100%; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Xác Nhận</button>`;
     
     if (isConfirm) {
         buttonsHTML = `
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
                 <button id="popup-no-btn" style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Chơi Mới</button>
                 <button id="popup-yes-btn" style="flex: 1; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Tiếp Tục</button>
             </div>
@@ -242,9 +254,9 @@ function showCustomPopup(message, callback, isConfirm = false) {
     }
 
     box.innerHTML = `
-        <div style="font-size: 28px; margin-bottom: 10px;">🛡️</div>
-        <h3 style="font-size: 16px; margin-bottom: 10px; color: #6366f1;">Hệ Thống Bản Lĩnh Số</h3>
-        <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 20px;">${message}</p>
+        <div style="font-size: 28px; margin-bottom: 8px;">🏆</div>
+        <h3 style="font-size: 16px; margin-bottom: 8px; color: #6366f1;">Hệ Thống Bản Lĩnh Số</h3>
+        <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 10px;">${message}</p>
         ${buttonsHTML}
     `;
 
@@ -302,12 +314,7 @@ function endGame() {
     const finalScoreEl = document.getElementById('final-score');
     if (finalScoreEl) finalScoreEl.textContent = score;
 
-    let rankTitle = "Đồng 🥉";
-    if (score >= 2000) rankTitle = "Thách Đấu 👑";
-    else if (score >= 1500) rankTitle = "Kim Cương 💎";
-    else if (score >= 1000) rankTitle = "Bạch Kim 🏆";
-    else if (score >= 500) rankTitle = "Vàng ⭐";
-
+    let rankTitle = calculateRank(score);
     const resultDesc = document.getElementById('result-desc');
     const resultIcon = document.getElementById('result-icon');
 
