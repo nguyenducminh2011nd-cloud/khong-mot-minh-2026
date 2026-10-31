@@ -1,4 +1,4 @@
-// --- CẤU HÌNH FIREBASE CHO DỰ ÁN ---
+// --- CẤU HÌNH FIREBASE CHUẨN XÁC ---
 const firebaseConfig = {
     apiKey: "AIzaSyCtQSv6-wGiKyzIIzpmdL32f00Lz14ih1M",
     authDomain: "khongmotminh2026.firebaseapp.com",
@@ -79,45 +79,4 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
         playerName = user.displayName;
-        const authContainer = document.getElementById('auth-container');
-        if (authContainer) {
-            authContainer.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.85); padding: 6px 14px; border-radius: 30px; border: 1px solid rgba(52,211,153,0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
-                    <img src="${user.photoURL}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #34d399;">
-                    <div style="text-align: left; font-size: 13px; color: #fff;">
-                        <strong>${user.displayName}</strong><br>
-                        <span style="font-size: 10px; color: #34d399;">Đã kết nối Cloud 🛡️</span>
-                    </div>
-                </div>
-            `;
-        }
-    }
-});
-
-// Xử lý khi trang được tải xong
-window.addEventListener('DOMContentLoaded', () => {
-    loadGlobalFeedbacks();
-    auth.getRedirectResult().catch((err) => console.log(err));
-});
-
-// --- LƯU ĐIỂM SỐ LÊN CLOUD FIRESTORE (Dùng cho logic game của cậu) ---
-function saveScoreToCloud(score, rankTitle) {
-    if (!currentUser) return;
-    
-    db.collection("leaderboard").doc(currentUser.uid).set({
-        name: currentUser.displayName,
-        photo: currentUser.photoURL,
-        score: score,
-        rank: rankTitle,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-        console.log("Đã đồng bộ điểm lên bảng xếp hạng chung!");
-    }).catch((error) => {
-        console.error("Lỗi lưu điểm:", error);
-    });
-}
-
-// ==========================================
-// TOÀN BỘ LOGIC GAME CỦA CẬU (300 câu hỏi, Fisher-Yates shuffle, v.v.)
-// Cậu dán phần code game cũ của mình ngay dưới dòng này:
-// ==========================================
+        const authContainer = document.getElementById('
