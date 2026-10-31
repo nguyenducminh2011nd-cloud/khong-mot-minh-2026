@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không Một Minh 2026</title>
+    <title>Không Một Mình 2026</title>
     
     <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <style>
@@ -34,7 +33,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         h1 {
@@ -53,45 +52,17 @@
             margin: 0;
         }
 
-        #auth-container {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .google-btn {
-            background: #ffffff;
-            color: #1f2937;
-            border: none;
-            padding: 9px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
-        }
-
-        .google-btn:hover {
-            background: #f3f4f6;
-            transform: translateY(-2px);
-        }
-
         .main-container {
             width: 100%;
             max-width: 900px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+            margin-top: 10px;
         }
 
         @media (max-width: 768px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
+            .main-container { grid-template-columns: 1fr; }
         }
 
         .card {
@@ -160,21 +131,24 @@
             align-items: center;
         }
 
-        textarea {
+        input[type="text"], textarea {
             width: 100%;
-            height: 75px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 8px;
             color: #fff;
             padding: 10px;
-            resize: none;
-            margin-bottom: 10px;
             box-sizing: border-box;
             font-family: inherit;
+            margin-bottom: 10px;
         }
 
-        textarea:focus {
+        textarea {
+            height: 75px;
+            resize: none;
+        }
+
+        input[type="text"]:focus, textarea:focus {
             outline: none;
             border-color: var(--accent-green);
         }
@@ -191,9 +165,7 @@
             transition: opacity 0.2s;
         }
 
-        .action-btn:hover {
-            opacity: 0.9;
-        }
+        .action-btn:hover { opacity: 0.9; }
 
         .feedback-item {
             background: rgba(0, 0, 0, 0.25);
@@ -204,9 +176,7 @@
             font-size: 0.9rem;
         }
 
-        .feedback-item strong {
-            color: var(--accent-blue);
-        }
+        .feedback-item strong { color: var(--accent-blue); }
 
         #global-feedback-list {
             margin-top: 10px;
@@ -222,16 +192,8 @@
         <p class="subtitle">Hệ thống Ôn tập & Kết nối Cộng đồng</p>
     </header>
 
-    <!-- NÚT ĐĂNG NHẬP GOOGLE -->
-    <div id="auth-container">
-        <button class="google-btn" onclick="loginWithGoogle()">
-            <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.49h4.84c-.21 1.12-.86 2.07-1.83 2.71v2.25h2.96c1.73-1.59 2.73-3.93 2.73-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.96-2.25c-.82.55-1.87.88-3 .88-2.31 0-4.27-1.56-4.97-3.65H1.04v2.32C2.55 15.95 5.58 18 9 18z"/><path fill="#FBBC05" d="M4.03 10.78c-.18-.55-.28-1.13-.28-1.78s.1-1.23.28-1.78V4.9H1.04C.37 6.25 0 7.8 0 9.42s.37 3.17 1.04 4.52l2.99-2.32z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0 5.58 0 2.55 2.05 1.04 4.9l2.99 2.32c.7-2.09 2.66-3.64 4.97-3.64z"/></svg>
-            Đăng Nhập Google
-        </button>
-    </div>
-
     <div class="main-container">
-        <!-- PHẦN 1: HỆ THỐNG TRẮC NGHIỆM ÔN TẬP -->
+        <!-- PHẦN 1: TRẮC NGHIỆM (TỰ LƯU TIẾN TRÌNH VÀO MÁY) -->
         <div class="card">
             <h3>🧠 Ôn Tập Trắc Nghiệm</h3>
             <div id="quiz-area">
@@ -245,9 +207,10 @@
             </div>
         </div>
 
-        <!-- PHẦN 2: ĐÁNH GIÁ & GÓP Ý CỘNG ĐỒNG -->
+        <!-- PHẦN 2: GÓP Ý CỘNG ĐỒNG (KHÔNG CẦN LOGIN) -->
         <div class="card">
             <h3>💬 Đánh Giá & Góp Ý</h3>
+            <input type="text" id="author-name-input" placeholder="Tên cậu (hoặc để trống là Khách)">
             <textarea id="home-feedback-input" placeholder="Viết cảm nhận hoặc góp ý của cậu..."></textarea>
             <button class="action-btn" onclick="submitHomeFeedback()" style="width: 100%;">Gửi Lên Mây ☁️</button>
 
@@ -258,7 +221,7 @@
     </div>
 
     <script>
-        // --- FIREBASE CONFIGURATION ---
+        // --- FIREBASE FIRESTORE PUBLIC ---
         const firebaseConfig = {
             apiKey: "AIzaSyCtQSv6-wGiKyzIIzpmdL32f00Lz14ih1M",
             authDomain: "khongmotminh2026.firebaseapp.com",
@@ -272,23 +235,9 @@
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        const auth = firebase.auth();
         const db = firebase.firestore();
-        let currentUser = null;
 
-        // --- GOOGLE AUTHENTICATION ---
-        window.loginWithGoogle = function() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).then((result) => {
-                console.log("Đăng nhập thành công:", result.user);
-            }).catch((error) => {
-                console.error("Lỗi đăng nhập:", error);
-                alert("Lỗi đăng nhập: " + error.message);
-            });
-        };
-
-        // --- KHO CÂU HỎI ĐỘC LẬP (KHÔNG DÙNG THUẬT TOÁN TẠO LẶP) ---
-        // Cậu có thể thoải mái thêm các câu hỏi thực tế của mình vào danh sách này
+        // --- DANH SÁCH CÂU HỎI ---
         const questionBank = [
             {
                 q: "Đâu là thành phần cốt lõi để khởi tạo ứng dụng Firebase trong JavaScript?",
@@ -317,15 +266,21 @@
             }
         ];
 
-        let currentQIndex = 0;
-        let score = 0;
+        // --- ĐỌC VÀ LƯU TIẾN TRÌNH CHƠI (LOCALSTORAGE) ---
+        let currentQIndex = parseInt(localStorage.getItem('kmm_q_index')) || 0;
+        let score = parseInt(localStorage.getItem('kmm_score')) || 0;
         let answered = false;
 
         function loadQuestion() {
             answered = false;
+            if (currentQIndex >= questionBank.length) {
+                currentQIndex = 0; // Vòng lặp lại nếu hết câu hỏi
+            }
+            
             let qData = questionBank[currentQIndex];
             document.getElementById('question-counter').innerText = `Câu hỏi ${currentQIndex + 1} / ${questionBank.length}`;
             document.getElementById('question-text').innerText = qData.q;
+            document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
             
             let optHtml = "";
             qData.options.forEach((opt, idx) => {
@@ -342,6 +297,7 @@
             if (selected === correct) {
                 buttons[selected].classList.add('correct');
                 score += 10;
+                localStorage.setItem('kmm_score', score);
                 document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
             } else {
                 buttons[selected].classList.add('wrong');
@@ -351,40 +307,43 @@
 
         window.nextQuestion = function() {
             currentQIndex = (currentQIndex + 1) % questionBank.length;
+            localStorage.setItem('kmm_q_index', currentQIndex);
             loadQuestion();
         };
 
-        // --- SUBMIT FEEDBACK TO FIRESTORE ---
+        // --- GỬI ĐÁNH GIÁ (KHÔNG CẦN ĐĂNG NHẬP) ---
         window.submitHomeFeedback = function() {
-            const input = document.getElementById('home-feedback-input');
-            const text = input ? input.value.trim() : "";
+            const nameInput = document.getElementById('author-name-input');
+            const textInput = document.getElementById('home-feedback-input');
+            
+            const authorName = nameInput ? (nameInput.value.trim() || "Khách ẩn danh") : "Khách ẩn danh";
+            const text = textInput ? textInput.value.trim() : "";
             
             if (!text) {
                 alert("Cậu vui lòng viết vài dòng đánh giá trước khi gửi nhé!");
                 return;
             }
 
-            let authorName = currentUser && currentUser.displayName ? currentUser.displayName : "Khách ẩn danh";
-
             db.collection("feedbacks").add({
                 name: authorName,
                 text: text,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                input.value = "";
-                alert("❤️ Cảm ơn cậu đã gửi đánh giá!");
+                textInput.value = "";
+                alert("❤️ Cảm ơn cậu đã gửi đánh giá lên hệ thống!");
                 loadGlobalFeedbacks();
             }).catch((error) => {
                 console.error("Lỗi gửi đánh giá:", error);
-                alert("Không thể gửi đánh giá do thiếu quyền hoặc lỗi mạng!");
+                alert("Chưa thể gửi đánh giá. Vui lòng kiểm tra lại kết nối mạng!");
             });
         };
 
+        // --- TẢI ĐÁNH GIÁ CỘNG ĐỒNG ---
         function loadGlobalFeedbacks() {
             const listContainer = document.getElementById('global-feedback-list');
             if (!listContainer) return;
 
-            db.collection("feedbacks").orderBy("timestamp", "desc").limit(5).get()
+            db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
                 .then((querySnapshot) => {
                     let html = "";
                     querySnapshot.forEach((doc) => {
@@ -396,28 +355,9 @@
                     listContainer.innerHTML = html || "<div style='color: #888; text-align: center; font-size: 0.85rem;'>Chưa có đánh giá nào.</div>";
                 }).catch((err) => {
                     console.log("Lỗi tải đánh giá:", err);
-                    listContainer.innerHTML = "<div style='color: #888; text-align: center; font-size: 0.85rem;'>Chưa thể tải dữ liệu từ Firestore.</div>";
+                    listContainer.innerHTML = "<div style='color: #888; text-align: center; font-size: 0.85rem;'>Chưa thể tải dữ liệu từ Cloud.</div>";
                 });
         }
-
-        // --- AUTH STATE MONITOR ---
-        auth.onAuthStateChanged((user) => {
-            const authContainer = document.getElementById('auth-container');
-            if (user) {
-                currentUser = user;
-                if (authContainer) {
-                    authContainer.innerHTML = `
-                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.8); padding: 8px 18px; border-radius: 30px; border: 1px solid var(--border-glow);">
-                            <img src="${user.photoURL}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--accent-green);">
-                            <div style="text-align: left; font-size: 13px; color: #fff;">
-                                <strong>${user.displayName}</strong><br>
-                                <span style="font-size: 10px; color: var(--accent-green);">Đã kết nối Cloud 🛡️</span>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-        });
 
         window.addEventListener('DOMContentLoaded', () => {
             loadQuestion();
