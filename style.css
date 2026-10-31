@@ -1,6 +1,6 @@
 :root {
     --bg-main: #0b0f19;
-    --card-bg: rgba(17, 24, 39, 0.85);
+    --card-bg: rgba(17, 24, 39, 0.88);
     --accent: #6366f1;
     --accent-hover: #4f46e5;
     --text-main: #f3f4f6;
@@ -10,21 +10,21 @@
 
 [data-theme="neon"] {
     --bg-main: #0f051d;
-    --card-bg: rgba(30, 15, 55, 0.85);
+    --card-bg: rgba(30, 15, 55, 0.88);
     --accent: #ec4899;
     --accent-hover: #db2777;
 }
 
 [data-theme="emerald"] {
     --bg-main: #022c22;
-    --card-bg: rgba(6, 78, 59, 0.85);
+    --card-bg: rgba(6, 78, 59, 0.88);
     --accent: #10b981;
     --accent-hover: #059669;
 }
 
 [data-theme="sunset"] {
     --bg-main: #2b110e;
-    --card-bg: rgba(69, 26, 22, 0.85);
+    --card-bg: rgba(69, 26, 22, 0.88);
     --accent: #f97316;
     --accent-hover: #ea580c;
 }
@@ -46,32 +46,51 @@ body {
     overflow-x: hidden;
     position: relative;
     padding: 15px;
+    transition: background-color 0.4s ease;
 }
 
 .ambient-glow {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     background: var(--accent);
-    filter: blur(150px);
-    opacity: 0.15;
+    filter: blur(160px);
+    opacity: 0.2;
     border-radius: 50%;
     z-index: 0;
-    pointer-events: none; /* Không chặn chuột */
+    pointer-events: none;
+    transition: background 0.4s ease;
+}
+
+/* VIỀN LED RGB CHẠY XUNG QUANH MƯỢT MÀ */
+.rgb-border-wrapper {
+    position: relative;
+    padding: 3px;
+    border-radius: 23px;
+    background: linear-gradient(45deg, #ff0055, var(--accent), #00ffcc, #ffcc00, #ff0055);
+    background-size: 400% 400%;
+    animation: rgbGlowAnimation 6s linear infinite;
+    z-index: 1;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.35);
+}
+
+@keyframes rgbGlowAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .app-container {
     width: 100%;
     max-width: 650px;
     background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-color);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 20px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     padding: 24px;
-    z-index: 10;
+    z-index: 2;
     position: relative;
+    transition: background 0.4s ease;
 }
 
 .app-header {
@@ -128,16 +147,19 @@ body {
 }
 
 .control-group select {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 11px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 12px;
     cursor: pointer;
     outline: none;
-    position: relative;
-    z-index: 20;
+    transition: 0.2s;
+}
+
+.control-group select:hover {
+    border-color: var(--accent);
 }
 
 .screen {
@@ -181,8 +203,6 @@ body {
     font-size: 13px;
     outline: none;
     transition: 0.2s;
-    position: relative;
-    z-index: 20;
 }
 
 .input-group input:focus {
@@ -218,8 +238,6 @@ body {
     flex-direction: column;
     gap: 6px;
     transition: 0.2s;
-    position: relative;
-    z-index: 20;
 }
 
 .mode-btn:hover {
@@ -247,7 +265,7 @@ body {
 }
 
 button, input, select {
-    pointer-events: auto !important; /* Đảm bảo mọi nút bấm đều nhận sự kiện click */
+    pointer-events: auto !important;
 }
 
 .primary-btn {
@@ -262,8 +280,6 @@ button, input, select {
     cursor: pointer;
     transition: 0.2s;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-    position: relative;
-    z-index: 20;
 }
 
 .primary-btn:hover {
@@ -327,8 +343,6 @@ button, input, select {
     font-weight: 500;
     cursor: pointer;
     transition: 0.2s;
-    position: relative;
-    z-index: 20;
 }
 
 .choice-btn:hover {
@@ -360,8 +374,6 @@ button, input, select {
     resize: none;
     outline: none;
     margin-bottom: 10px;
-    position: relative;
-    z-index: 20;
 }
 
 .secondary-btn {
@@ -374,8 +386,6 @@ button, input, select {
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
-    position: relative;
-    z-index: 20;
 }
 
 .secondary-btn:hover {
