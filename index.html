@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Không Một Mình 2026</title>
     
-    <!-- Thư viện Firebase SDK Compat -->
+    <!-- Firebase App (Core) SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <!-- Firebase Auth SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <!-- Firebase Firestore SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <link rel="stylesheet" href="style.css">
-    
     <style>
         body {
             background-color: #0d1117;
@@ -19,60 +19,199 @@
             color: #ffffff;
             margin: 0;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
-        .game-container {
-            max-width: 700px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        /* TIÊU ĐỀ CHUẨN ĐÚNG TÊN KHÔNG MỘT MÌNH 2026 VÀ CÓ HIỆU ỨNG PHÁT SÁNG */
-        .game-title {
-            font-size: 2.8rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #34d399, #3b82f6, #ec4899);
+        h1 {
+            background: linear-gradient(45deg, #34d399, #60a5fa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(52, 211, 153, 0.3);
-            margin: 40px 0 30px 0;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            text-align: center;
+        }
+        #auth-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .google-btn {
+            background: #ffffff;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+        .google-btn:hover {
+            background: #f0f0f0;
+        }
+        textarea {
+            width: 90%;
+            height: 80px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            padding: 10px;
+            resize: none;
+            margin-bottom: 10px;
+        }
+        .submit-btn {
+            background: #34d399;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background: #2bc48a;
         }
     </style>
 </head>
-<body style="position: relative;">
-    
-    <!-- NÚT ĐĂNG NHẬP GOOGLE CỐ ĐỊNH GÓC PHẢI - ÉP NỔI LÊN TRÊN CÙNG, CHỐNG BỊ CHE -->
-    <div id="auth-container" style="position: fixed; top: 15px; right: 20px; z-index: 2147483647; pointer-events: auto;">
-        <button id="google-login-btn" type="button" onclick="loginWithGoogle()" style="background: linear-gradient(135deg, #4285F4, #34A853); border: none; padding: 8px 16px; border-radius: 30px; color: white; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); outline: none;">
-            <span style="background: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4285F4; font-size: 12px;">G</span>
-            Đăng Nhập Google 🛡️
+<body>
+
+    <h1>KHÔNG MỘT MÌNH 2026</h1>
+
+    <!-- KHU VỰC ĐĂNG NHẬP -->
+    <div id="auth-container">
+        <button class="google-btn" onclick="loginWithGoogle()">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.49h4.84c-.21 1.12-.86 2.07-1.83 2.71v2.25h2.96c1.73-1.59 2.73-3.93 2.73-6.61z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.96-2.25c-.82.55-1.87.88-3 .88-2.31 0-4.27-1.56-4.97-3.65H1.04v2.32C2.55 15.95 5.58 18 9 18z"/><path fill="#FBBC05" d="M4.03 10.78c-.18-.55-.28-1.13-.28-1.78s.1-1.23.28-1.78V4.9H1.04C.37 6.25 0 7.8 0 9.42s.37 3.17 1.04 4.52l2.99-2.32z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0 5.58 0 2.55 2.05 1.04 4.9l2.99 2.32c.7-2.09 2.66-3.64 4.97-3.64z"/></svg>
+            Đăng Nhập Google
         </button>
     </div>
 
-    <div class="game-container">
-        <!-- TIÊU ĐỀ ĐẦY ĐỦ DẤU VÀ TÊN -->
-        <h1 class="game-title">KHÔNG MỘT MÌNH 2026</h1>
+    <!-- KHU VỰC ĐÁNH GIÁ -->
+    <div class="container">
+        <h3>💬 Đánh Giá & Góp Ý Từ Cộng Đồng</h3>
+        <textarea id="home-feedback-input" placeholder="Viết cảm nhận hoặc góp ý của cậu về game..."></textarea><br>
+        <button class="submit-btn" onclick="submitHomeFeedback()">Gửi Lên Mây ☁️</button>
         
-        <!-- KHU VỰC CHƠI GAME CHÍNH -->
-        <div id="game-play-area">
-            <!-- Nơi chứa logic màn chơi của cậu -->
-        </div>
-
-        <!-- KHU VỰC ĐÁNH GIÁ TỪ CỘNG ĐỒNG -->
-        <div class="feedback-section" style="margin-top: 35px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px);">
-            <h3 style="color: #fff; margin-bottom: 12px; font-size: 15px; text-align: left; display: flex; align-items: center; gap: 8px;">
-                💬 Đánh Giá & Góp Ý Từ Cộng Đồng
-            </h3>
-            <textarea id="home-feedback-input" placeholder="Viết cảm nhận hoặc góp ý của cậu về game..." style="width: 100%; height: 70px; border-radius: 10px; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.15); outline: none; box-sizing: border-box; font-family: inherit; font-size: 14px;"></textarea>
-            <button type="button" onclick="submitHomeFeedback()" style="background: linear-gradient(135deg, #34d399, #059669); border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; color: #fff; box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3); float: right; font-size: 14px; transition: opacity 0.2s;">Gửi Lên Mây ☁️</button>
-            <div style="clear: both;"></div>
-            
-            <div id="global-feedback-list" style="margin-top: 20px; max-height: 180px; overflow-y: auto; text-align: left; font-size: 13px;">
-                <!-- Danh sách đánh giá đồng bộ từ Firestore -->
-            </div>
+        <div id="global-feedback-list" style="margin-top: 15px; text-align: left;">
+            Đang tải đánh giá...
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // --- CẤU HÌNH CHUẨN XÁC TỪ FIREBASE CONSOLE CỦA CẬU ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtQSv6-wGiKyzIIzpmdL32f00Lz14ih1M",
+            authDomain: "khongmotminh2026.firebaseapp.com",
+            projectId: "khongmotminh2026",
+            storageBucket: "khongmotminh2026.fireappstorage.app",
+            messagingSenderId: "391078149804",
+            appId: "1:391078149804:web:9ba69127156c66e6966909",
+            measurementId: "G-BFXSCXN4Q0"
+        };
+
+        // Khởi tạo Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+
+        // --- ĐĂNG NHẬP GOOGLE ---
+        window.loginWithGoogle = function() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then((result) => {
+                console.log("Đăng nhập thành công:", result.user);
+            }).catch((error) => {
+                console.error("Lỗi đăng nhập:", error);
+                alert("Lỗi đăng nhập: " + error.message);
+            });
+        };
+
+        // --- GỬI ĐÁNH GIÁ ---
+        window.submitHomeFeedback = function() {
+            const input = document.getElementById('home-feedback-input');
+            const text = input ? input.value.trim() : "";
+            
+            if (!text) {
+                alert("Cậu vui lòng viết vài dòng đánh giá trước khi gửi nhé!");
+                return;
+            }
+
+            let authorName = currentUser && currentUser.displayName ? currentUser.displayName : "Khách ẩn danh";
+
+            db.collection("feedbacks").add({
+                name: authorName,
+                text: text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                input.value = "";
+                alert("❤️ Cảm ơn cậu đã gửi đánh giá lên hệ thống chung!");
+                loadGlobalFeedbacks();
+            }).catch((error) => {
+                console.error("Lỗi gửi đánh giá:", error);
+                alert("Không thể gửi đánh giá do thiếu quyền hoặc lỗi mạng!");
+            });
+        };
+
+        // --- TẢI ĐÁNH GIÁ ---
+        function loadGlobalFeedbacks() {
+            const listContainer = document.getElementById('global-feedback-list');
+            if (!listContainer) return;
+
+            db.collection("feedbacks").orderBy("timestamp", "desc").limit(5).get()
+                .then((querySnapshot) => {
+                    let html = "";
+                    querySnapshot.forEach((doc) => {
+                        let data = doc.data();
+                        html += `<div style="background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; color: #fff; border-left: 3px solid #34d399;">
+                            <strong>${data.name || "Khách"}:</strong> ${data.text}
+                        </div>`;
+                    });
+                    listContainer.innerHTML = html || "Chưa có đánh giá nào.";
+                }).catch((err) => {
+                    console.log("Lỗi tải đánh giá:", err);
+                    listContainer.innerHTML = "Chưa thể tải dữ liệu từ Firestore.";
+                });
+        }
+
+        // --- THEO DÕI TRẠNG THÁI ĐĂNG NHẬP ---
+        auth.onAuthStateChanged((user) => {
+            const authContainer = document.getElementById('auth-container');
+            if (user) {
+                currentUser = user;
+                if (authContainer) {
+                    authContainer.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.85); padding: 6px 14px; border-radius: 30px; border: 1px solid rgba(52,211,153,0.4);">
+                            <img src="${user.photoURL}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #34d399;">
+                            <div style="text-align: left; font-size: 13px; color: #fff;">
+                                <strong>${user.displayName}</strong><br>
+                                <span style="font-size: 10px; color: #34d399;">Đã kết nối Cloud 🛡️</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadGlobalFeedbacks();
+        });
+    </script>
 </body>
 </html>
