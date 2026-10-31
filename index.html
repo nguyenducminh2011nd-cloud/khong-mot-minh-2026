@@ -48,3 +48,31 @@
             Đăng Nhập Google 🛡️
         </button>
     </div>
+
+    <div class="game-container">
+        <!-- TIÊU ĐỀ ĐẦY ĐỦ DẤU VÀ TÊN -->
+        <h1 class="game-title">KHÔNG MỘT MÌNH 2026</h1>
+        
+        <!-- KHU VỰC CHƠI GAME CHÍNH (Nơi hiển thị các màn chơi của cậu) -->
+        <div id="game-play-area">
+            <!-- Giao diện game của cậu sẽ hiện ở đây -->
+        </div>
+
+        <!-- KHU VỰC ĐÁNH GIÁ TỪ CỘNG ĐỒNG -->
+        <div class="feedback-section" style="margin-top: 35px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px);">
+            <h3 style="color: #fff; margin-bottom: 12px; font-size: 15px; text-align: left; display: flex; align-items: center; gap: 8px;">
+                💬 Đánh Giá & Góp Ý Từ Cộng Đồng
+            </h3>
+            <textarea id="home-feedback-input" placeholder="Viết cảm nhận hoặc góp ý của cậu về game..." style="width: 100%; height: 70px; border-radius: 10px; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.15); outline: none; box-sizing: border-box; font-family: inherit; font-size: 14px;"></textarea>
+            <button type="button" onclick="submitHomeFeedback()" style="background: linear-gradient(135deg, #34d399, #059669); border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; color: #fff; box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3); float: right; font-size: 14px; transition: opacity 0.2s;">Gửi Lên Mây ☁️</button>
+            <div style="clear: both;"></div>
+            
+            <div id="global-feedback-list" style="margin-top: 20px; max-height: 180px; overflow-y: auto; text-align: left; font-size: 13px;">
+                <!-- Danh sách đánh giá đồng bộ từ Firestore -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
