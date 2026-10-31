@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="cyber">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
 <body>
     <div class="ambient-glow"></div>
     
-    <!-- KHUNG RGB LED CHẠY XUNG QUANH -->
+    <!-- KHUNG VIỀN LED RGB GAMING CAO CẤP -->
     <div class="rgb-border-wrapper">
         <div class="app-container">
             <!-- Header chính -->
@@ -24,9 +24,15 @@
                 </div>
                 
                 <div class="header-controls">
+                    <!-- KHÔI PHỤC PHẦN CHỌN HÌNH NỀN / GIAO DIỆN -->
                     <div class="control-group">
-                        <label>🎨 Màu LED:</label>
-                        <input type="color" id="rgbColorPicker" value="#6366f1" onchange="changeCustomRGB(this.value)" title="Chọn màu chủ đạo & LED">
+                        <label>🎨 Giao diện:</label>
+                        <select id="themeSelect" onchange="changeTheme(this.value)">
+                            <option value="cyber">Cyberpunk Đêm</option>
+                            <option value="neon">Neon Hồng Tím</option>
+                            <option value="emerald">Emerald Xanh Lục</option>
+                            <option value="sunset">Sunset Hoàng Hôn</option>
+                        </select>
                     </div>
                 </div>
             </header>
