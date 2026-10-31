@@ -11,31 +11,71 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <link rel="stylesheet" href="style.css">
+    
+    <!-- CSS TỰ CHỈNH GIAO DIỆN HIỆN ĐẠI, HẾT PHÈN -->
+    <style>
+        body {
+            background-color: #0d1117;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        /* HIỆU ỨNG TIÊU ĐỀ NGHỆ THUẬT, SANG TRỌNG */
+        .game-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #34d399, #3b82f6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(52, 211, 153, 0.3);
+            margin: 30px 0 10px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .game-subtitle {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+    </style>
 </head>
-<body>
-    <div class="game-container">
-        <h1>Không Một Minh 2026</h1>
-        
-        <!-- NÚT ĐĂNG NHẬP GOOGLE CAO CẤP (Tương thích cả PC và Mobile) -->
-        <div id="auth-container" style="margin-bottom: 20px; display: flex; justify-content: center;">
-            <button type="button" onclick="loginWithGoogle()" style="background: linear-gradient(135deg, #4285F4, #34A853); border: none; padding: 12px 24px; border-radius: 30px; color: white; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4); transition: all 0.3s ease; outline: none; width: 100%; max-width: 320px;">
-                <span style="background: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4285F4; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">G</span>
-                Đăng Nhập Bằng Google 🛡️
-            </button>
-        </div>
+<body style="position: relative;">
+    
+    <!-- NÚT ĐĂNG NHẬP GOOGLE CỐ ĐỊNH GÓC TRÊN BÊN PHẢI (Khắc phục hoàn toàn lỗi không ấn được do bị che) -->
+    <div id="auth-container" style="position: fixed; top: 15px; right: 20px; z-index: 99999;">
+        <button type="button" onclick="loginWithGoogle()" style="background: linear-gradient(135deg, #4285F4, #34A853); border: none; padding: 8px 16px; border-radius: 30px; color: white; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); outline: none; transition: transform 0.2s;">
+            <span style="background: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4285F4; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">G</span>
+            Đăng Nhập Google 🛡️
+        </button>
+    </div>
 
+    <div class="game-container">
+        <!-- TIÊU ĐỀ: ĐƯỢC THIẾT KẾ ĐỒ HOẠ GRADIENT, CHUYÊN NGHIỆP, HẾT PHÈN -->
+        <h1 class="game-title">Không Một Minh</h1>
+        <div class="game-subtitle">Hệ thống kịch bản thông minh & Đồng bộ đám mây trực tuyến 2026</div>
+        
         <!-- KHU VỰC CHƠI GAME CHÍNH -->
         <div id="game-play-area">
             <!-- Nơi chứa toàn bộ kịch bản và logic game của cậu -->
         </div>
 
         <!-- KHU VỰC ĐÁNH GIÁ TỪ CỘNG ĐỒNG -->
-        <div class="feedback-section" style="margin-top: 25px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-            <h3 style="color: #fff; margin-bottom: 10px; font-size: 16px;">💬 Đánh Giá Từ Cộng Đồng</h3>
-            <textarea id="home-feedback-input" placeholder="Viết đánh giá của cậu về game..." style="width: 100%; height: 60px; border-radius: 8px; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); outline: none; box-sizing: border-box;"></textarea>
-            <button onclick="submitHomeFeedback()" style="background: linear-gradient(135deg, #34d399, #059669); border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; color: #fff; box-shadow: 0 4px 10px rgba(52, 211, 153, 0.3);">Gửi Đánh Giá Lên Mây ☁️</button>
+        <div class="feedback-section" style="margin-top: 35px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(10px);">
+            <h3 style="color: #fff; margin-bottom: 12px; font-size: 15px; text-align: left; display: flex; align-items: center; gap: 8px;">
+                💬 Đánh Giá & Góp Ý Từ Cộng Đồng
+            </h3>
+            <textarea id="home-feedback-input" placeholder="Viết cảm nhận hoặc góp ý của cậu về game..." style="width: 100%; height: 70px; border-radius: 10px; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.15); outline: none; box-sizing: border-box; font-family: inherit; font-size: 14px;"></textarea>
+            <button onclick="submitHomeFeedback()" style="background: linear-gradient(135deg, #34d399, #059669); border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; color: #fff; box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3); float: right; font-size: 14px; transition: opacity 0.2s;">Gửi Lên Mây ☁️</button>
+            <div style="clear: both;"></div>
             
-            <div id="global-feedback-list" style="margin-top: 15px; max-height: 160px; overflow-y: auto; text-align: left; font-size: 13px;">
+            <div id="global-feedback-list" style="margin-top: 20px; max-height: 180px; overflow-y: auto; text-align: left; font-size: 13px;">
                 <!-- Danh sách đánh giá đồng bộ từ Firestore -->
             </div>
         </div>
