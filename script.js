@@ -17,16 +17,16 @@ const db = firebase.firestore();
 const warnings = [
     "⚠️ Cảnh báo: Kẻ lừa đảo thường dùng tâm lý hoảng sợ hoặc hám lợi để thao túng bạn!",
     "🚨 Chú ý: Đừng bao giờ cung cấp mã OTP hay mật khẩu cho bất kỳ ai!",
-    "⚡ Thử thách nhanh: 15 tình huống chớp nhoáng, đọc kỹ từng từ để không sập bẫy!",
+    "⚡ Thử thách đỉnh cao: Khó (40đ/câu) & Hack Não (100đ/câu), cày điểm bứt phá rank!",
     "🔥 Cẩn thận: Các đáp án đều được cân bằng độ dài, hãy tư duy logic để vượt ải!"
 ];
 
-// --- HỆ THỐNG XẾP HẠNG RANK THEO ĐIỂM SỐ ---
+// --- HỆ THỐNG XẾP HẠNG RANK THEO THANG ĐIỂM MỚI ---
 function getPlayerRank(score) {
-    if (score >= 300) return { name: "🏆 Thách Đấu", color: "#f43f5e" };
-    if (score >= 200) return { name: "💎 Kim Cương", color: "#38bdf8" };
-    if (score >= 100) return { name: "🥇 Vàng", color: "#fbbf24" };
-    if (score >= 50)  return { name: "🥈 Bạc", color: "#94a3b8" };
+    if (score >= 600) return { name: "🏆 Thách Đấu", color: "#f43f5e" };
+    if (score >= 400) return { name: "💎 Kim Cương", color: "#38bdf8" };
+    if (score >= 200) return { name: "🥇 Vàng", color: "#fbbf24" };
+    if (score >= 80)  return { name: "🥈 Bạc", color: "#94a3b8" };
     return { name: "🥉 Đồng", color: "#cd7f32" };
 }
 
@@ -186,7 +186,9 @@ window.checkAnswer = function(btnElement, isCorrect) {
     
     if (isCorrect) {
         btnElement.classList.add('correct');
-        score += 10;
+        // Phân định điểm chuẩn xác: Khó = 40đ/câu, Hack Não = 100đ/câu
+        let pointsToAdd = (selectedMode === 'hacknao') ? 100 : 40;
+        score += pointsToAdd;
         localStorage.setItem('kmm_score', score);
         const scoreElem = document.getElementById('quiz-score');
         if (scoreElem) scoreElem.innerText = `Điểm: ${score}`;
