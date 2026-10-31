@@ -17,7 +17,7 @@ const db = firebase.firestore();
 let currentUser = null;
 let playerName = "Khách ẩn danh";
 
-// --- XỬ LÝ ĐĂNG NHẬP GOOGLE (Tương thích tuyệt đối trên Mobile & PC) ---
+// --- XỬ LÝ ĐĂNG NHẬP GOOGLE (Tương thích tuyệt đối trên Mobile & PC, chống chặn popup) ---
 function loginWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithRedirect(provider);
@@ -49,16 +49,16 @@ window.addEventListener('DOMContentLoaded', () => {
     loadGlobalFeedbacks();
 });
 
-// Giao diện thẻ thông tin tài khoản sau khi đăng nhập thành công
+// Giao diện thẻ thông tin tài khoản ở góc phải sau khi đăng nhập thành công
 function updateAuthUI() {
     const authContainer = document.getElementById('auth-container');
     if (authContainer && currentUser) {
         authContainer.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08); padding: 10px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                <img src="${currentUser.photoURL}" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #34d399;">
-                <div style="text-align: left; font-size: 14px; color: #fff;">
+            <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.85); padding: 6px 14px; border-radius: 30px; border: 1px solid rgba(52,211,153,0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+                <img src="${currentUser.photoURL}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #34d399;">
+                <div style="text-align: left; font-size: 13px; color: #fff;">
                     <strong>${playerName}</strong><br>
-                    <span style="font-size: 11px; color: #34d399; font-weight: 500;">Đã liên kết Cloud thành công 🛡️</span>
+                    <span style="font-size: 10px; color: #34d399;">Đã kết nối Cloud 🛡️</span>
                 </div>
             </div>
         `;
@@ -127,6 +127,6 @@ function loadGlobalFeedbacks() {
 
 
 // ==========================================
-// TOÀN BỘ LOGIC GAME CŨ CỦA CẬU (300 câu hỏi, Fisher-Yates shuffle, v.v.)
-// Cậu dán toàn bộ phần code xử lý game cũ của mình ngay dưới dòng này:
+// TOÀN BỘ LOGIC GAME CỦA CẬU (300 câu hỏi, Fisher-Yates shuffle, v.v.)
+// Cậu dán phần code game cũ của mình ngay dưới dòng này:
 // ==========================================
