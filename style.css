@@ -18,6 +18,8 @@
     --border-color: rgba(0, 0, 0, 0.1);
 }
 
+* { box-sizing: border-box; }
+
 body {
     background-color: var(--bg-dark);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -32,9 +34,9 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1050px;
 }
 
 .header-top {
@@ -47,46 +49,62 @@ h1 {
     background: linear-gradient(45deg, var(--accent-green), var(--accent-blue));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 2.1rem;
+    font-size: 2.3rem;
     margin: 0;
     font-weight: 800;
 }
 
-.subtitle { color: var(--text-muted); font-size: 0.88rem; margin-top: 5px; }
+.subtitle { color: var(--text-muted); font-size: 0.9rem; margin-top: 6px; }
 
 .theme-toggle-btn {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid var(--border-color);
     color: var(--text-main);
-    padding: 6px 14px;
+    padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 0.88rem;
 }
 
 .screen-container {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1050px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
+/* LỜI NHẮN CỘNG ĐỒNG RỘNG DÀI NẰM TRÊN */
+.welcome-feedback-banner {
+    width: 100%;
+    text-align: center;
+    padding: 12px 20px;
+}
+.welcome-feedback-banner h3 { margin: 0 0 6px 0; font-size: 1rem; color: var(--accent-green); }
+.ticker-content { font-size: 0.92rem; color: var(--text-muted); font-style: italic; }
+
+/* CHIA 2 CỘT CÂN ĐỐI 50-50 BẢN RỘNG */
 .welcome-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 20px;
+    width: 100%;
 }
-@media (max-width: 768px) { .welcome-grid { grid-template-columns: 1fr; } }
 
-/* VIỀN LED RGB */
+@media (max-width: 768px) {
+    .welcome-grid { grid-template-columns: 1fr; }
+}
+
+/* VIỀN LED RGB VIỀN MỎNG CHUẨN */
 .rgb-border {
     position: relative;
     background: var(--card-bg);
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
+
 .rgb-border::before {
     content: '';
     position: absolute;
@@ -94,37 +112,36 @@ h1 {
     background: linear-gradient(45deg, #34d399, #60a5fa, #a855f7, #34d399);
     background-size: 300%;
     z-index: -1;
-    border-radius: 15px;
+    border-radius: 17px;
     opacity: 0.5;
     animation: rgbGlow 10s linear infinite;
 }
+
 @keyframes rgbGlow {
     0% { background-position: 0 0; }
     50% { background-position: 300% 0; }
     100% { background-position: 0 0; }
 }
 
-.welcome-feedback-banner { text-align: center; padding: 10px 15px; }
-.welcome-feedback-banner h3 { margin: 0 0 5px 0; font-size: 0.95rem; color: var(--accent-green); }
-.ticker-content { font-size: 0.88rem; color: var(--text-muted); font-style: italic; }
+.card h3 { margin: 0 0 15px 0; color: var(--accent-green); font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
 
 .mode-select-box { margin: 15px 0; }
-.mode-select-box label { display: block; font-size: 0.88rem; margin-bottom: 6px; color: var(--text-muted); }
+.mode-select-box label { display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-muted); }
 
-.mode-selector { display: flex; gap: 8px; }
+.mode-selector { display: flex; gap: 10px; }
 .mode-btn {
     flex: 1;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid var(--border-color);
     color: var(--text-main);
-    padding: 8px;
+    padding: 10px;
     border-radius: 10px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
 }
-.mode-btn.active { background: var(--accent-green); color: #000; font-weight: bold; }
+.mode-btn.active { background: var(--accent-green); color: #000; font-weight: bold; border-color: var(--accent-green); }
 
-.start-btn { width: 100%; padding: 12px; font-size: 1rem; margin-top: 10px; }
+.start-btn { width: 100%; padding: 12px; font-size: 1rem; margin-top: 15px; }
 .pause-btn { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
 .pause-btn:hover { background: #ef4444; color: #fff; }
 
@@ -136,31 +153,30 @@ h1 {
     padding-bottom: 10px;
     margin-bottom: 15px;
 }
-.card h3 { margin: 0; color: var(--accent-green); font-size: 1.05rem; }
 
 .warning-box {
     background: rgba(239, 68, 68, 0.15);
     border-left: 3px solid #ef4444;
-    padding: 8px 10px;
-    font-size: 0.82rem;
+    padding: 10px;
+    font-size: 0.88rem;
     color: #ef4444;
     border-radius: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
-.counter-text { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
-.question-box { font-size: 1rem; margin-bottom: 15px; font-weight: 600; line-height: 1.4; min-height: 55px; }
+.counter-text { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; }
+.question-box { font-size: 1.05rem; margin-bottom: 15px; font-weight: 600; line-height: 1.4; min-height: 55px; }
 
-.options-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+.options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
 .option-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
     color: var(--text-main);
-    padding: 10px 14px;
-    border-radius: 8px;
+    padding: 12px 16px;
+    border-radius: 10px;
     text-align: left;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     transition: 0.2s;
 }
 .option-btn:hover { background: rgba(52, 211, 153, 0.15); border-color: var(--accent-green); }
@@ -168,42 +184,43 @@ h1 {
 .option-btn.wrong { background: rgba(248, 113, 113, 0.4) !important; border-color: #f87171 !important; }
 
 .quiz-controls { display: flex; justify-content: space-between; align-items: center; }
-.score-text { font-weight: bold; color: var(--accent-green); font-size: 0.95rem; }
+.score-text { font-weight: bold; color: var(--accent-green); font-size: 1rem; }
 
 input[type="text"], textarea {
     width: 100%;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--text-main);
-    padding: 9px;
+    padding: 11px;
     box-sizing: border-box;
     font-family: inherit;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
 }
-textarea { height: 65px; resize: none; }
+textarea { height: 85px; resize: none; }
 input:focus, textarea:focus { outline: none; border-color: var(--accent-green); }
 
 .action-btn {
     background: linear-gradient(45deg, var(--accent-green), #10b981);
     color: #000;
     border: none;
-    padding: 8px 18px;
+    padding: 10px 22px;
     border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
 }
 .action-btn:hover { opacity: 0.9; }
 .full-width { width: 100%; }
 
-.scroll-list { max-height: 160px; overflow-y: auto; margin-top: 6px; }
+.scroll-list { max-height: 200px; overflow-y: auto; margin-top: 8px; }
 .leaderboard-item {
-    background: rgba(0, 0, 0, 0.15);
-    padding: 7px 10px;
-    border-radius: 6px;
-    margin-bottom: 5px;
-    font-size: 0.85rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
     display: flex;
     justify-content: space-between;
 }
