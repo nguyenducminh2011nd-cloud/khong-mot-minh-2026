@@ -17,37 +17,57 @@ const db = firebase.firestore();
 let currentUser = null;
 let playerName = "Khách ẩn danh";
 
-// --- XỬ LÝ ĐĂNG NHẬP GOOGLE ---
+// --- XỬ LÝ ĐĂNG NHẬP GOOGLE (Tương thích tuyệt đối trên Mobile & PC) ---
 function loginWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
+    auth.signInWithRedirect(provider);
+}
+
+// Xử lý khi trang được tải xong
+window.addEventListener('DOMContentLoaded', () => {
+    // Kiểm tra kết quả sau khi Google chuyển hướng trả về
+    auth.getRedirectResult()
         .then((result) => {
-            currentUser = result.user;
-            playerName = currentUser.displayName;
-            
-            const authContainer = document.getElementById('auth-container');
-            if (authContainer) {
-                authContainer.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); padding: 10px; border-radius: 10px;">
-                        <img src="${currentUser.photoURL}" style="width: 32px; height: 32px; border-radius: 50%;">
-                        <div style="text-align: left; font-size: 13px; color: #fff;">
-                            <strong>${playerName}</strong><br>
-                            <span style="font-size: 11px; color: #34d399;">Đã liên kết tài khoản Google 🛡️</span>
-                        </div>
-                    </div>
-                `;
+            if (result.user) {
+                currentUser = result.user;
+                playerName = currentUser.displayName;
+                updateAuthUI();
             }
-            alert(`🎉 Chào mừng ${playerName} đã đăng nhập thành công!`);
-        })
-        .catch((error) => {
+        }).catch((error) => {
             console.error("Lỗi đăng nhập:", error);
-            alert("⚠️ Đăng nhập không thành công. Cậu vui lòng thử lại nhé!");
         });
+
+    // Lắng nghe trạng thái tài khoản thời gian thực
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            currentUser = user;
+            playerName = user.displayName;
+            updateAuthUI();
+        }
+    });
+
+    loadGlobalFeedbacks();
+});
+
+// Giao diện thẻ thông tin tài khoản sau khi đăng nhập thành công
+function updateAuthUI() {
+    const authContainer = document.getElementById('auth-container');
+    if (authContainer && currentUser) {
+        authContainer.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08); padding: 10px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                <img src="${currentUser.photoURL}" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #34d399;">
+                <div style="text-align: left; font-size: 14px; color: #fff;">
+                    <strong>${playerName}</strong><br>
+                    <span style="font-size: 11px; color: #34d399; font-weight: 500;">Đã liên kết Cloud thành công 🛡️</span>
+                </div>
+            </div>
+        `;
+    }
 }
 
 // --- LƯU ĐIỂM SỐ LÊN CLOUD FIRESTORE ---
 function saveScoreToCloud(score, rankTitle) {
-    if (!currentUser) return; // Nếu chưa đăng nhập thì bỏ qua
+    if (!currentUser) return; // Chưa đăng nhập thì bỏ qua
     
     db.collection("leaderboard").doc(currentUser.uid).set({
         name: currentUser.displayName,
@@ -97,7 +117,7 @@ function loadGlobalFeedbacks() {
             let html = "";
             querySnapshot.forEach((doc) => {
                 let data = doc.data();
-                html += `<div style="background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; color: #fff;">
+                html += `<div style="background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; color: #fff; border-left: 3px solid #34d399;">
                     <strong>${data.name}:</strong> ${data.text}
                 </div>`;
             });
@@ -105,13 +125,8 @@ function loadGlobalFeedbacks() {
         });
 }
 
-// Tự động tải đánh giá khi mở trang
-window.addEventListener('DOMContentLoaded', () => {
-    loadGlobalFeedbacks();
-});
-
 
 // ==========================================
 // TOÀN BỘ LOGIC GAME CŨ CỦA CẬU (300 câu hỏi, Fisher-Yates shuffle, v.v.)
-// Cậu tiếp tục dán phần code game cũ của mình ngay dưới đây nhé:
+// Cậu dán toàn bộ phần code xử lý game cũ của mình ngay dưới dòng này:
 // ==========================================
