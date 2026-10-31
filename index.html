@@ -3,137 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không Một Minh 2026 - Mô Phỏng Tâm Lý & An Toàn Số</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Không Một Minh 2026</title>
+    
+    <!-- Thư viện Firebase SDK Compat (Bản chạy trực tiếp trên web tĩnh) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <!-- MÀN HÌNH CHÀO MỪNG -->
-        <div id="welcome-screen" class="screen active">
-            <div class="header-banner">
-                <div class="app-logo">🛡️</div>
-                <div class="app-info">
-                    <h1>Không Một Minh 2026</h1>
-                    <p>Mô Phỏng Thao Túng Tâm Lý & An Toàn Số</p>
-                </div>
-                <div class="theme-selector">
-                    <span style="font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;">🎨 Giao diện:</span>
-                    <select id="themeSelect" onchange="changeTheme(this.value)">
-                        <option value="cyberpunk">Cyberpunk Đêm</option>
-                        <option value="matrix">Matrix Xanh</option>
-                        <option value="neon">Neon Hồng Tím</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="welcome-card">
-                <h2>Cạm Bẫy Mạng & Bản Lĩnh Số</h2>
-                <p>Thế giới mạng không chỉ có màu hồng. Những cái bẫy thao túng tâm lý, bạo lực ẩn giấu và hội nhóm độc hại đang chờ sẵn. Cậu có giữ được tỉnh táo?</p>
-                
-                <input type="text" id="playerName" placeholder="Nhập biệt danh hoặc tên của cậu..." autocomplete="off">
-
-                <button type="button" class="btn-secondary" onclick="openLeaderboard()">
-                    🏆 Xem Bảng Xếp Hạng & Thang Điểm Rank
-                </button>
-
-                <div class="mode-selection">
-                    <p style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Chọn chế độ thử thách:</p>
-                    <div class="mode-buttons">
-                        <button type="button" id="btn-mode-std" class="mode-card active" onclick="selectMode('standard')">
-                            <span class="mode-icon">🧠</span>
-                            <div class="mode-info">
-                                <strong>Tiêu Chuẩn Hack Não</strong>
-                                <span>Nhiều đáp án nhiễu & tình huống phức tạp.</span>
-                            </div>
-                        </button>
-                        <button type="button" id="btn-mode-exp" class="mode-card" onclick="selectMode('expert')">
-                            <span class="mode-icon">🔥</span>
-                            <div class="mode-info">
-                                <strong>Cực Hạn Tự Trả Lời</strong>
-                                <span>Tự do gõ ý kiến riêng & nhận điểm đánh giá.</span>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Nút mở bảng đánh giá & góp ý ngay ngoài màn hình chính -->
-                <button type="button" class="btn-secondary" onclick="openFeedbackModal()" style="width: 100%; margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    📝 Gửi Đánh Giá & Góp Ý
-                </button>
-
-                <button type="button" class="btn-primary pulse-anim" onclick="startGame()" style="margin-top: 12px;">
-                    Bắt Đầu Thử Thách 🚀
-                </button>
-            </div>
+        <h1>Không Một Minh 2026</h1>
+        
+        <!-- NÚT ĐĂNG NHẬP GOOGLE -->
+        <div id="auth-container" style="margin-bottom: 15px;">
+            <button type="button" class="btn-primary" onclick="loginWithGoogle()" style="background: #db4437; border: none; padding: 10px 16px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+                🔐 Đăng Nhập Google Để Lưu Điểm & Đánh Giá Chung
+            </button>
         </div>
 
-        <!-- MÀN HÌNH TRÒ CHƠI -->
-        <div id="game-screen" class="screen">
-            <div class="game-header">
-                <div class="game-stats">
-                    <span class="badge">Câu: <strong id="current-q">1</strong>/<span id="total-q">300</span></span>
-                    <span class="badge">Điểm: <strong id="current-score">0</strong></span>
-                    <span class="badge" id="alert-level" style="color: #34d399;">An toàn vững vàng 🛡️</span>
-                </div>
-                <button type="button" class="btn-icon" onclick="pauseGame()" title="Lưu và Tạm dừng">☕ Tạm Dừng</button>
-            </div>
-
-            <div class="chat-viewport">
-                <div class="scenario-meta">
-                    <span id="scenario-sender" class="sender-name">Hệ thống an ninh mạng</span>
-                    <span class="time-tag">Vừa xong</span>
-                </div>
-                <div id="chat-messages" class="chat-messages-container">
-                    <!-- Nội dung chat động -->
-                </div>
-            </div>
-
-            <div class="interaction-area">
-                <div id="choices-box" class="choices-container">
-                    <!-- Các lựa chọn đáp án -->
-                </div>
-
-                <!-- Ô nhập ở chế độ chuyên gia -->
-                <div id="custom-answer-area" class="custom-answer-wrapper hidden">
-                    <textarea id="custom-input" placeholder="Nhập phương án xử lý chi tiết của riêng cậu..." rows="2"></textarea>
-                    <button type="button" class="btn-primary" onclick="submitCustomAnswer()">Gửi Giải Pháp Chuyên Gia 💡</button>
-                </div>
-            </div>
+        <!-- KHU VỰC CHƠI GAME CHÍNH -->
+        <div id="game-play-area">
+            <!-- Nơi hiển thị câu hỏi, đáp án, 300 kịch bản và bảng điểm của cậu -->
         </div>
 
-        <!-- MÀN HÌNH KẾT QUẢ -->
-        <div id="result-screen" class="screen">
-            <div class="result-card">
-                <div id="result-icon" style="font-size: 48px; margin-bottom: 10px;">🏆</div>
-                <h2>Tổng Kết Hành Trình</h2>
-                <div class="score-display-box">
-                    <span>Tổng điểm đạt được:</span>
-                    <h3 id="final-score">0</h3>
-                </div>
-                <p id="result-desc" style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px;"></p>
-                
-                <div class="leaderboard-preview">
-                    <h4>🌟 Bảng Xếp Hạng Vàng</h4>
-                    <div id="leaderboard-container"></div>
-                </div>
-
-                <div class="action-buttons-group">
-                    <button type="button" class="btn-primary" onclick="restartGame()">Chơi Lại Vòng Mới 🔄</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- MÀN HÌNH BẢNG XẾP HẠNG -->
-        <div id="leaderboard-screen" class="screen">
-            <div class="leaderboard-card">
-                <h2>🏆 Bảng Xếp Hạng Toàn Cục</h2>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Danh sách các thành viên xuất sắc nhất có bản lĩnh số vững vàng.</p>
-                <div id="global-leaderboard-container" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;"></div>
-                <button type="button" class="btn-primary" onclick="backToHome()">Quay Lại Màn Hình Chính 🏠</button>
+        <!-- KHU VỰC ĐÁNH GIÁ TỪ CỘNG ĐỒNG -->
+        <div class="feedback-section" style="margin-top: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
+            <h3>💬 Đánh Giá Từ Cộng Đồng</h3>
+            <textarea id="home-feedback-input" placeholder="Viết đánh giá của cậu về game..." style="width: 100%; height: 60px; border-radius: 6px; padding: 8px; margin-bottom: 8px; background: rgba(0,0,0,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.2);"></textarea>
+            <button onclick="submitHomeFeedback()" style="background: #34d399; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; color: #000;">Gửi Đánh Giá Lên Mây ☁️</button>
+            
+            <div id="global-feedback-list" style="margin-top: 12px; max-height: 150px; overflow-y: auto; text-align: left; font-size: 13px;">
+                <!-- Danh sách đánh giá đồng bộ từ Firestore -->
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
