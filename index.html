@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không Một Minh 2026</title>
+    <title>Không Một Mình 2026</title>
     
     <link rel="stylesheet" href="style.css">
 
@@ -16,37 +16,62 @@
     <header>
         <div class="header-top">
             <h1>KHÔNG MỘT MÌNH 2026</h1>
-            <!-- Nút đổi nền Sáng / Tối -->
             <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 Đổi Giao Diện</button>
         </div>
-        <p class="subtitle">Đấu Trí 100 Tình Huống Kịch Tính & Bảng Xếp Hạng Cộng Đồng</p>
+        <p class="subtitle">Hệ Thống Đấu Trí Tình Huống An Toàn Mạng & Phòng Chống Lừa Đảo</p>
     </header>
 
-    <!-- KHU VỰC HIỂN THỊ ĐÁNH GIÁ NGAY PHẦN MỞ ĐẦU -->
-    <div class="welcome-feedback-banner rgb-border">
-        <h3>💬 Lời Nhắn Từ Cộng Đồng</h3>
-        <div id="top-feedback-ticker" class="ticker-content">Đang tải đánh giá mới nhất...</div>
-    </div>
+    <!-- 1. MÀN HÌNH CHÀO MỪNG (WELCOME SCREEN) -->
+    <div id="welcome-screen" class="screen-container">
+        <!-- ĐÁNH GIÁ MỞ ĐẦU -->
+        <div class="welcome-feedback-banner rgb-border">
+            <h3>💬 Lời Nhắn Từ Cộng Đồng</h3>
+            <div id="top-feedback-ticker" class="ticker-content">Đang tải đánh giá mới nhất...</div>
+        </div>
 
-    <!-- KHUNG NHẬP TÊN NGƯỜI CHƠI -->
-    <div class="player-bar rgb-border">
-        <input type="text" id="player-name-input" placeholder="Nhập biệt danh của cậu để ghi danh bảng xếp hạng..." onchange="savePlayerName(this.value)">
-    </div>
-
-    <div class="main-container">
-        <!-- CỘT TRÁI: HỆ THỐNG TRẮC NGHIỆM 100 TÌNH HUỐNG -->
-        <div class="card rgb-border">
-            <div class="card-header-flex">
-                <h3>🧠 Đấu Trí Tình Huống</h3>
-                <!-- THANH CHỌN CHẾ ĐỘ -->
-                <div class="mode-selector">
-                    <button class="mode-btn active" onclick="switchMode('kho')">🔥 Khó (50 câu)</button>
-                    <button class="mode-btn" onclick="switchMode('hacknao')">⚡ Hack Não (50 câu)</button>
+        <div class="welcome-grid">
+            <!-- KHU VỰC CHỌN CHẾ ĐỘ & BẮT ĐẦU -->
+            <div class="card rgb-border welcome-card">
+                <h3>🚀 Chuẩn Bị Đấu Trí</h3>
+                <input type="text" id="player-name-input" placeholder="Nhập biệt danh của cậu..." onchange="savePlayerName(this.value)">
+                
+                <div class="mode-select-box">
+                    <label>Chọn chế độ thử thách:</label>
+                    <div class="mode-selector">
+                        <button class="mode-btn active" id="btn-mode-kho" onclick="selectMode('kho')">🔥 Khó (50 câu)</button>
+                        <button class="mode-btn" id="btn-mode-hacknao" onclick="selectMode('hacknao')">⚡ Hack Não (50 câu)</button>
+                    </div>
                 </div>
+
+                <button class="action-btn start-btn" onclick="startGame()">VÀO CHƠI NGAY 🎮</button>
+            </div>
+
+            <!-- BẢNG XẾP HẠNG NGOÀI MÀN HÌNH CHÀO -->
+            <div class="card rgb-border">
+                <h3>🏆 Bảng Xếp Hạng Cao Thủ</h3>
+                <div id="leaderboard-list" class="scroll-list">Đang tải bảng xếp hạng...</div>
+            </div>
+        </div>
+
+        <!-- Ô GỬI ĐÁNH GIÁ -->
+        <div class="card rgb-border feedback-box-welcome">
+            <h3>✍️ Gửi Đánh Giá Của Cậu</h3>
+            <textarea id="home-feedback-input" placeholder="Cảm nhận của cậu về hệ thống..."></textarea>
+            <button class="action-btn full-width" onclick="submitHomeFeedback()">Gửi Lên Mây ☁️</button>
+        </div>
+    </div>
+
+    <!-- 2. MÀN HÌNH CHƠI GAME (QUIZ SCREEN - MẶC ĐỊNH ẨN) -->
+    <div id="quiz-screen" class="screen-container" style="display: none;">
+        <div class="card rgb-border quiz-main-card">
+            <div class="card-header-flex">
+                <h3 id="quiz-title-mode">🧠 Đấu Trí Tình Huống</h3>
+                <!-- NÚT DỪNG & LƯU TIẾN TRÌNH -->
+                <button class="action-btn pause-btn" onclick="pauseAndSaveGame()">⏸️ Dừng & Lưu Tiến Trình</button>
             </div>
 
             <div id="quiz-area">
-                <div id="warning-banner" class="warning-box">⚠️ Cảnh báo: Các câu hỏi có bẫy cực mạnh, suy nghĩ kỹ trước khi chọn!</div>
+                <div id="warning-banner" class="warning-box">⚠️ Cảnh báo: Suy nghĩ kỹ trước khi chọn!</div>
                 <div id="question-counter" class="counter-text"></div>
                 <div class="question-box" id="question-text">Đang tải tình huống...</div>
                 <div class="options-list" id="options-container"></div>
@@ -55,22 +80,6 @@
                     <span id="quiz-score" class="score-text">Điểm: 0</span>
                     <button class="action-btn" onclick="nextQuestion()">Câu Tiếp ➡️</button>
                 </div>
-            </div>
-        </div>
-
-        <!-- CỘT PHẢI: BẢNG XẾP HẠNG & GỬI ĐÁNH GIÁ -->
-        <div class="right-column">
-            <!-- BẢNG XẾP HẠNG -->
-            <div class="card rgb-border">
-                <h3>🏆 Bảng Xếp Hạng Cao Thủ</h3>
-                <div id="leaderboard-list" class="scroll-list">Đang tải bảng xếp hạng...</div>
-            </div>
-
-            <!-- Ô GỬI ĐÁNH GIÁ -->
-            <div class="card rgb-border">
-                <h3>✍️ Gửi Đánh Giá Của Cậu</h3>
-                <textarea id="home-feedback-input" placeholder="Cảm nhận của cậu về hệ thống..."></textarea>
-                <button class="action-btn full-width" onclick="submitHomeFeedback()">Gửi Lên Mây ☁️</button>
             </div>
         </div>
     </div>
