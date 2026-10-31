@@ -3,29 +3,29 @@ const coreScenarios = [
         sender: "👤 Nick ẩn danh 'Bóc Phốt Học Đường'",
         dialogue: "Ê bạn ơi, mình vừa tìm thấy mấy bức ảnh cũ hơi ngố của bạn M. lớp bên cạnh. Giờ mình định đăng lên nhóm chung kèm vài câu trêu chọc cho vui cửa vui nhà, tương tác chắc cao phết đấy! Cậu có hùa vào bình luận cùng mình không?",
         choices: [
-            { text: "A. Hùa theo bình luận vài câu chọc ghẹo cho vui, chắc bạn ấy không để ý đâu.", score: 0, feedback: "Sai lầm! Hành vi này tiếp tay cho bạo lực mạng và gây tổn thương sâu sắc." },
-            { text: "B. Âm thầm bấm like dạo và xem người khác tranh cãi mà không nói gì.", score: 10, feedback: "Chưa tốt. Sự im lặng của người chứng kiến vô tình cổ vũ kẻ xấu hoành hành." },
+            { text: "A. Báo cáo (report) tài khoản giả mạo và chụp màn hình gửi giáo viên chủ nhiệm.", score: 30, feedback: "Xuất sắc! Xử lý triệt để, đúng chuẩn công dân số văn minh." },
+            { text: "B. Hùa theo bình luận vài câu chọc ghẹo cho vui, chắc bạn ấy không để ý đâu.", score: 0, feedback: "Sai lầm! Hành vi này tiếp tay cho bạo lực mạng và gây tổn thương sâu sắc." },
             { text: "C. Nhắn tin can ngăn tài khoản đó và cảnh báo người bạn bị đăng ảnh ngay lập tức.", score: 25, feedback: "Tuyệt vời! Bản lĩnh số cực tốt, biết bảo vệ bạn bè trước làn sóng độc hại." },
-            { text: "D. Báo cáo (report) tài khoản giả mạo và chụp màn hình gửi giáo viên chủ nhiệm.", score: 30, feedback: "Xuất sắc! Xử lý triệt để, đúng chuẩn công dân số văn minh." }
+            { text: "D. Âm thầm bấm like dạo và xem người khác tranh cãi mà không nói gì.", score: 10, feedback: "Chưa tốt. Sự im lặng của người chứng kiến vô tình cổ vũ kẻ xấu hoành hành." }
         ]
     },
     {
         sender: "🎁 Tin nhắn trúng thưởng giả mạo",
         dialogue: "🎉 CHÚC MỪNG! Tài khoản của bạn đã may mắn trúng giải Đặc biệt: 1 chiếc điện thoại cao cấp trị giá 25 triệu từ chương trình tri ân học sinh! Hãy click vào đường link lạ đăng nhập tài khoản mật khẩu để nhận thưởng ngay trong 5 phút!",
         choices: [
-            { text: "A. Sướng quá, click ngay vào link và điền tài khoản mật khẩu để nhận quà.", score: 0, feedback: "Sập bẫy lừa đảo tinh vi! Mất tài khoản mạng xã hội chỉ trong một nốt nhạc." },
-            { text: "B. Bán tín bán nghi nhưng cứ thử bấm vào xem sao, nhỡ trúng thật thì sao.", score: 5, feedback: "Nguy hiểm! Phishing link đánh cắp thông tin rất hay dùng chiêu trò này." },
-            { text: "C. Bỏ qua, xóa tin nhắn vì không có chương trình phát thưởng ngẫu nhiên nào như vậy.", score: 20, feedback: "Tỉnh táo! Đã nhận thức được các chiêu trò lừa đảo qua mạng phổ biến." },
-            { text: "D. Chặn ngay tài khoản, thông báo lên nhóm chung để cảnh báo mọi người cùng tránh.", score: 30, feedback: "Quá đỉnh! Không những né bẫy mà còn bảo vệ cộng đồng xung quanh." }
+            { text: "A. Bỏ qua, xóa tin nhắn vì không có chương trình phát thưởng ngẫu nhiên nào như vậy.", score: 20, feedback: "Tỉnh táo! Đã nhận thức được các chiêu trò lừa đảo qua mạng phổ biến." },
+            { text: "B. Sướng quá, click ngay vào link và điền tài khoản mật khẩu để nhận quà.", score: 0, feedback: "Sập bẫy lừa đảo tinh vi! Mất tài khoản mạng xã hội chỉ trong một nốt nhạc." },
+            { text: "C. Chặn ngay tài khoản, thông báo lên nhóm chung để cảnh báo mọi người cùng tránh.", score: 30, feedback: "Quá đỉnh! Không những né bẫy mà còn bảo vệ cộng đồng xung quanh." },
+            { text: "D. Bán tín bán nghi nhưng cứ thử bấm vào xem sao, nhỡ trúng thật thì sao.", score: 5, feedback: "Nguy hiểm! Phishing link đánh cắp thông tin rất hay dùng chiêu trò này." }
         ]
     },
     {
         sender: "💬 Nhóm chat kín 'Góc Tâm Sự'",
         dialogue: "Này, dạo này thấy bạn H. hay thui thủi một mình, hình như tính tình kỳ quặc lắm. Cả lũ mình lập hội kín lập poll chê bai ngoại hình đi, xem ai bình chọn độc miệng nhất sẽ được thưởng thẻ cào nhé!",
         choices: [
-            { text: "A. Tham gia bình chọn ngay cho vui vì đằng nào cũng có thưởng.", score: 0, feedback: "Trầm trọng! Đây là hành vi bạo lực mạng có tổ chức và đáng lên án." },
+            { text: "A. Lên tiếng phản đối trong nhóm, yêu cầu dừng ngay trò đùa độc hại này lại.", score: 25, feedback: "Dũng cảm! Dám đứng lên chống lại cái xấu và bảo vệ nạn nhân." },
             { text: "B. Đứng ngoài xem mọi người chơi chứ không trực tiếp tham gia bình chọn.", score: 10, feedback: "Thiếu bản lĩnh. Bàng quan trước nỗi đau của người khác là hành vi thiếu văn minh." },
-            { text: "C. Lên tiếng phản đối trong nhóm, yêu cầu dừng ngay trò đùa độc hại này lại.", score: 25, feedback: "Dũng cảm! Dám đứng lên chống lại cái xấu và bảo vệ nạn nhân." },
+            { text: "C. Tham gia bình chọn ngay cho vui vì đằng nào cũng có thưởng.", score: 0, feedback: "Trầm trọng! Đây là hành vi bạo lực mạng có tổ chức và đáng lên án." },
             { text: "D. Rời nhóm ngay lập tức và báo cáo hành vi bắt nạt với nhà trường.", score: 30, feedback: "Hoàn hảo! Hành động kiên quyết, bảo vệ tuyệt đối an toàn tâm lý cho mọi người." }
         ]
     }
@@ -36,27 +36,28 @@ const expansionBank = [
         sender: "💻 Tuyển dụng việc làm online",
         dialogue: "Tin tuyển dụng: 'Cần tuyển cộng tác viên gõ văn bản, like video TikTok kiếm 300k - 500k mỗi ngày. Không cần kinh nghiệm, nhận lương ngay qua tài khoản. Phí đăng ký hồ sơ ban đầu chỉ 50k'. Bạn sẽ phản ứng thế nào?",
         choices: [
-            { text: "A. Đóng ngay 50k phí để thử việc vì số tiền quá nhỏ.", score: 0, feedback: "Sập bẫy lừa đảo việc làm online! Bạn đã mất tiền oan." },
-            { text: "B. Nhắn tin hỏi xem có thể trừ tiền phí vào lương đầu tiên không.", score: 10, feedback: "Chưa sắc sảo. Các công ty uy tín tuyệt đối không thu phí tuyển dụng." },
-            { text: "C. Lờ đi vì biết chắc đây là chiêu trò lừa đảo chiếm đoạt tài sản.", score: 25, feedback: "Rất tỉnh táo! Tránh xa các cạm bẫy việc nhẹ lương cao." },
-            { text: "D. Báo cáo bài viết lừa đảo để bảo vệ cộng đồng mạng.", score: 30, feedback: "Xuất sắc! Hành động văn minh của một công dân số." }
+            { text: "A. Lờ đi vì biết chắc đây là chiêu trò lừa đảo chiếm đoạt tài sản.", score: 25, feedback: "Rất tỉnh táo! Tránh xa các cạm bẫy việc nhẹ lương cao." },
+            { text: "B. Đóng ngay 50k phí để thử việc vì số tiền quá nhỏ.", score: 0, feedback: "Sập bẫy lừa đảo việc làm online! Bạn đã mất tiền oan." },
+            { text: "C. Báo cáo bài viết lừa đảo để bảo vệ cộng đồng mạng.", score: 30, feedback: "Xuất sắc! Hành động văn minh của một công dân số." },
+            { text: "D. Nhắn tin hỏi xem có thể trừ tiền phí vào lương đầu tiên không.", score: 10, feedback: "Chưa sắc sảo. Các công ty uy tín tuyệt đối không thu phí tuyển dụng." }
         ]
     },
     {
         sender: "🤖 Cuộc gọi Video từ 'Người thân'",
         dialogue: "Bạn nhận được cuộc gọi video call từ tài khoản của một người bạn thân. Hình ảnh hơi mờ, giật cục và thông báo đang bị kẹt ở đồn công an nước ngoài, cần bạn chuyển gấp 2 triệu để giải cứu.",
         choices: [
-            { text: "A. Vội vàng chuyển khoản ngay vì thấy đúng mặt và nghe giọng bạn mình.", score: 0, feedback: "Mắc bẫy công nghệ Deepfake AI giả mạo hình ảnh và giọng nói cực kỳ tinh vi!" },
-            { text: "B. Bán tín bán nghi, hỏi thêm vài câu thử thách xem có đúng là bạn mình không.", score: 10, feedback: "Nguy hiểm! Kẻ gian dùng AI có thể lừa được các câu trả lời xã giao." },
-            { text: "C. Cúp máy ngay lập tức và gọi điện thoại trực tiếp bằng số di động thông thường để xác thực.", score: 25, feedback: "Quá thông minh! Luôn có kênh xác thực độc lập cho các tình huống khẩn cấp." },
-            { text: "D. Cảnh báo cho nhóm chung của lớp về thủ đoạn giả mạo công nghệ cao này.", score: 30, feedback: "Tuyệt đối xuất sắc! Bản lĩnh phòng thủ không gian mạng tuyệt vời." }
+            { text: "A. Cúp máy ngay lập tức và gọi điện thoại trực tiếp bằng số di động thông thường để xác thực.", score: 25, feedback: "Quá thông minh! Luôn có kênh xác thực độc lập cho các tình huống khẩn cấp." },
+            { text: "B. Vội vàng chuyển khoản ngay vì thấy đúng mặt và nghe giọng bạn mình.", score: 0, feedback: "Mắc bẫy công nghệ Deepfake AI giả mạo hình ảnh và giọng nói cực kỳ tinh vi!" },
+            { text: "C. Cảnh báo cho nhóm chung của lớp về thủ đoạn giả mạo công nghệ cao này.", score: 30, feedback: "Tuyệt đối xuất sắc! Bản lĩnh phòng thủ không gian mạng tuyệt vời." },
+            { text: "D. Bán tín bán nghi, hỏi thêm vài câu thử thách xem có đúng là bạn mình không.", score: 10, feedback: "Nguy hiểm! Kẻ gian dùng AI có thể lừa được các câu trả lời xã giao." }
         ]
     }
 ];
 
 let scenarios = [...coreScenarios];
-for (let i = 4; i <= 300; i++) {
-    let template = expansionBank[(i - 4) % expansionBank.length];
+// Vòng lặp chạy trọn vẹn 300 tình huống, không bị hụt câu hỏi số 3
+for (let i = 3; i <= 300; i++) {
+    let template = expansionBank[(i - 3) % expansionBank.length];
     scenarios.push({
         sender: `${template.sender} (Ca #${i})`,
         dialogue: `${template.dialogue} (Tình huống phát sinh #${i}). Hãy chọn phương án xử lý khôn ngoan nhất:`,
@@ -134,7 +135,6 @@ function startGame() {
     const inputEl = document.getElementById('playerName');
     const typedName = inputEl && inputEl.value.trim() ? inputEl.value.trim() : "";
     
-    // Kiểm tra xem có bản lưu cũ không
     const savedGame = localStorage.getItem('khongmotminh_save');
     if (savedGame) {
         const data = JSON.parse(savedGame);
@@ -312,20 +312,52 @@ function handleChoice(points, feedback) {
     });
 }
 
+// Chống gõ bừa/nhảm ở chế độ chuyên gia bằng từ khóa an toàn số
 function submitCustomAnswer() {
     const customInput = document.getElementById('custom-input');
     const text = customInput ? customInput.value.trim() : "";
-    if (!text) {
-        showCustomPopup("Cậu hãy nhập ý kiến của mình trước nhé!");
+    
+    if (!text || text.length < 5) {
+        showCustomPopup("⚠️ Câu trả lời quá ngắn hoặc chưa hợp lệ! Cậu hãy nhập ý kiến xử lý chi tiết hơn (tối thiểu 5 ký tự) để hệ thống ghi nhận.");
         return;
     }
-    let bonus = text.length > 20 ? 25 : 10;
+
+    const validKeywords = [
+        "báo", "chặn", "xóa", "không", "gọi", "công an", "báo cáo", "report", 
+        "tránh", "ngờ", "xác thực", "kiểm tra", "bảo vệ", "nhắc", "tố giác", 
+        "từ chối", "im lặng", "chụp", "bằng chứng", "thận trọng", "block", "tin"
+    ];
+
+    const lowerText = text.toLowerCase();
+    const hasValidKeyword = validKeywords.some(keyword => lowerText.includes(keyword));
+
+    if (!hasValidKeyword && text.length < 15) {
+        showCustomPopup("🚨 Phát hiện câu trả lời sơ sài hoặc gõ bừa! Cậu cần đưa ra phương án xử lý cụ thể hơn (ví dụ: chặn, báo cáo, không tin tưởng...) mới được tính điểm.");
+        return;
+    }
+
+    let bonus = text.length > 25 ? 25 : 15;
     score += bonus;
-    showCustomPopup(`💡 Đánh giá từ chuyên gia: Câu trả lời rất sắc sảo! (+${bonus} điểm vào BXH).`, () => {
+    showCustomPopup(`💡 Đánh giá từ hệ thống chuyên gia: Câu trả lời rất có trách nhiệm và sắc sảo! (+${bonus} điểm vào bảng xếp hạng).`, () => {
         if (customInput) customInput.value = '';
         currentIdx++;
         loadQuestion();
     });
+}
+
+function submitUserFeedback() {
+    const feedbackInput = document.getElementById('user-feedback-input');
+    const feedbackText = feedbackInput ? feedbackInput.value.trim() : "";
+    if (!feedbackText) {
+        showCustomPopup("Cậu vui lòng viết vài dòng đánh giá hoặc góp ý trước khi gửi nhé!");
+        return;
+    }
+    let allFeedbacks = JSON.parse(localStorage.getItem('khongmotminh_feedbacks')) || [];
+    allFeedbacks.push({ name: playerName, text: feedbackText, time: new Date().toLocaleString() });
+    localStorage.setItem('khongmotminh_feedbacks', JSON.stringify(allFeedbacks));
+
+    showCustomPopup("❤️ Cảm ơn đánh giá và góp ý tuyệt vời của cậu! Phản hồi đã được ghi nhận thành công.");
+    if (feedbackInput) feedbackInput.value = '';
 }
 
 function endGame() {
@@ -360,6 +392,22 @@ function endGame() {
                 </div>
             `;
         });
+    }
+
+    const resultScreen = document.getElementById('result-screen');
+    if (resultScreen && !document.getElementById('feedback-wrapper-box')) {
+        const feedbackBox = document.createElement('div');
+        feedbackBox.id = 'feedback-wrapper-box';
+        feedbackBox.style.cssText = `
+            margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; text-align: left;
+        `;
+        feedbackBox.innerHTML = `
+            <h4 style="font-size: 14px; color: var(--accent); margin-bottom: 8px;">📝 Gửi Đánh Giá & Góp Ý Cho Tác Giả:</h4>
+            <textarea id="user-feedback-input" placeholder="Cậu thấy trò chơi thế nào? Có cần thêm tình huống gì không..." style="width: 100%; height: 70px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px; resize: none; margin-bottom: 8px; font-family: 'Plus Jakarta Sans', sans-serif;"></textarea>
+            <button type="button" onclick="submitUserFeedback()" style="width: 100%; padding: 10px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Gửi Đánh Giá 🚀</button>
+        `;
+        resultScreen.appendChild(feedbackBox);
     }
 }
 
