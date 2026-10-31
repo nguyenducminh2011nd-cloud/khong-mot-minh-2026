@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không Một Mình 2026</title>
+    <title>Không Một Minh 2026</title>
     
     <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -34,27 +34,27 @@
 
         header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         h1 {
             background: linear-gradient(45deg, var(--accent-green), var(--accent-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 2.4rem;
-            margin: 0 0 8px 0;
+            font-size: 2.2rem;
+            margin: 0 0 5px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .subtitle {
             color: #9ca3af;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin: 0;
         }
 
         #auth-container {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: center;
         }
@@ -63,10 +63,10 @@
             background: #ffffff;
             color: #1f2937;
             border: none;
-            padding: 10px 22px;
+            padding: 9px 20px;
             border-radius: 30px;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -78,20 +78,25 @@
         .google-btn:hover {
             background: #f3f4f6;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 211, 153, 0.2);
         }
 
         .main-container {
             width: 100%;
-            max-width: 650px;
-            display: flex;
-            flex-direction: column;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         .card {
             background: var(--card-bg);
-            padding: 22px;
+            padding: 20px;
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -101,24 +106,70 @@
         .card h3 {
             margin-top: 0;
             color: var(--accent-green);
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+        }
+
+        /* Quiz Styles */
+        .question-box {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.4;
+            min-height: 50px;
+        }
+
+        .options-list {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 9px 12px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            background: rgba(52, 211, 153, 0.2);
+            border-color: var(--accent-green);
+        }
+
+        .option-btn.correct {
+            background: rgba(52, 211, 153, 0.4);
+            border-color: var(--accent-green);
+        }
+
+        .option-btn.wrong {
+            background: rgba(248, 113, 113, 0.4);
+            border-color: #f87171;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         textarea {
             width: 100%;
-            height: 90px;
+            height: 75px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 8px;
             color: #fff;
-            padding: 12px;
+            padding: 10px;
             resize: none;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             box-sizing: border-box;
             font-family: inherit;
         }
@@ -128,30 +179,29 @@
             border-color: var(--accent-green);
         }
 
-        .submit-btn {
+        .action-btn {
             background: linear-gradient(45deg, var(--accent-green), #10b981);
             color: #000;
             border: none;
-            padding: 10px 24px;
+            padding: 8px 18px;
             border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            width: 100%;
+            font-size: 0.9rem;
             transition: opacity 0.2s;
         }
 
-        .submit-btn:hover {
+        .action-btn:hover {
             opacity: 0.9;
         }
 
         .feedback-item {
             background: rgba(0, 0, 0, 0.25);
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-left: 3px solid var(--accent-green);
-            font-size: 0.92rem;
-            line-height: 1.4;
+            font-size: 0.9rem;
         }
 
         .feedback-item strong {
@@ -159,8 +209,8 @@
         }
 
         #global-feedback-list {
-            margin-top: 15px;
-            max-height: 250px;
+            margin-top: 10px;
+            max-height: 200px;
             overflow-y: auto;
         }
     </style>
@@ -169,7 +219,7 @@
 
     <header>
         <h1>KHÔNG MỘT MÌNH 2026</h1>
-        <p class="subtitle">Dự án kết nối & chia sẻ cộng đồng</p>
+        <p class="subtitle">Hệ thống Ôn tập & Kết nối Cộng đồng</p>
     </header>
 
     <!-- NÚT ĐĂNG NHẬP GOOGLE -->
@@ -181,11 +231,25 @@
     </div>
 
     <div class="main-container">
-        <!-- KHU VỰC GÓP Ý & ĐÁNH GIÁ -->
+        <!-- PHẦN 1: HỆ THỐNG TRẮC NGHIỆM ÔN TẬP -->
         <div class="card">
-            <h3>💬 Đánh Giá & Góp Ý Từ Cộng Đồng</h3>
-            <textarea id="home-feedback-input" placeholder="Viết cảm nhận hoặc góp ý của cậu về dự án..."></textarea>
-            <button class="submit-btn" onclick="submitHomeFeedback()">Gửi Lên Mây ☁️</button>
+            <h3>🧠 Ôn Tập Trắc Nghiệm</h3>
+            <div id="quiz-area">
+                <div id="question-counter" style="font-size: 0.8rem; color: #9ca3af; margin-bottom: 6px;"></div>
+                <div class="question-box" id="question-text">Đang tải câu hỏi...</div>
+                <div class="options-list" id="options-container"></div>
+                <div class="quiz-controls">
+                    <span id="quiz-score" style="font-weight: bold; color: var(--accent-green); font-size: 0.95rem;">Điểm: 0</span>
+                    <button class="action-btn" onclick="nextQuestion()">Câu Tiếp ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHẦN 2: ĐÁNH GIÁ & GÓP Ý CỘNG ĐỒNG -->
+        <div class="card">
+            <h3>💬 Đánh Giá & Góp Ý</h3>
+            <textarea id="home-feedback-input" placeholder="Viết cảm nhận hoặc góp ý của cậu..."></textarea>
+            <button class="action-btn" onclick="submitHomeFeedback()" style="width: 100%;">Gửi Lên Mây ☁️</button>
 
             <div id="global-feedback-list">
                 Đang tải đánh giá...
@@ -205,27 +269,89 @@
             measurementId: "G-BFXSCXN4Q0"
         };
 
-        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         const auth = firebase.auth();
         const db = firebase.firestore();
-
         let currentUser = null;
 
         // --- GOOGLE AUTHENTICATION ---
         window.loginWithGoogle = function() {
-            console.log("Đang gọi đăng nhập Google...");
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    console.log("Đăng nhập thành công:", result.user);
-                })
-                .catch((error) => {
-                    console.error("Lỗi đăng nhập:", error);
-                    alert("Lỗi đăng nhập: " + error.message);
-                });
+            auth.signInWithPopup(provider).then((result) => {
+                console.log("Đăng nhập thành công:", result.user);
+            }).catch((error) => {
+                console.error("Lỗi đăng nhập:", error);
+                alert("Lỗi đăng nhập: " + error.message);
+            });
+        };
+
+        // --- KHO CÂU HỎI ĐỘC LẬP (KHÔNG DÙNG THUẬT TOÁN TẠO LẶP) ---
+        // Cậu có thể thoải mái thêm các câu hỏi thực tế của mình vào danh sách này
+        const questionBank = [
+            {
+                q: "Đâu là thành phần cốt lõi để khởi tạo ứng dụng Firebase trong JavaScript?",
+                options: ["firebase.initializeApp()", "firebase.start()", "firebase.run()", "firebase.init()"],
+                correct: 0
+            },
+            {
+                q: "Phương thức nào dùng để xác thực người dùng qua popup với Google trong Firebase Auth?",
+                options: ["auth.loginPopup()", "auth.signInWithPopup()", "auth.googleLogin()", "auth.popupAuth()"],
+                correct: 1
+            },
+            {
+                q: "Trong Firestore, lệnh nào dùng để thêm một bản ghi mới vào collection?",
+                options: ["db.collection().add()", "db.insert()", "db.pushData()", "db.createDoc()"],
+                correct: 0
+            },
+            {
+                q: "Khi lưu trữ trang web tĩnh lên GitHub Pages, file khởi tạo giao diện bắt buộc phải đặt tên là gì?",
+                options: ["main.html", "home.html", "index.html", "app.html"],
+                correct: 2
+            },
+            {
+                q: "Thuộc tính 'apiKey' trong cấu hình Firebase dùng để làm gì?",
+                options: ["Nhận diện dự án với Google Cloud", "Mã hóa mật khẩu tài khoản", "Bảo mật cơ sở dữ liệu", "Tăng tốc độ kết nối mạng"],
+                correct: 0
+            }
+        ];
+
+        let currentQIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        function loadQuestion() {
+            answered = false;
+            let qData = questionBank[currentQIndex];
+            document.getElementById('question-counter').innerText = `Câu hỏi ${currentQIndex + 1} / ${questionBank.length}`;
+            document.getElementById('question-text').innerText = qData.q;
+            
+            let optHtml = "";
+            qData.options.forEach((opt, idx) => {
+                optHtml += `<button class="option-btn" onclick="checkAnswer(${idx}, ${qData.correct})">${String.fromCharCode(65 + idx)}. ${opt}</button>`;
+            });
+            document.getElementById('options-container').innerHTML = optHtml;
+        }
+
+        window.checkAnswer = function(selected, correct) {
+            if (answered) return;
+            answered = true;
+            let buttons = document.querySelectorAll('#options-container .option-btn');
+            
+            if (selected === correct) {
+                buttons[selected].classList.add('correct');
+                score += 10;
+                document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
+            } else {
+                buttons[selected].classList.add('wrong');
+                buttons[correct].classList.add('correct');
+            }
+        };
+
+        window.nextQuestion = function() {
+            currentQIndex = (currentQIndex + 1) % questionBank.length;
+            loadQuestion();
         };
 
         // --- SUBMIT FEEDBACK TO FIRESTORE ---
@@ -254,12 +380,11 @@
             });
         };
 
-        // --- LOAD FEEDBACKS FROM FIRESTORE ---
         function loadGlobalFeedbacks() {
             const listContainer = document.getElementById('global-feedback-list');
             if (!listContainer) return;
 
-            db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
+            db.collection("feedbacks").orderBy("timestamp", "desc").limit(5).get()
                 .then((querySnapshot) => {
                     let html = "";
                     querySnapshot.forEach((doc) => {
@@ -268,10 +393,10 @@
                             <strong>${data.name || "Khách"}:</strong> ${data.text}
                         </div>`;
                     });
-                    listContainer.innerHTML = html || "<div style='color: #888; text-align: center;'>Chưa có đánh giá nào.</div>";
+                    listContainer.innerHTML = html || "<div style='color: #888; text-align: center; font-size: 0.85rem;'>Chưa có đánh giá nào.</div>";
                 }).catch((err) => {
                     console.log("Lỗi tải đánh giá:", err);
-                    listContainer.innerHTML = "<div style='color: #888; text-align: center;'>Chưa thể tải dữ liệu từ Firestore.</div>";
+                    listContainer.innerHTML = "<div style='color: #888; text-align: center; font-size: 0.85rem;'>Chưa thể tải dữ liệu từ Firestore.</div>";
                 });
         }
 
@@ -283,7 +408,7 @@
                 if (authContainer) {
                     authContainer.innerHTML = `
                         <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.8); padding: 8px 18px; border-radius: 30px; border: 1px solid var(--border-glow);">
-                            <img src="${user.photoURL}" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent-green);">
+                            <img src="${user.photoURL}" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--accent-green);">
                             <div style="text-align: left; font-size: 13px; color: #fff;">
                                 <strong>${user.displayName}</strong><br>
                                 <span style="font-size: 10px; color: var(--accent-green);">Đã kết nối Cloud 🛡️</span>
@@ -295,6 +420,7 @@
         });
 
         window.addEventListener('DOMContentLoaded', () => {
+            loadQuestion();
             loadGlobalFeedbacks();
         });
     </script>
