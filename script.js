@@ -21,7 +21,7 @@ const warnings = [
     "🔥 Cẩn thận: Các đáp án đều được cân bằng độ dài, hãy tư duy logic để vượt ải!"
 ];
 
-// --- KHO 15 CÂU KHÓ CHUẨN XÁC ---
+// --- KHO 15 CÂU KHÓ & HACK NÃO ---
 const questionPools = {
     kho: [
         { q: "1. Nhận cuộc gọi tự xưng Công an yêu cầu chuyển tiền vào tài khoản tạm giữ để điều tra. Bạn xử lý thế nào?", options: ["Cúp máy ngay lập tức và báo công an địa phương", "Chuyển tiền vào tài khoản để chứng minh trong sạch", "Cung cấp mã OTP qua điện thoại cho người gọi", "Hẹn gặp trực tiếp người gọi ở nơi vắng vẻ"], correct: "Cúp máy ngay lập tức và báo công an địa phương", explain: "💡 Công an không bao giờ làm việc hay yêu cầu chuyển tiền qua điện thoại!" },
@@ -40,7 +40,6 @@ const questionPools = {
         { q: "14. Một người tự xưng là nhân viên sàn thương mại điện tử gọi điện thông báo hoàn tiền sản phẩm. Thao tác an toàn là:", options: ["Cúp máy và từ chối cung cấp bất kỳ thông tin gì", "Làm theo hướng dẫn bấm vào link trên điện thoại", "Cung cấp số thẻ tín dụng để nhận tiền hoàn trả", "Đọc mã OTP ngân hàng gửi về để hoàn tất thủ tục"], correct: "Cúp máy và từ chối cung cấp bất kỳ thông tin gì", explain: "💡 Sàn thương mại điện tử không bao giờ gọi điện hoàn tiền qua các đường link lạ." },
         { q: "15. Khi máy tính cá nhân xuất hiện phần mềm lạ tự động cài đặt và trình duyệt liên tục bật trang quảng cáo, bạn nên:", options: ["Quét virus hệ thống và gỡ bỏ phần mềm lạ đó", "Tắt máy đi ngủ và hy vọng ngày mai sẽ hết", "Mua thêm một chiếc máy tính xách tay mới", "Đổi mật khẩu tài khoản mạng xã hội ngay lập tức"], correct: "Quét virus hệ thống và gỡ bỏ phần mềm lạ đó", explain: "💡 Máy tính đã bị nhiễm Adware hoặc phần mềm độc hại cần được xử lý dứt điểm." }
     ],
-    // --- KHO 15 CÂU HACK NÃO CHUẨN XÁC ---
     hacknao: [
         { q: "1. Nhận tin nhắn từ chính số điện thoại của mình giục nợ và đe dọa tống tiền. Hiện tượng này do đâu?", options: ["Kẻ gian dùng trạm phát sóng giả IMSI Catcher hoặc SMS Spoofing", "Điện thoại tự động phát tán tin nhắn lúc nửa đêm", "Nhà mạng đang thử nghiệm hệ thống tin nhắn mới", "Do cài đặt lịch hẹn giờ gửi tin nhắn từ trước"], correct: "Kẻ gian dùng trạm phát sóng giả IMSI Catcher hoặc SMS Spoofing", explain: "💡 Kẻ gian dùng công nghệ giả mạo số điện thoại người gửi để gây hoang mang tột độ!" },
         { q: "2. Rau bán iPhone đời mới giá rẻ bất ngờ với lý do hàng trưng bày không dùng đến. Bạn đánh giá sao?", options: ["Chắc chắn là lừa đảo nhận cọc rồi chiếm đoạt tài sản", "Cơ hội hiếm có nên cần chuyển khoản cọc liền", "Hàng chính hãng uy tín nên mới có giá rẻ như vậy", "Mua trực tiếp vì hàng trưng bày luôn siêu rẻ"], correct: "Chắc chắn là lừa đảo nhận cọc rồi chiếm đoạt tài sản", explain: "💡 Không có chiếc iPhone giá trị cao nào bán rẻ như cho. Đừng để lòng tham mờ mắt!" },
@@ -83,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     selectMode(selectedMode);
     loadLeaderboard();
-    loadTopFeedbacks();
+    loadAllFeedbacks();
 });
 
 function toggleTheme() {
@@ -123,6 +122,7 @@ window.pauseAndSaveGame = function() {
     if (quiz) quiz.style.display = 'none';
     if (welcome) welcome.style.display = 'block';
     loadLeaderboard();
+    loadAllFeedbacks();
 }
 
 window.savePlayerName = function(val) {
@@ -230,7 +230,7 @@ function updateLeaderboard() {
 function loadLeaderboard() {
     const container = document.getElementById('leaderboard-list');
     if (!container) return;
-    db.collection("leaderboard").orderBy("score", "desc").limit(5).get()
+    db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
         .then((snapshot) => {
             let html = "";
             let rank = 1;
@@ -259,20 +259,34 @@ window.submitHomeFeedback = function() {
     }).then(() => {
         if (textInput) textInput.value = "";
         alert("❤️ Đã gửi đánh giá thành công lên mây!");
-        loadTopFeedbacks();
+        loadAllFeedbacks();
     });
 };
 
-function loadTopFeedbacks() {
+function loadAllFeedbacks() {
     const banner = document.getElementById('top-feedback-ticker');
-    if (!banner) return;
-    db.collection("feedbacks").orderBy("timestamp", "desc").limit(1).get()
+    const cardsContainer = document.getElementById('feedback-cards-container');
+    
+    db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
-                let doc = snapshot.docs[0].data();
-                banner.innerHTML = `"${doc.text}" — <strong>${doc.name}</strong>`;
+                // Đánh giá mới nhất hiện ở thanh chạy trên cùng
+                let topDoc = snapshot.docs[0].data();
+                if (banner) banner.innerHTML = `"${topDoc.text}" — <strong>${topDoc.name}</strong>`;
+                
+                // Hiển thị danh sách các đánh giá thành từng ô card riêng biệt
+                let cardsHtml = "";
+                snapshot.forEach((doc) => {
+                    let d = doc.data();
+                    cardsHtml += `<div class="feedback-card-item">
+                        <div class="feedback-card-author">👤 ${d.name}</div>
+                        <div class="feedback-card-text">"${d.text}"</div>
+                    </div>`;
+                });
+                if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
             } else {
-                banner.innerHTML = "Chưa có đánh giá nào từ cộng đồng.";
+                if (banner) banner.innerHTML = "Chưa có đánh giá nào từ cộng đồng.";
+                if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào. Hãy là người đầu tiên gửi ý kiến!</div>";
             }
         });
 }
