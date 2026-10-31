@@ -112,7 +112,7 @@ function renderGlobalLeaderboard() {
             globalContainer.innerHTML += `
                 <div class="leaderboard-item" style="display: flex; justify-content: space-between; padding: 10px 14px; font-size: 13px; align-items: center; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.1);">
                     <span>#${index + 1} - <strong>${item.name}</strong> (${item.rank})</span>
-                    <span style="font-weight: 700; color: #6366f1;">${item.score} điểm</span>
+                    <span style="font-weight: 700; color: var(--accent);">${item.score} điểm</span>
                 </div>
             `;
         });
@@ -132,13 +132,38 @@ function backToHome() {
 
 function startGame() {
     const inputEl = document.getElementById('playerName');
-    playerName = inputEl && inputEl.value.trim() ? inputEl.value.trim() : "Thành viên ẩn danh";
-    currentIdx = 0;
-    score = 0;
-    localStorage.removeItem('khongmotminh_save');
-    document.getElementById('welcome-screen').classList.remove('active');
-    document.getElementById('game-screen').classList.add('active');
-    loadQuestion();
+    const typedName = inputEl && inputEl.value.trim() ? inputEl.value.trim() : "";
+    
+    // Kiểm tra xem có bản lưu cũ không
+    const savedGame = localStorage.getItem('khongmotminh_save');
+    if (savedGame) {
+        const data = JSON.parse(savedGame);
+        showCustomPopup(`Phát hiện tiến độ đã lưu trước đó của "${data.playerName}":\n- Đang ở câu hỏi: ${data.currentIdx + 1}/300\n- Tổng điểm: ${data.score}\n\nCậu có muốn tiếp tục phần chơi này không?`, (isYes) => {
+            if (isYes) {
+                playerName = data.playerName;
+                currentIdx = data.currentIdx;
+                score = data.score;
+                gameMode = data.gameMode || 'standard';
+                if(inputEl) inputEl.value = playerName;
+            } else {
+                localStorage.removeItem('khongmotminh_save');
+                playerName = typedName || "Thành viên ẩn danh";
+                currentIdx = 0;
+                score = 0;
+            }
+            document.getElementById('welcome-screen').classList.remove('active');
+            document.getElementById('game-screen').classList.add('active');
+            loadQuestion();
+        }, true);
+    } else {
+        playerName = typedName || "Thành viên ẩn danh";
+        currentIdx = 0;
+        score = 0;
+        localStorage.removeItem('khongmotminh_save');
+        document.getElementById('welcome-screen').classList.remove('active');
+        document.getElementById('game-screen').classList.add('active');
+        loadQuestion();
+    }
 }
 
 function pauseGame() {
@@ -169,6 +194,9 @@ function loadQuestion() {
         endGame();
         return;
     }
+
+    const saveData = { playerName, currentIdx, score, gameMode };
+    localStorage.setItem('khongmotminh_save', JSON.stringify(saveData));
 
     const current = scenarios[currentIdx];
     document.getElementById('current-q').textContent = currentIdx + 1;
@@ -238,20 +266,20 @@ function showCustomPopup(message, callback, isConfirm = false) {
         font-family: 'Plus Jakarta Sans', sans-serif; white-space: pre-line;
     `;
 
-    let buttonsHTML = `<button id="popup-ok-btn" type="button" style="width: 100%; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Xác Nhận</button>`;
+    let buttonsHTML = `<button id="popup-ok-btn" type="button" style="width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Xác Nhận</button>`;
     
     if (isConfirm) {
         buttonsHTML = `
             <div style="display: flex; gap: 10px; margin-top: 10px;">
                 <button id="popup-no-btn" type="button" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.1); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Chơi Mới</button>
-                <button id="popup-yes-btn" type="button" style="flex: 1; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Tiếp Tục</button>
+                <button id="popup-yes-btn" type="button" style="flex: 1; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">Tiếp Tục</button>
             </div>
         `;
     }
 
     box.innerHTML = `
         <div style="font-size: 28px; margin-bottom: 8px;">🏆</div>
-        <h3 style="font-size: 16px; margin-bottom: 8px; color: #6366f1;">Hệ Thống Bản Lĩnh Số</h3>
+        <h3 style="font-size: 16px; margin-bottom: 8px; color: var(--accent);">Hệ Thống Bản Lĩnh Số</h3>
         <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 10px; text-align: left; padding: 0 10px;">${message}</p>
         ${buttonsHTML}
     `;
@@ -313,7 +341,7 @@ function endGame() {
 
     if (resultDesc && resultIcon) {
         resultIcon.textContent = "🏆";
-        resultDesc.innerHTML = `Chúc mừng ${playerName} đã hoàn thành hành trình! Mức rank đạt được: <strong style="color: #6366f1;">${rankTitle}</strong> với tổng điểm tích lũy là <strong>${score}</strong> điểm!`;
+        resultDesc.innerHTML = `Chúc mừng ${playerName} đã hoàn thành hành trình! Mức rank đạt được: <strong style="color: var(--accent);">${rankTitle}</strong> với tổng điểm tích lũy là <strong>${score}</strong> điểm!`;
     }
 
     leaderboard.push({ name: playerName, score: score, rank: rankTitle });
@@ -340,26 +368,3 @@ function restartGame() {
     document.getElementById('result-screen').classList.remove('active');
     document.getElementById('welcome-screen').classList.add('active');
 }
-
-window.addEventListener('DOMContentLoaded', () => {
-    const savedGame = localStorage.getItem('khongmotminh_save');
-    if (savedGame) {
-        const data = JSON.parse(savedGame);
-        if (data && data.currentIdx > 0 && data.currentIdx < scenarios.length) {
-            let savedRank = calculateRank(data.score);
-            showCustomPopup(`Chào mừng ${data.playerName} trở lại!\n\n📊 Tiến độ hiện tại:\n- Đang ở câu hỏi số: ${data.currentIdx + 1}/300\n- Tổng điểm tích lũy: ${data.score}\n- Mức Rank hiện tại: ${savedRank}\n\nCậu có muốn tiếp tục chinh phục không?`, (isYes) => {
-                if (isYes) {
-                    playerName = data.playerName;
-                    currentIdx = data.currentIdx;
-                    score = data.score;
-                    gameMode = data.gameMode || 'standard';
-                    document.getElementById('welcome-screen').classList.remove('active');
-                    document.getElementById('game-screen').classList.add('active');
-                    loadQuestion();
-                } else {
-                    localStorage.removeItem('khongmotminh_save');
-                }
-            }, true);
-        }
-    }
-});
