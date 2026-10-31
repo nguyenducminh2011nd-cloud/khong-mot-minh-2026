@@ -28,21 +28,19 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    transition: background 0.3s, color 0.3s;
 }
 
 header {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     width: 100%;
-    max-width: 1100px;
+    max-width: 1000px;
 }
 
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
 }
 
 h1 {
@@ -51,15 +49,10 @@ h1 {
     -webkit-text-fill-color: transparent;
     font-size: 2.1rem;
     margin: 0;
-    text-transform: uppercase;
     font-weight: 800;
 }
 
-.subtitle {
-    color: var(--text-muted);
-    font-size: 0.88rem;
-    margin-top: 5px;
-}
+.subtitle { color: var(--text-muted); font-size: 0.88rem; margin-top: 5px; }
 
 .theme-toggle-btn {
     background: rgba(255, 255, 255, 0.1);
@@ -68,12 +61,25 @@ h1 {
     padding: 6px 14px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 0.85rem;
     font-weight: bold;
 }
-.theme-toggle-btn:hover { background: var(--accent-green); color: #000; }
 
-/* VIỀN LED RGB NHẸ NHÀNG */
+.screen-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.welcome-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+@media (max-width: 768px) { .welcome-grid { grid-template-columns: 1fr; } }
+
+/* VIỀN LED RGB */
 .rgb-border {
     position: relative;
     background: var(--card-bg);
@@ -98,54 +104,39 @@ h1 {
     100% { background-position: 0 0; }
 }
 
-.welcome-feedback-banner {
-    width: 100%;
-    max-width: 1100px;
-    margin-bottom: 12px;
-    text-align: center;
-    padding: 10px 15px;
-}
+.welcome-feedback-banner { text-align: center; padding: 10px 15px; }
 .welcome-feedback-banner h3 { margin: 0 0 5px 0; font-size: 0.95rem; color: var(--accent-green); }
 .ticker-content { font-size: 0.88rem; color: var(--text-muted); font-style: italic; }
 
-.player-bar {
-    width: 100%;
-    max-width: 1100px;
-    margin-bottom: 15px;
-    padding: 10px 15px;
-}
-.player-bar input { margin: 0; }
+.mode-select-box { margin: 15px 0; }
+.mode-select-box label { display: block; font-size: 0.88rem; margin-bottom: 6px; color: var(--text-muted); }
 
-.main-container {
-    width: 100%;
-    max-width: 1100px;
-    display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 15px;
+.mode-selector { display: flex; gap: 8px; }
+.mode-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
 }
-@media (max-width: 850px) { .main-container { grid-template-columns: 1fr; } }
+.mode-btn.active { background: var(--accent-green); color: #000; font-weight: bold; }
+
+.start-btn { width: 100%; padding: 12px; font-size: 1rem; margin-top: 10px; }
+.pause-btn { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+.pause-btn:hover { background: #ef4444; color: #fff; }
 
 .card-header-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 8px;
-    margin-bottom: 12px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
 }
 .card h3 { margin: 0; color: var(--accent-green); font-size: 1.05rem; }
-
-.mode-selector { display: flex; gap: 6px; }
-.mode-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.78rem;
-    cursor: pointer;
-}
-.mode-btn.active { background: var(--accent-green); color: #000; font-weight: bold; border-color: var(--accent-green); }
 
 .warning-box {
     background: rgba(239, 68, 68, 0.15);
@@ -155,11 +146,10 @@ h1 {
     color: #ef4444;
     border-radius: 6px;
     margin-bottom: 10px;
-    font-weight: 600;
 }
 
-.counter-text { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
-.question-box { font-size: 0.98rem; margin-bottom: 12px; font-weight: 600; line-height: 1.4; min-height: 50px; }
+.counter-text { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+.question-box { font-size: 1rem; margin-bottom: 15px; font-weight: 600; line-height: 1.4; min-height: 55px; }
 
 .options-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
 .option-btn {
@@ -190,7 +180,6 @@ input[type="text"], textarea {
     box-sizing: border-box;
     font-family: inherit;
     margin-bottom: 8px;
-    font-size: 0.9rem;
 }
 textarea { height: 65px; resize: none; }
 input:focus, textarea:focus { outline: none; border-color: var(--accent-green); }
@@ -208,9 +197,7 @@ input:focus, textarea:focus { outline: none; border-color: var(--accent-green); 
 .action-btn:hover { opacity: 0.9; }
 .full-width { width: 100%; }
 
-.right-column { display: flex; flex-direction: column; gap: 15px; }
 .scroll-list { max-height: 160px; overflow-y: auto; margin-top: 6px; }
-
 .leaderboard-item {
     background: rgba(0, 0, 0, 0.15);
     padding: 7px 10px;
