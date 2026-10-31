@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không Một Minh 2026</title>
+    <title>Không Một Mình 2026</title>
     
     <!-- Thư viện Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -12,7 +12,6 @@
 
     <link rel="stylesheet" href="style.css">
     
-    <!-- CSS TỰ CHỈNH GIAO DIỆN HIỆN ĐẠI, HẾT PHÈN -->
     <style>
         body {
             background-color: #0d1117;
@@ -26,7 +25,7 @@
             margin: 0 auto;
             text-align: center;
         }
-        /* HIỆU ỨNG TIÊU ĐỀ NGHỆ THUẬT, SANG TRỌNG */
+        /* TIÊU ĐỀ CHUẨN ĐÚNG TÊN KHÔNG MỘT MÌNH 2026 VÀ CÓ HIỆU ỨNG PHÁT SÁNG */
         .game-title {
             font-size: 2.8rem;
             font-weight: 900;
@@ -34,32 +33,25 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 30px rgba(52, 211, 153, 0.3);
-            margin: 30px 0 10px 0;
+            margin: 40px 0 30px 0;
             letter-spacing: 1px;
             text-transform: uppercase;
-        }
-        .game-subtitle {
-            font-size: 0.95rem;
-            color: #94a3b8;
-            margin-bottom: 30px;
-            font-weight: 400;
         }
     </style>
 </head>
 <body style="position: relative;">
     
-    <!-- NÚT ĐĂNG NHẬP GOOGLE CỐ ĐỊNH GÓC TRÊN BÊN PHẢI (Khắc phục hoàn toàn lỗi không ấn được do bị che) -->
-    <div id="auth-container" style="position: fixed; top: 15px; right: 20px; z-index: 99999;">
-        <button type="button" onclick="loginWithGoogle()" style="background: linear-gradient(135deg, #4285F4, #34A853); border: none; padding: 8px 16px; border-radius: 30px; color: white; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); outline: none; transition: transform 0.2s;">
-            <span style="background: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4285F4; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">G</span>
+    <!-- NÚT ĐĂNG NHẬP GOOGLE CỐ ĐỊNH GÓC PHẢI - ÉP NỔI LÊN TRÊN CÙNG, CHỐNG BỊ CHE -->
+    <div id="auth-container" style="position: fixed; top: 15px; right: 20px; z-index: 2147483647; pointer-events: auto;">
+        <button id="google-login-btn" type="button" style="background: linear-gradient(135deg, #4285F4, #34A853); border: none; padding: 8px 16px; border-radius: 30px; color: white; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); outline: none;">
+            <span style="background: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4285F4; font-size: 12px;">G</span>
             Đăng Nhập Google 🛡️
         </button>
     </div>
 
     <div class="game-container">
-        <!-- TIÊU ĐỀ: ĐƯỢC THIẾT KẾ ĐỒ HOẠ GRADIENT, CHUYÊN NGHIỆP, HẾT PHÈN -->
-        <h1 class="game-title">Không Một Minh</h1>
-        <div class="game-subtitle">Hệ thống kịch bản thông minh & Đồng bộ đám mây trực tuyến 2026</div>
+        <!-- TIÊU ĐỀ ĐẦY ĐỦ DẤU VÀ TÊN -->
+        <h1 class="game-title">KHÔNG MỘT MÌNH 2026</h1>
         
         <!-- KHU VỰC CHƠI GAME CHÍNH -->
         <div id="game-play-area">
