@@ -21,6 +21,15 @@ const warnings = [
     "🔥 Cẩn thận: Các đáp án đều được cân bằng độ dài, hãy tư duy logic để vượt ải!"
 ];
 
+// --- HỆ THỐNG XẾP HẠNG RANK THEO ĐIỂM SỐ ---
+function getPlayerRank(score) {
+    if (score >= 300) return { name: "🏆 Thách Đấu", color: "#f43f5e" };
+    if (score >= 200) return { name: "💎 Kim Cương", color: "#38bdf8" };
+    if (score >= 100) return { name: "🥇 Vàng", color: "#fbbf24" };
+    if (score >= 50)  return { name: "🥈 Bạc", color: "#94a3b8" };
+    return { name: "🥉 Đồng", color: "#cd7f32" };
+}
+
 // --- KHO 15 CÂU KHÓ & HACK NÃO ---
 const questionPools = {
     kho: [
@@ -236,8 +245,15 @@ function loadLeaderboard() {
             let rank = 1;
             snapshot.forEach((doc) => {
                 let data = doc.data();
+                let playerRank = getPlayerRank(data.score);
                 html += `<div class="leaderboard-item">
-                    <span>#${rank++} <strong>${data.name}</strong></span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
+                        <div>
+                            <strong>${data.name}</strong>
+                            <div style="font-size: 0.75rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
+                        </div>
+                    </div>
                     <span style="color: var(--accent-green); font-weight: bold;">${data.score} đ</span>
                 </div>`;
             });
@@ -270,11 +286,9 @@ function loadAllFeedbacks() {
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
-                // Đánh giá mới nhất hiện ở thanh chạy trên cùng
                 let topDoc = snapshot.docs[0].data();
                 if (banner) banner.innerHTML = `"${topDoc.text}" — <strong>${topDoc.name}</strong>`;
                 
-                // Hiển thị danh sách các đánh giá thành từng ô card riêng biệt
                 let cardsHtml = "";
                 snapshot.forEach((doc) => {
                     let d = doc.data();
