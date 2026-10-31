@@ -131,6 +131,44 @@ function backToHome() {
     document.getElementById('welcome-screen').classList.add('active');
 }
 
+// Hàm mở bảng đánh giá & góp ý ngay ngoài màn hình chính
+function openFeedbackModal() {
+    let allFeedbacks = JSON.parse(localStorage.getItem('khongmotminh_feedbacks')) || [];
+    let feedbackHtml = allFeedbacks.length > 0 
+        ? allFeedbacks.slice(-5).reverse().map(f => `<div style="padding: 8px 10px; background: rgba(255,255,255,0.05); border-radius: 6px; margin-bottom: 6px; font-size: 12px; text-align: left;"><strong style="color: var(--accent);">${f.name}:</strong> ${f.text}</div>`).join('')
+        : `<p style="font-size: 12px; color: #9ca3af; text-align: center;">Chưa có đánh giá nào. Hãy là người đầu tiên góp ý nhé!</p>`;
+
+    let modalContent = `
+        <h4 style="font-size: 15px; color: var(--accent); margin-bottom: 8px;">📝 Đánh Giá & Góp Ý Từ Cộng Đồng</h4>
+        <textarea id="home-feedback-input" placeholder="Nhập cảm nhận hoặc góp ý của cậu về game..." style="width: 100%; height: 75px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px; resize: none; margin-bottom: 8px; font-family: 'Plus Jakarta Sans', sans-serif;"></textarea>
+        <button type="button" onclick="submitHomeFeedback()" style="width: 100%; padding: 10px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-bottom: 12px;">Gửi Đánh Giá 🚀</button>
+        <h5 style="font-size: 13px; color: #f3f4f6; margin-bottom: 6px; text-align: left;">💬 Góp ý gần đây:</h5>
+        <div style="max-height: 140px; overflow-y: auto;">${feedbackHtml}</div>
+    `;
+    showCustomPopup(modalContent, null, false, true);
+}
+
+// Xử lý gửi đánh giá ngoài màn hình chính
+function submitHomeFeedback() {
+    const input = document.getElementById('home-feedback-input');
+    const text = input ? input.value.trim() : "";
+    const nameInput = document.getElementById('playerName');
+    const currentName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : "Khách ẩn danh";
+
+    if (!text) {
+        alert("Cậu vui lòng viết vài dòng đánh giá trước khi gửi nhé!");
+        return;
+    }
+
+    let allFeedbacks = JSON.parse(localStorage.getItem('khongmotminh_feedbacks')) || [];
+    allFeedbacks.push({ name: currentName, text: text, time: new Date().toLocaleString() });
+    localStorage.setItem('khongmotminh_feedbacks', JSON.stringify(allFeedbacks));
+
+    let overlay = document.getElementById('custom-popup-overlay');
+    if (overlay) overlay.remove();
+    showCustomPopup("❤️ Cảm ơn cậu đã gửi đánh giá và góp ý tuyệt vời cho game!");
+}
+
 function startGame() {
     const inputEl = document.getElementById('playerName');
     const typedName = inputEl && inputEl.value.trim() ? inputEl.value.trim() : "";
@@ -246,7 +284,7 @@ function loadQuestion() {
     }
 }
 
-function showCustomPopup(message, callback, isConfirm = false) {
+function showCustomPopup(message, callback, isConfirm = false, isHtml = false) {
     let existingOverlay = document.getElementById('custom-popup-overlay');
     if (existingOverlay) existingOverlay.remove();
 
@@ -263,10 +301,11 @@ function showCustomPopup(message, callback, isConfirm = false) {
         background: #111827; border: 1px solid rgba(255, 255, 255, 0.15);
         padding: 20px 25px; border-radius: 16px; width: 90%; max-width: 420px;
         color: #f3f4f6; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        font-family: 'Plus Jakarta Sans', sans-serif; white-space: pre-line;
+        font-family: 'Plus Jakarta Sans', sans-serif;
     `;
 
-    let buttonsHTML = `<button id="popup-ok-btn" type="button" style="width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Xác Nhận</button>`;
+    let contentInner = isHtml ? message : `<p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 10px; text-align: left; padding: 0 10px; white-space: pre-line;">${message}</p>`;
+    let buttonsHTML = isHtml ? `<button id="popup-close-btn" type="button" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Đóng</button>` : `<button id="popup-ok-btn" type="button" style="width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 10px;">Xác Nhận</button>`;
     
     if (isConfirm) {
         buttonsHTML = `
@@ -280,7 +319,7 @@ function showCustomPopup(message, callback, isConfirm = false) {
     box.innerHTML = `
         <div style="font-size: 28px; margin-bottom: 8px;">🏆</div>
         <h3 style="font-size: 16px; margin-bottom: 8px; color: var(--accent);">Hệ Thống Bản Lĩnh Số</h3>
-        <p style="font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 10px; text-align: left; padding: 0 10px;">${message}</p>
+        ${contentInner}
         ${buttonsHTML}
     `;
 
@@ -296,6 +335,8 @@ function showCustomPopup(message, callback, isConfirm = false) {
             overlay.remove();
             if (callback) callback(false);
         };
+    } else if (isHtml) {
+        document.getElementById('popup-close-btn').onclick = () => overlay.remove();
     } else {
         document.getElementById('popup-ok-btn').onclick = () => {
             overlay.remove();
