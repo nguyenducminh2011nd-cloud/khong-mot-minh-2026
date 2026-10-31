@@ -1,4 +1,4 @@
-// --- FIREBASE CONFIGURATION ---
+// --- CẤU HÌNH FIREBASE ---
 const firebaseConfig = {
     apiKey: "AIzaSyCtQSv6-wGiKyzIIzpmdL32f00Lz14ih1M",
     authDomain: "khongmotminh2026.firebaseapp.com",
@@ -21,7 +21,7 @@ const warnings = [
     "🔥 Cẩn thận: Đọc kỹ tình huống để không sập bẫy các chiêu trò giả mạo tinh vi!"
 ];
 
-// KHO 100 TÌNH HUỐNG CHUẨN
+// KHO 100 TÌNH HUỐNG AN TOÀN MẠNG
 const questionPools = {
     kho: [
         { q: "Nhận cuộc gọi tự xưng Công an yêu cầu chuyển tiền vào tài khoản tạm giữ để điều tra. Bạn xử lý thế nào?", options: ["Cúp máy ngay lập tức, không chuyển tiền và báo công an địa phương", "Làm theo hướng dẫn chuyển tiền nhanh để chứng minh trong sạch", "Cung cấp số CCCD và mã OTP qua điện thoại", "Hẹn gặp trực tiếp người gọi ở nơi vắng để giải quyết"], correct: "Cúp máy ngay lập tức, không chuyển tiền và báo công an địa phương", explain: "💡 Công an không bao giờ làm việc hay yêu cầu chuyển tiền qua điện thoại!" },
@@ -63,7 +63,8 @@ let answered = false;
 let autoNextTimeout = null;
 
 if (playerName) {
-    document.getElementById('player-name-input').value = playerName;
+    const nameInput = document.getElementById('player-name-input');
+    if (nameInput) nameInput.value = playerName;
 }
 
 function toggleTheme() {
@@ -75,32 +76,37 @@ function toggleTheme() {
 }
 document.documentElement.setAttribute('data-theme', localStorage.getItem('kmm_theme') || 'dark');
 
-function selectMode(mode) {
+window.selectMode = function(mode) {
     selectedMode = mode;
     localStorage.setItem('kmm_mode', mode);
     
     document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`btn-mode-${mode}`).classList.add('active');
+    const btnElem = document.getElementById(`btn-mode-${mode}`);
+    if (btnElem) btnElem.classList.add('active');
 }
 
-function startGame() {
-    document.getElementById('welcome-screen').style.display = 'none';
-    document.getElementById('quiz-screen').style.display = 'block';
+window.startGame = function() {
+    const welcome = document.getElementById('welcome-screen');
+    const quiz = document.getElementById('quiz-screen');
+    if (welcome) welcome.style.display = 'none';
+    if (quiz) quiz.style.display = 'block';
     
     currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) || 0;
     loadQuestion();
 }
 
-function pauseAndSaveGame() {
+window.pauseAndSaveGame = function() {
     if (autoNextTimeout) clearTimeout(autoNextTimeout);
     alert(`⏸️ Đã lưu tiến trình!\n- Chế độ: ${selectedMode.toUpperCase()}\n- Câu hiện tại: ${currentQIndex + 1}\n- Điểm số: ${score}`);
     
-    document.getElementById('quiz-screen').style.display = 'none';
-    document.getElementById('welcome-screen').style.display = 'block';
+    const welcome = document.getElementById('welcome-screen');
+    const quiz = document.getElementById('quiz-screen');
+    if (quiz) quiz.style.display = 'none';
+    if (welcome) welcome.style.display = 'block';
     loadLeaderboard();
 }
 
-function savePlayerName(val) {
+window.savePlayerName = function(val) {
     playerName = val.trim();
     localStorage.setItem('kmm_player_name', playerName);
     updateLeaderboard();
@@ -114,12 +120,20 @@ function loadQuestion() {
     let qData = list[currentQIndex];
     
     let randomWarning = warnings[Math.floor(Math.random() * warnings.length)];
-    document.getElementById('warning-banner').innerText = randomWarning;
+    const warnElem = document.getElementById('warning-banner');
+    if (warnElem) warnElem.innerText = randomWarning;
 
-    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Chế độ Khó' : 'Chế độ Hack Não'})`;
-    document.getElementById('question-counter').innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
-    document.getElementById('question-text').innerText = qData.q;
-    document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
+    const titleElem = document.getElementById('quiz-title-mode');
+    if (titleElem) titleElem.innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Chế độ Khó' : 'Chế độ Hack Não'})`;
+    
+    const counterElem = document.getElementById('question-counter');
+    if (counterElem) counterElem.innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
+    
+    const textElem = document.getElementById('question-text');
+    if (textElem) textElem.innerText = qData.q;
+    
+    const scoreElem = document.getElementById('quiz-score');
+    if (scoreElem) scoreElem.innerText = `Điểm: ${score}`;
     
     let shuffled = shuffleOptions(qData.options);
     let optHtml = "";
@@ -127,7 +141,8 @@ function loadQuestion() {
         let isCorrect = (optText === qData.correct);
         optHtml += `<button class="option-btn" onclick="checkAnswer(this, ${isCorrect})">${String.fromCharCode(65 + idx)}. ${optText}</button>`;
     });
-    document.getElementById('options-container').innerHTML = optHtml;
+    const optContainer = document.getElementById('options-container');
+    if (optContainer) optContainer.innerHTML = optHtml;
 }
 
 window.checkAnswer = function(btnElement, isCorrect) {
@@ -142,7 +157,8 @@ window.checkAnswer = function(btnElement, isCorrect) {
         btnElement.classList.add('correct');
         score += 10;
         localStorage.setItem('kmm_score', score);
-        document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
+        const scoreElem = document.getElementById('quiz-score');
+        if (scoreElem) scoreElem.innerText = `Điểm: ${score}`;
         updateLeaderboard();
     } else {
         btnElement.classList.add('wrong');
@@ -153,10 +169,13 @@ window.checkAnswer = function(btnElement, isCorrect) {
         });
     }
 
-    let explainDiv = document.createElement('div');
-    explainDiv.style.cssText = "margin-top: 12px; padding: 10px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.88rem; color: #fff;";
-    explainDiv.innerHTML = `<strong>Giải thích an toàn:</strong> ${qData.explain}`;
-    document.getElementById('quiz-area').appendChild(explainDiv);
+    let quizArea = document.getElementById('quiz-area');
+    if (quizArea) {
+        let explainDiv = document.createElement('div');
+        explainDiv.style.cssText = "margin-top: 12px; padding: 10px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.88rem; color: #fff;";
+        explainDiv.innerHTML = `<strong>Giải thích an toàn:</strong> ${qData.explain}`;
+        quizArea.appendChild(explainDiv);
+    }
 
     autoNextTimeout = setTimeout(() => {
         nextQuestion();
@@ -188,6 +207,7 @@ function updateLeaderboard() {
 
 function loadLeaderboard() {
     const container = document.getElementById('leaderboard-list');
+    if (!container) return;
     db.collection("leaderboard").orderBy("score", "desc").limit(5).get()
         .then((snapshot) => {
             let html = "";
@@ -215,7 +235,7 @@ window.submitHomeFeedback = function() {
         text: text,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
-        textInput.value = "";
+        if (textInput) textInput.value = "";
         alert("❤️ Đã gửi đánh giá thành công lên mây!");
         loadTopFeedbacks();
     });
@@ -223,6 +243,7 @@ window.submitHomeFeedback = function() {
 
 function loadTopFeedbacks() {
     const banner = document.getElementById('top-feedback-ticker');
+    if (!banner) return;
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(1).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
