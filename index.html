@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Không Một Minh 2026</title>
     
-    <!-- Thư viện Firebase SDK Compat (Bản chạy trực tiếp trên web tĩnh) -->
+    <!-- Thư viện Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -16,25 +16,26 @@
     <div class="game-container">
         <h1>Không Một Minh 2026</h1>
         
-        <!-- NÚT ĐĂNG NHẬP GOOGLE -->
-        <div id="auth-container" style="margin-bottom: 15px;">
-            <button type="button" class="btn-primary" onclick="loginWithGoogle()" style="background: #db4437; border: none; padding: 10px 16px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
-                🔐 Đăng Nhập Google Để Lưu Điểm & Đánh Giá Chung
+        <!-- NÚT ĐĂNG NHẬP GOOGLE CAO CẤP (Tương thích cả PC và Mobile) -->
+        <div id="auth-container" style="margin-bottom: 20px; display: flex; justify-content: center;">
+            <button type="button" onclick="loginWithGoogle()" style="background: linear-gradient(135deg, #4285F4, #34A853); border: none; padding: 12px 24px; border-radius: 30px; color: white; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4); transition: all 0.3s ease; outline: none; width: 100%; max-width: 320px;">
+                <span style="background: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #4285F4; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">G</span>
+                Đăng Nhập Bằng Google 🛡️
             </button>
         </div>
 
         <!-- KHU VỰC CHƠI GAME CHÍNH -->
         <div id="game-play-area">
-            <!-- Nơi hiển thị câu hỏi, đáp án, 300 kịch bản và bảng điểm của cậu -->
+            <!-- Nơi chứa toàn bộ kịch bản và logic game của cậu -->
         </div>
 
         <!-- KHU VỰC ĐÁNH GIÁ TỪ CỘNG ĐỒNG -->
-        <div class="feedback-section" style="margin-top: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
-            <h3>💬 Đánh Giá Từ Cộng Đồng</h3>
-            <textarea id="home-feedback-input" placeholder="Viết đánh giá của cậu về game..." style="width: 100%; height: 60px; border-radius: 6px; padding: 8px; margin-bottom: 8px; background: rgba(0,0,0,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.2);"></textarea>
-            <button onclick="submitHomeFeedback()" style="background: #34d399; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; color: #000;">Gửi Đánh Giá Lên Mây ☁️</button>
+        <div class="feedback-section" style="margin-top: 25px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            <h3 style="color: #fff; margin-bottom: 10px; font-size: 16px;">💬 Đánh Giá Từ Cộng Đồng</h3>
+            <textarea id="home-feedback-input" placeholder="Viết đánh giá của cậu về game..." style="width: 100%; height: 60px; border-radius: 8px; padding: 10px; margin-bottom: 10px; background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); outline: none; box-sizing: border-box;"></textarea>
+            <button onclick="submitHomeFeedback()" style="background: linear-gradient(135deg, #34d399, #059669); border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; color: #fff; box-shadow: 0 4px 10px rgba(52, 211, 153, 0.3);">Gửi Đánh Giá Lên Mây ☁️</button>
             
-            <div id="global-feedback-list" style="margin-top: 12px; max-height: 150px; overflow-y: auto; text-align: left; font-size: 13px;">
+            <div id="global-feedback-list" style="margin-top: 15px; max-height: 160px; overflow-y: auto; text-align: left; font-size: 13px;">
                 <!-- Danh sách đánh giá đồng bộ từ Firestore -->
             </div>
         </div>
