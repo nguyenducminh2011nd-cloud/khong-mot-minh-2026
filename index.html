@@ -21,7 +21,7 @@
         <p class="subtitle">Hệ Thống Đấu Trí Tình Huống An Toàn Mạng & Phòng Chống Lừa Đảo</p>
     </header>
 
-    <!-- 1. MÀN HÌNH CHÀO MỪNG (WELCOME SCREEN) -->
+    <!-- 1. MÀN HÌNH CHÀO MỪNG -->
     <div id="welcome-screen" class="screen-container">
         <!-- ĐÁNH GIÁ MỞ ĐẦU -->
         <div class="welcome-feedback-banner rgb-border">
@@ -30,8 +30,8 @@
         </div>
 
         <div class="welcome-grid">
-            <!-- KHU VỰC CHỌN CHẾ ĐỘ & BẮT ĐẦU -->
-            <div class="card rgb-border welcome-card">
+            <!-- CỘT TRÁI: BẮT ĐẦU CHƠI -->
+            <div class="card rgb-border">
                 <h3>🚀 Chuẩn Bị Đấu Trí</h3>
                 <input type="text" id="player-name-input" placeholder="Nhập biệt danh của cậu..." onchange="savePlayerName(this.value)">
                 
@@ -46,27 +46,27 @@
                 <button class="action-btn start-btn" onclick="startGame()">VÀO CHƠI NGAY 🎮</button>
             </div>
 
-            <!-- BẢNG XẾP HẠNG NGOÀI MÀN HÌNH CHÀO -->
-            <div class="card rgb-border">
-                <h3>🏆 Bảng Xếp Hạng Cao Thủ</h3>
-                <div id="leaderboard-list" class="scroll-list">Đang tải bảng xếp hạng...</div>
-            </div>
-        </div>
+            <!-- CỘT PHẢI: BẢNG XẾP HẠNG & GỬI ĐÁNH GIÁ -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="card rgb-border">
+                    <h3>🏆 Bảng Xếp Hạng Cao Thủ</h3>
+                    <div id="leaderboard-list" class="scroll-list">Đang tải bảng xếp hạng...</div>
+                </div>
 
-        <!-- Ô GỬI ĐÁNH GIÁ -->
-        <div class="card rgb-border feedback-box-welcome">
-            <h3>✍️ Gửi Đánh Giá Của Cậu</h3>
-            <textarea id="home-feedback-input" placeholder="Cảm nhận của cậu về hệ thống..."></textarea>
-            <button class="action-btn full-width" onclick="submitHomeFeedback()">Gửi Lên Mây ☁️</button>
+                <div class="card rgb-border">
+                    <h3>✍️ Gửi Đánh Giá Của Cậu</h3>
+                    <textarea id="home-feedback-input" placeholder="Cảm nhận của cậu về hệ thống..."></textarea>
+                    <button class="action-btn full-width" onclick="submitHomeFeedback()">Gửi Lên Mây ☁️</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 2. MÀN HÌNH CHƠI GAME (QUIZ SCREEN - MẶC ĐỊNH ẨN) -->
+    <!-- 2. MÀN HÌNH CHƠI GAME (MẶC ĐỊNH ẨN) -->
     <div id="quiz-screen" class="screen-container" style="display: none;">
-        <div class="card rgb-border quiz-main-card">
+        <div class="card rgb-border">
             <div class="card-header-flex">
                 <h3 id="quiz-title-mode">🧠 Đấu Trí Tình Huống</h3>
-                <!-- NÚT DỪNG & LƯU TIẾN TRÌNH -->
                 <button class="action-btn pause-btn" onclick="pauseAndSaveGame()">⏸️ Dừng & Lưu Tiến Trình</button>
             </div>
 
