@@ -1,9 +1,9 @@
-// --- CẤU HÌNH FIREBASE CHUẨN XÁC ---
+// --- CẤU HÌNH FIREBASE LẤY TRỰC TIẾP TỪ CONSOLE CỦA CẬU ---
 const firebaseConfig = {
     apiKey: "AIzaSyCtQSv6-wGiKyzIIzpmdL32f00Lz14ih1M",
     authDomain: "khongmotminh2026.firebaseapp.com",
     projectId: "khongmotminh2026",
-    storageBucket: "khongmotminh2026.appspot.com",
+    storageBucket: "khongmotminh2026.fireappstorage.app",
     messagingSenderId: "391078149804",
     appId: "1:391078149804:web:9ba69127156c66e6966909",
     measurementId: "G-BFXSCXN4Q0"
@@ -19,7 +19,7 @@ const db = firebase.firestore();
 let currentUser = null;
 let playerName = "Khách ẩn danh";
 
-// --- XỬ LÝ ĐĂNG NHẬP GOOGLE TOÀN CỤC (BẤM LÀ CHẠY NGAY) ---
+// --- XỬ LÝ ĐĂNG NHẬP GOOGLE TOÀN CỤC ---
 window.loginWithGoogle = function() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithRedirect(provider).catch((error) => {
