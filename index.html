@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Không Một Mình 2026 - Hệ Thống Đấu Trí An Toàn Mạng</title>
-    <!-- Firebase App (thư viện cốt lõi) -->
+    <!-- Firebase App -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <!-- Firebase Firestore (lưu bảng xếp hạng & đánh giá) -->
+    <!-- Firebase Firestore -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -52,7 +52,6 @@
                     <div class="card-box">
                         <h3 class="card-heading">🏆 Bảng Xếp Hạng Cao Thủ</h3>
                         <div id="leaderboard-list" class="leaderboard-container">
-                            <!-- Danh sách load từ Firestore -->
                             <div style="color:#888; font-size:0.85rem;">Đang tải bảng xếp hạng...</div>
                         </div>
                     </div>
@@ -76,7 +75,6 @@
                     <span id="quiz-score" style="font-weight: bold; color: #fbbf24;">Điểm: 0</span>
                 </div>
 
-                <!-- Bảng cảnh báo ngẫu nhiên -->
                 <div id="warning-banner" class="warning-ticker">
                     ⚠️ Đang tải cảnh báo an toàn...
                 </div>
@@ -87,9 +85,7 @@
 
                 <h2 id="question-text" class="question-title">Đang tải câu hỏi...</h2>
 
-                <div id="options-container" class="options-grid">
-                    <!-- Các nút đáp án A B C D -->
-                </div>
+                <div id="options-container" class="options-grid"></div>
 
                 <div class="quiz-bottom-actions">
                     <button class="control-btn pause-btn" onclick="pauseAndSaveGame()">⏸️ Tạm Dừng & Lưu</button>
