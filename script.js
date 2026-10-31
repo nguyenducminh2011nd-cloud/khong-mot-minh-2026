@@ -17,14 +17,22 @@ const db = firebase.firestore();
 let currentUser = null;
 let playerName = "Khách ẩn danh";
 
-// --- XỬ LÝ ĐĂNG NHẬP GOOGLE (Tương thích tuyệt đối trên Mobile & PC, chống chặn popup) ---
+// --- XỬ LÝ ĐĂNG NHẬP GOOGLE BẰNG REDIRECT (Tương thích tuyệt đối trên Mobile & PC) ---
 function loginWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithRedirect(provider);
 }
 
-// Xử lý khi trang được tải xong
-window.addEventListener('DOMContentLoaded', () => {
+// Xử lý khi trang được tải xong & Gán sự kiện click nút đăng nhập chắc chắn ăn 100%
+document.addEventListener('DOMContentLoaded', () => {
+    const loginBtn = document.getElementById('google-login-btn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            loginWithGoogle();
+        });
+    }
+
     // Kiểm tra kết quả sau khi Google chuyển hướng trả về
     auth.getRedirectResult()
         .then((result) => {
@@ -67,7 +75,7 @@ function updateAuthUI() {
 
 // --- LƯU ĐIỂM SỐ LÊN CLOUD FIRESTORE ---
 function saveScoreToCloud(score, rankTitle) {
-    if (!currentUser) return; // Chưa đăng nhập thì bỏ qua
+    if (!currentUser) return;
     
     db.collection("leaderboard").doc(currentUser.uid).set({
         name: currentUser.displayName,
