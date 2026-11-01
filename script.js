@@ -1,4 +1,4 @@
-// --- CẤU HÌNH FIREBASE AN TOÀN (CHỐNG TREO PROMISE) ---
+// --- CẤU HÌNH FIREBASE AN TOÀN ---
 let db = null;
 try {
     if (typeof firebase !== 'undefined') {
@@ -36,7 +36,7 @@ function getPlayerRank(score) {
     return { name: "🥉 Đồng", color: "#cd7f32" };
 }
 
-// --- KHO 15 CÂU KHÓ & HACK NÃO ---
+// --- KHO CÂU HỎI MỞ RỘNG (20 CÂU MỖI CHẾ ĐỘ) ---
 const questionPools = {
     kho: [
         { q: "1. Nhận cuộc gọi tự xưng Công an yêu cầu chuyển tiền vào tài khoản tạm giữ để điều tra. Bạn xử lý thế nào?", options: ["Cúp máy ngay lập tức và báo công an địa phương", "Chuyển tiền vào tài khoản để chứng minh trong sạch", "Cung cấp mã OTP qua điện thoại cho người gọi", "Hẹn gặp trực tiếp người gọi ở nơi vắng vẻ"], correct: "Cúp máy ngay lập tức và báo công an địa phương", explain: "💡 Công an không bao giờ làm việc hay yêu cầu chuyển tiền qua điện thoại!" },
@@ -53,7 +53,12 @@ const questionPools = {
         { q: "12. Bạn nhận được mã OTP xác nhận giao dịch mặc dù bạn không hề thực hiện bất kỳ giao dịch nào. Việc cần làm là:", options: ["Khóa thẻ tạm thời và liên hệ ngay ngân hàng", "Bỏ qua vì nghĩ rằng hệ thống nhắn nhầm", "Gửi mã OTP đó cho người hỏi mua hàng trực tuyến", "Đăng tải toàn bộ thông tin thẻ lên mạng xã hội"], correct: "Khóa thẻ tạm thời và liên hệ ngay ngân hàng", explain: "💡 Tài khoản của bạn có thể đang bị kẻ gian tấn công dò quét thanh toán trái phép." },
         { q: "13. Khi kết nối vào mạng Wi-Fi miễn phí tại quán cà phê, bạn tuyệt đối nên tránh thực hiện hành động nào?", options: ["Đăng nhập tài khoản ngân hàng và chuyển tiền", "Đọc báo giải trí và xem tin tức thời sự hàng ngày", "Tìm kiếm thông tin học tập qua các trang web", "Xem video ngắn giải trí trên các nền tảng"], correct: "Đăng nhập tài khoản ngân hàng và chuyển tiền", explain: "💡 Wi-Fi công cộng không bảo mật dễ bị kẻ xấu đánh cắp thông tin đăng nhập." },
         { q: "14. Một người tự xưng là nhân viên sàn thương mại điện tử gọi điện thông báo hoàn tiền sản phẩm. Thao tác an toàn là:", options: ["Cúp máy và từ chối cung cấp bất kỳ thông tin gì", "Làm theo hướng dẫn bấm vào link trên điện thoại", "Cung cấp số thẻ tín dụng để nhận tiền hoàn trả", "Đọc mã OTP ngân hàng gửi về để hoàn tất thủ tục"], correct: "Cúp máy và từ chối cung cấp bất kỳ thông tin gì", explain: "💡 Sàn thương mại điện tử không bao giờ gọi điện hoàn tiền qua các đường link lạ." },
-        { q: "15. Khi máy tính cá nhân xuất hiện phần mềm lạ tự động cài đặt và trình duyệt liên tục bật trang quảng cáo, bạn nên:", options: ["Quét virus hệ thống và gỡ bỏ phần mềm lạ đó", "Tắt máy đi ngủ và hy vọng ngày mai sẽ hết", "Mua thêm một chiếc máy tính xách tay mới", "Đổi mật khẩu tài khoản mạng xã hội ngay lập tức"], correct: "Quét virus hệ thống và gỡ bỏ phần mềm lạ đó", explain: "💡 Máy tính đã bị nhiễm Adware hoặc phần mềm độc hại cần được xử lý dứt điểm." }
+        { q: "15. Khi máy tính cá nhân xuất hiện phần mềm lạ tự động cài đặt và trình duyệt liên tục bật trang quảng cáo, bạn nên:", options: ["Quét virus hệ thống và gỡ bỏ phần mềm lạ đó", "Tắt máy đi ngủ và hy vọng ngày mai sẽ hết", "Mua thêm một chiếc máy tính xách tay mới", "Đổi mật khẩu tài khoản mạng xã hội ngay lập tức"], correct: "Quét virus hệ thống và gỡ bỏ phần mềm lạ đó", explain: "💡 Máy tính đã bị nhiễm Adware hoặc phần mềm độc hại cần được xử lý dứt điểm." },
+        { q: "16. Bạn nhận được một đường link chia sẻ video nhạy cảm từ bạn thân trên Messenger kèm theo câu nói 'Xem đi, bất ngờ lắm'. Bạn nên làm gì?", options: ["Cảnh báo bạn thân tài khoản đã bị hack, tuyệt đối không click", "Click vào xem ngay vì người quen gửi chắc chắn an toàn", "Tải video về máy để xem offline cho mượt", "Chia sẻ tiếp cho nhóm lớp cùng xem"], correct: "Cảnh báo bạn thân tài khoản đã bị hack, tuyệt đối không click", explain: "💡 Đây là dạng link mã độc tự động phát tán qua tài khoản đã bị chiếm đoạt." },
+        { q: "17. Khi tạo mật khẩu cho các tài khoản mạng xã hội, thói quen nào dễ khiến bạn bị hacker chiếm đoạt tài sản số nhất?", options: ["Dùng chung một mật khẩu đơn giản cho mọi tài khoản", "Đổi mật khẩu định kỳ 3 tháng một lần", "Sử dụng trình quản lý mật khẩu an toàn", "Bật tính năng xác thực 2 bước (2FA)"], correct: "Dùng chung một mật khẩu đơn giản cho mọi tài khoản", explain: "💡 Lộ một nơi là mất toàn bộ hệ thống tài khoản liên kết!" },
+        { q: "18. Hành vi nào sau đây vi phạm Luật An ninh mạng khi sử dụng mạng xã hội tại Việt Nam?", options: ["Đăng tải, phát tán thông tin sai sự thật xúc phạm danh dự người khác", "Đăng ảnh đi chơi cùng gia đình và bạn bè lên Facebook", "Nhắn tin trò chuyện vui vẻ với bạn bè qua Zalo", "Cập nhật tiểu sử cá nhân và sở thích âm nhạc"], correct: "Đăng tải, phát tán thông tin sai sự thật xúc phạm danh dự người khác", explain: "💡 Phát tán tin giả, bôi nhọ người khác trên không gian mạng là hành vi vi phạm pháp luật." },
+        { q: "19. Khi mua hàng trên mạng, cách thanh toán nào giảm thiểu tối đa rủi ro bị lừa đảo mất trắng tiền?", options: ["Kiểm tra hàng trước rồi mới thanh toán (COD)", "Chuyển khoản toàn bộ 100% trước khi nhận hàng", "Đặt cọc trước 50% qua tài khoản cá nhân người bán lạ", "Chuyển tiền qua thẻ cào điện thoại theo yêu cầu"], correct: "Kiểm tra hàng trước rồi mới thanh toán (COD)", explain: "💡 Hình thức thanh toán khi nhận hàng (COD) sau khi kiểm tra giúp bảo vệ người mua tốt nhất." },
+        { q: "20. Nếu phát hiện thông tin cá nhân của mình bị kẻ gian lợi dụng đi lừa đảo người khác, bạn cần làm gì?", options: ["Trình báo ngay cơ quan công an gần nhất và thông báo cho người thân", "Giữ im lặng và âm thầm khóa tài khoản cá nhân", "Lập một tài khoản mới và không quan tâm nữa", "Nhờ bạn bè lên mạng tranh cãi với kẻ gian"], correct: "Trình báo ngay cơ quan công an gần nhất và thông báo cho người thân", explain: "💡 Cần nhanh chóng thông báo cơ quan chức năng để tránh vướng vào vòng lao lý." }
     ],
     hacknao: [
         { q: "1. Nhận tin nhắn từ chính số điện thoại của mình giục nợ và đe dọa tống tiền. Hiện tượng này do đâu?", options: ["Kẻ gian dùng trạm phát sóng giả IMSI Catcher hoặc SMS Spoofing", "Điện thoại tự động phát tán tin nhắn lúc nửa đêm", "Nhà mạng đang thử nghiệm hệ thống tin nhắn mới", "Do cài đặt lịch hẹn giờ gửi tin nhắn từ trước"], correct: "Kẻ gian dùng trạm phát sóng giả IMSI Catcher hoặc SMS Spoofing", explain: "💡 Kẻ gian dùng công nghệ giả mạo số điện thoại người gửi để gây hoang mang tột độ!" },
@@ -70,7 +75,12 @@ const questionPools = {
         { q: "12. Khi bạn vô tình quét mã QR tại các điểm dán đè ở bãi xe hoặc quán nước công cộng, hiểm họa tiềm ẩn là gì?", options: ["Dẫn tới các trang web độc hại đánh cắp dữ liệu hoặc cài mã độc", "Điện thoại sẽ tự động sập nguồn vĩnh viễn không mở lại", "Tài khoản mạng xã hội tự động kết bạn với hàng nghìn người", "Dung lượng bộ nhớ điện thoại bị đầy lên tức thì"], correct: "Dẫn tới các trang web độc hại đánh cắp dữ liệu hoặc cài mã độc", explain: "💡 Kẻ gian thường dán đè mã QR giả mạo mã độc để lừa người dùng truy cập." },
         { q: "13. Một tài khoản game uy tín rao bán với giá rẻ bằng 1/10 giá trị thực kèm cam kết 'bảo hành vĩnh viễn'. Bản chất là gì?", options: ["Chiêu trò thu hồi lại tài khoản qua email gốc sau khi đã nhận tiền", "Cơ hội săn sale có một không hai trong năm cho game thủ", "Người bán thực sự tốt bụng muốn thanh lý nhanh nghỉ game", "Chính sách ưu đãi tri ân khách hàng của nhà phát hành"], correct: "Chiêu trò thu hồi lại tài khoản qua email gốc sau khi đã nhận tiền", explain: "💡 Kẻ lừa đảo thường dùng chính thông tin đăng ký gốc để lấy lại tài khoản sau khi bán." },
         { q: "14. Tại sao các vụ lừa đảo qua mạng thường sử dụng các tài khoản ngân hàng 'ảo' hoặc mua lại danh tính người khác?", options: ["Để xóa dấu vết dòng tiền và tránh sự truy vết của cơ quan chức năng", "Vì ngân hàng tặng nhiều ưu đãi cho người mở nhiều tài khoản", "Giúp người chuyển tiền nhận được nhiều điểm thưởng hơn", "Để giảm bớt thuế thu nhập cá nhân phải đóng hàng năm"], correct: "Để xóa dấu vết dòng tiền và tránh sự truy vết của cơ quan chức năng", explain: "💡 Việc sử dụng tài khoản trung gian giúp kẻ gian che giấu danh tính thực sự của mình." },
-        { q: "15. Khi nhận được lời mời tham gia hội nhóm đầu tư tài chính sinh lời 200% mỗi ngày chỉ bằng chiếc điện thoại, bạn nên:", options: ["Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", "Bỏ ra số vốn nhỏ để thử vận may đổi đời", "Vay mượn bạn bè người thân để đầu tư thu lời lớn", "Hỏi thêm kinh nghiệm của họ trước khi tham gia"], correct: "Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", explain: "💡 Lợi nhuận siêu cao luôn đi kèm rủi ro siêu lớn hoặc 100% là mô hình lừa đảo Ponzi." }
+        { q: "15. Khi nhận được lời mời tham gia hội nhóm đầu tư tài chính sinh lời 200% mỗi ngày chỉ bằng chiếc điện thoại, bạn nên:", options: ["Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", "Bỏ ra số vốn nhỏ để thử vận may đổi đời", "Vay mượn bạn bè người thân để đầu tư thu lời lớn", "Hỏi thêm kinh nghiệm của họ trước khi tham gia"], correct: "Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", explain: "💡 Lợi nhuận siêu cao luôn đi kèm rủi ro siêu lớn hoặc 100% là mô hình lừa đảo Ponzi." },
+        { q: "16. Kẻ xấu sử dụng công nghệ Deepfake để giả mạo hình ảnh và giọng nói của người thân gọi điện nhờ chuyển tiền. Cách nhận diện tốt nhất là gì?", options: ["Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", "Tin tưởng ngay vì đúng hình ảnh và giọng nói thật của người thân", "Chuyển tiền nhanh chóng vì sợ người thân gặp chuyện gấp", "Tắt máy và không bao giờ nghe điện thoại nữa"], correct: "Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", explain: "💡 Công nghệ Deepfake đôi khi có độ trễ hoặc lỗi hình ảnh khi chuyển động, đặt câu hỏi kiểm chứng là cách khắc phục." },
+        { q: "17. Khi điện thoại tự động cài đặt các tệp tin APK lạ từ nguồn không rõ ràng, mối nguy hiểm lớn nhất là gì?", options: ["Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", "Làm cho điện thoại sạc pin nhanh hơn bình thường", "Giúp tăng tốc độ kết nối mạng 5G của máy", "Tự động dọn dẹp các tệp tin rác trong bộ nhớ"], correct: "Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", explain: "💡 File APK ngoài cửa hàng ứng dụng chính thức tiềm ẩn mã độc kiểm soát toàn diện thiết bị." },
+        { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
+        { q: "19. Khi nhận được thông báo trúng thưởng lớn từ một tổ chức quốc tế yêu cầu đóng trước một khoản phí nhỏ bằng tiền điện tử (Crypto), bạn nên làm gì?", options: ["Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", "Nộp tiền điện tử ngay để kịp nhận giải thưởng lớn", "Đăng ký thông tin cá nhân chi tiết để nhận quà", "Chia sẻ cơ hội trúng thưởng cho bạn bè cùng tham gia"], correct: "Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", explain: "💡 Không có phần thưởng quốc tế nào yêu cầu người trúng tự nộp phí bằng tiền điện tử trước cả." },
+        { q: "20. Điều gì là quan trọng nhất để bảo vệ bản thân và cộng đồng trước sự bùng nổ của các hình thức lừa đảo trực tuyến hiện nay?", options: ["Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", "Tuyệt đối không sử dụng điện thoại thông minh và mạng xã hội", "Chỉ kết bạn và giao lưu với những người quen biết ngoài đời thực", "Thay đổi mật khẩu thiết bị liên tục mỗi phút mỗi giây"], correct: "Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", explain: "💡 Kiến thức và sự tỉnh táo chính là chiếc khiên bảo vệ vững chắc nhất trong kỷ nguyên số!" }
     ]
 };
 
@@ -118,6 +128,7 @@ window.selectMode = function(mode) {
 
 window.startGame = function() {
     document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'block';
     currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) || 0;
     loadQuestion();
@@ -126,6 +137,7 @@ window.startGame = function() {
 window.pauseAndSaveGame = function() {
     alert(`⏸️ Đã lưu tiến trình!\n- Chế độ: ${selectedMode.toUpperCase()}\n- Câu hiện tại: ${currentQIndex + 1}\n- Điểm số: ${score}`);
     document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
     loadLeaderboard();
     loadAllFeedbacks();
@@ -213,6 +225,7 @@ const wireColors = [
 
 window.openBombMinigame = function() {
     document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'block';
     startBombMinigame();
 };
@@ -220,8 +233,11 @@ window.openBombMinigame = function() {
 window.closeBombMinigame = function() {
     if (bombInterval) clearInterval(bombInterval);
     document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
     document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
+    loadLeaderboard();
+    loadAllFeedbacks();
 };
 
 function startBombMinigame() {
@@ -250,6 +266,7 @@ function startBombMinigame() {
         bombTimer--;
         document.getElementById('bomb-timer-number').innerText = bombTimer;
         
+        // Kích hoạt rung lắc và cảnh báo khi dưới 10 giây
         if (bombTimer <= 10) {
             document.getElementById('bomb-timer-box').classList.add('shake-urgent');
         }
@@ -264,6 +281,7 @@ function startBombMinigame() {
 window.cutWire = function(chosenIdx) {
     if (bombTimer <= 0) return;
     clearInterval(bombInterval);
+    document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
     
     if (chosenIdx === correctWireIndex) {
         score += 150;
@@ -284,14 +302,9 @@ function endBombGame(isWin, msg) {
     resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startBombMinigame()">🔄 Thử Lại Ván Mới</button>`;
 }
 
-// --- HÀM TẢI DỮ LIỆU AN TOÀN (BẢO VỆ CHỐNG TREO GIAO DIỆN) ---
+// --- HÀM FIREBASE XẾP HẠNG & ĐÁNH GIÁ ---
 function updateLeaderboard() {
-    if (!playerName) return;
-    if (!db) {
-        // Lưu tạm vào localStorage nếu chưa có kết nối db
-        console.log("Lưu điểm ngoại tuyến:", score);
-        return;
-    }
+    if (!playerName || !db) return;
     db.collection("leaderboard").doc(playerName).set({
         name: playerName,
         score: score,
@@ -304,17 +317,7 @@ function loadLeaderboard() {
     if (!container) return;
 
     if (!db) {
-        container.innerHTML = `
-            <div class="leaderboard-item">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-weight: bold; color: #9ca3af;">#1</span>
-                    <div>
-                        <strong>${playerName || "Cậu (Offline)"}</strong>
-                        <div style="font-size: 0.75rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div>
-                    </div>
-                </div>
-                <span style="color: var(--accent-green); font-weight: bold;">${score} đ</span>
-            </div>`;
+        container.innerHTML = `<div style="color:#888; font-size:0.85rem;">Chưa kết nối mây.</div>`;
         return;
     }
 
@@ -340,11 +343,7 @@ function loadLeaderboard() {
         })
         .catch((error) => {
             console.error("Lỗi tải bảng xếp hạng:", error);
-            container.innerHTML = `
-                <div class="leaderboard-item">
-                    <div><strong>${playerName || "Người chơi"}</strong></div>
-                    <span style="color: var(--accent-green); font-weight: bold;">${score} đ</span>
-                </div>`;
+            container.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Lỗi tải dữ liệu xếp hạng.</div>";
         });
 }
 
@@ -355,12 +354,7 @@ window.submitHomeFeedback = function() {
     if (!text) { alert("Cậu vui lòng viết nhận xét trước nhé!"); return; }
 
     if (!db) {
-        alert("❤️ Đã lưu đánh giá cục bộ (Chế độ offline)!");
-        if (textInput) textInput.value = "";
-        const cardsContainer = document.getElementById('feedback-cards-container');
-        if (cardsContainer) {
-            cardsContainer.innerHTML = `<div class="feedback-card-item"><div class="feedback-card-author">👤 ${author}</div><div class="feedback-card-text">"${text}"</div></div>` + cardsContainer.innerHTML;
-        }
+        alert("⚠️ Mất kết nối cơ sở dữ liệu!");
         return;
     }
 
@@ -383,14 +377,8 @@ function loadAllFeedbacks() {
     const cardsContainer = document.getElementById('feedback-cards-container');
 
     if (!db) {
-        if (banner) banner.innerHTML = `"Hệ thống đấu trí an toàn mạng rất trực quan và hữu ích!" — <strong>Admin</strong>`;
-        if (cardsContainer) {
-            cardsContainer.innerHTML = `
-                <div class="feedback-card-item">
-                    <div class="feedback-card-author">👤 Diệu xinggais</div>
-                    <div class="feedback-card-text">"Nội dung câu hỏi rất có lợi cho học sinh!"</div>
-                </div>`;
-        }
+        if (banner) banner.innerHTML = "Chưa kết nối cơ sở dữ liệu.";
+        if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào.</div>";
         return;
     }
 
@@ -416,7 +404,7 @@ function loadAllFeedbacks() {
         })
         .catch((error) => {
             console.error("Lỗi tải đánh giá:", error);
-            if (banner) banner.innerHTML = "Hệ thống hoạt động ổn định.";
-            if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào từ cộng đồng.</div>";
+            if (banner) banner.innerHTML = "Không thể tải lời nhắn.";
+            if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Lỗi tải ý kiến cộng đồng.</div>";
         });
 }
