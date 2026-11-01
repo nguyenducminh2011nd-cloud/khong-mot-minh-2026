@@ -45,7 +45,7 @@
                         </div>
 
                         <button class="primary-btn glow-btn" onclick="startGame()">VÀO CHƠI ĐẤU TRÍ 🎮</button>
-                        <button class="minigame-launch-btn" onclick="openBombMinigame()">💣 MINI-GAME: GỠ BOM MÃ ĐỘC (30S)</button>
+                        <button class="minigame-launch-btn" onclick="openCipherMinigame()">🔐 MINI-GAME: CYBER CIPHER 30S (HACK NÃO)</button>
                     </div>
 
                     <div class="card-box">
@@ -76,35 +76,57 @@
             </div>
         </div>
 
-        <!-- MÀN HÌNH MINIGAME: GỠ BOM MÃ ĐỘC (30S) -->
+        <!-- MÀN HÌNH MINIGAME: CYBER CIPHER 30S (GIẢI MÃ MÃ ĐỘC) -->
         <div id="minigame-screen" class="screen" style="display: none;">
             <div class="quiz-card bomb-glass-card">
                 <div class="bomb-header">
-                    <span class="bomb-title">💣 CYBER BOMB DEFUSE: CHỐNG HACKER 30S</span>
-                    <button class="close-minigame-btn" onclick="closeBombMinigame()">✖ Thoát</button>
+                    <span class="bomb-title">🔐 CYBER CIPHER: GIẢI MÃ TƯ DUY 30S</span>
+                    <button class="close-minigame-btn" onclick="closeCipherMinigame()">✖ Thoát</button>
                 </div>
 
                 <div class="bomb-rules-box">
-                    <strong>📖 HƯỚNG DẪN CÁCH CHƠI:</strong>
+                    <strong>📖 LỆNH HACK MÁY CHỦ:</strong>
                     <ol>
-                        <li>Hệ thống bị tấn công mã độc! Bạn có <strong>30 giây</strong> để cắt đúng dây cáp giải mã.</li>
-                        <li>Đọc kỹ <strong>Mật lệnh an toàn</strong> xuất hiện để tìm dây có màu chính xác.</li>
-                        <li>Cắt đúng trước khi hết giờ ➔ <strong>Thắng ngay +150đ</strong>! Cắt sai hoặc hết giờ ➔ Bom nổ!</li>
+                        <li>Suy luận manh mối logic bên dưới để tìm ra **Mật mã 4 chữ số PIN**.</li>
+                        <li>Bấm bàn phím số để nhập mã và ấn **[🔓 GIẢI MÃ]** trước khi hết 30s.</li>
+                        <li>Giải thành công ➔ **+150đ**. Nhập sai ➔ **Trừ 5 giây** phạt khẩn cấp!</li>
                     </ol>
                 </div>
 
-                <div class="timer-display-box" id="bomb-timer-box">
-                    <span>THỜI GIAN CÒN LẠI:</span>
-                    <div id="bomb-timer-number" class="timer-num">30</div>
+                <div class="timer-display-box" id="cipher-timer-box">
+                    <span>THỜI GIAN ĐẾM NGƯỢC:</span>
+                    <div id="cipher-timer-number" class="timer-num">30</div>
                 </div>
 
-                <div class="target-clue-box" id="bomb-clue">
-                    🔍 Đang giải mã tín hiệu...
+                <div class="target-clue-box" id="cipher-clue">
+                    🔍 Đang phân tích quy luật mã hóa...
                 </div>
 
-                <div class="wires-container" id="wires-grid"></div>
+                <!-- Ô hiển thị mã vừa nhập -->
+                <div class="cipher-pin-display">
+                    <span id="pin-digit-0" class="pin-box">_</span>
+                    <span id="pin-digit-1" class="pin-box">_</span>
+                    <span id="pin-digit-2" class="pin-box">_</span>
+                    <span id="pin-digit-3" class="pin-box">_</span>
+                </div>
 
-                <div id="bomb-result-msg" class="bomb-result-box" style="display: none;"></div>
+                <!-- Bàn phím số iOS Kính mờ -->
+                <div class="numpad-grid">
+                    <button class="num-btn" onclick="pressNum('1')">1</button>
+                    <button class="num-btn" onclick="pressNum('2')">2</button>
+                    <button class="num-btn" onclick="pressNum('3')">3</button>
+                    <button class="num-btn" onclick="pressNum('4')">4</button>
+                    <button class="num-btn" onclick="pressNum('5')">5</button>
+                    <button class="num-btn" onclick="pressNum('6')">6</button>
+                    <button class="num-btn" onclick="pressNum('7')">7</button>
+                    <button class="num-btn" onclick="pressNum('8')">8</button>
+                    <button class="num-btn" onclick="pressNum('9')">9</button>
+                    <button class="num-btn action-del" onclick="pressNum('del')">⌫ Xóa</button>
+                    <button class="num-btn" onclick="pressNum('0')">0</button>
+                    <button class="num-btn action-submit" onclick="submitCipher()">🔓 GIẢI MÃ</button>
+                </div>
+
+                <div id="cipher-result-msg" class="bomb-result-box" style="display: none;"></div>
             </div>
         </div>
 
