@@ -36,7 +36,7 @@ function getPlayerRank(score) {
     return { name: "🥉 Đồng", color: "#cd7f32" };
 }
 
-// --- KHO CÂU HỎI MỞ RỘNG (20 CÂU MỖI CHẾ ĐỘ) ---
+// --- KHO 20 CÂU HỎI MỖI CHẾ ĐỘ ---
 const questionPools = {
     kho: [
         { q: "1. Nhận cuộc gọi tự xưng Công an yêu cầu chuyển tiền vào tài khoản tạm giữ để điều tra. Bạn xử lý thế nào?", options: ["Cúp máy ngay lập tức và báo công an địa phương", "Chuyển tiền vào tài khoản để chứng minh trong sạch", "Cung cấp mã OTP qua điện thoại cho người gọi", "Hẹn gặp trực tiếp người gọi ở nơi vắng vẻ"], correct: "Cúp máy ngay lập tức và báo công an địa phương", explain: "💡 Công an không bao giờ làm việc hay yêu cầu chuyển tiền qua điện thoại!" },
@@ -266,7 +266,7 @@ function startBombMinigame() {
         bombTimer--;
         document.getElementById('bomb-timer-number').innerText = bombTimer;
         
-        // Kích hoạt rung lắc và cảnh báo khi dưới 10 giây
+        // Kích hoạt hiệu ứng cảnh báo rúng lắc khi dưới hoặc bằng 10 giây
         if (bombTimer <= 10) {
             document.getElementById('bomb-timer-box').classList.add('shake-urgent');
         }
