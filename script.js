@@ -223,7 +223,6 @@ function startBombMinigame() {
     document.getElementById('bomb-result-msg').style.display = 'none';
     document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
     
-    // Ngẫu nhiên chọn 1 dây đúng
     correctWireIndex = Math.floor(Math.random() * wireColors.length);
     let clueText = "";
     if (correctWireIndex === 0) clueText = "🔑 MẬT LỆNH: Cắt dây chứa nguy cơ đánh cắp mật khẩu giả mạo!";
@@ -233,7 +232,6 @@ function startBombMinigame() {
     
     document.getElementById('bomb-clue').innerText = clueText;
 
-    // Vẽ các dây
     const wiresGrid = document.getElementById('wires-grid');
     wiresGrid.innerHTML = "";
     wireColors.forEach((wire, idx) => {
@@ -245,7 +243,6 @@ function startBombMinigame() {
         bombTimer--;
         document.getElementById('bomb-timer-number').innerText = bombTimer;
         
-        // Rung lắc khi dưới 10 giây
         if (bombTimer <= 10) {
             document.getElementById('bomb-timer-box').classList.add('shake-urgent');
         }
@@ -280,38 +277,43 @@ function endBombGame(isWin, msg) {
     resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startBombMinigame()">🔄 Thử Lại Ván Mới</button>`;
 }
 
-// --- FIREBASE DASHBOARD & FEEDBACKS ---
+// --- FIREBASE DASHBOARD & FEEDBACKS (CÓ BẢO VỆ CHỐNG TREO) ---
 function updateLeaderboard() {
     if (!playerName) return;
     db.collection("leaderboard").doc(playerName).set({
         name: playerName,
         score: score,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(() => loadLeaderboard());
+    }, { merge: true }).then(() => loadLeaderboard()).catch(err => console.log("Lỗi ghi điểm:", err));
 }
 
 function loadLeaderboard() {
     const container = document.getElementById('leaderboard-list');
     if (!container) return;
+    
     db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
         .then((snapshot) => {
             let html = "";
             let rank = 1;
             snapshot.forEach((doc) => {
                 let data = doc.data();
-                let playerRank = getPlayerRank(data.score);
+                let playerRank = getPlayerRank(data.score || 0);
                 html += `<div class="leaderboard-item">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
                         <div>
-                            <strong>${data.name}</strong>
+                            <strong>${data.name || "Ẩn danh"}</strong>
                             <div style="font-size: 0.75rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
                         </div>
                     </div>
-                    <span style="color: var(--accent-green); font-weight: bold;">${data.score} đ</span>
+                    <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0} đ</span>
                 </div>`;
             });
             container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ nào.</div>";
+        })
+        .catch((error) => {
+            console.error("Lỗi tải bảng xếp hạng:", error);
+            container.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Không thể kết nối cơ sở dữ liệu xếp hạng.</div>";
         });
 }
 
@@ -329,12 +331,16 @@ window.submitHomeFeedback = function() {
         if (textInput) textInput.value = "";
         alert("❤️ Đã gửi đánh giá thành công lên mây!");
         loadAllFeedbacks();
+    }).catch(err => {
+        alert("Lỗi gửi đánh giá, vui lòng thử lại!");
+        console.error(err);
     });
 };
 
 function loadAllFeedbacks() {
     const banner = document.getElementById('top-feedback-ticker');
     const cardsContainer = document.getElementById('feedback-cards-container');
+    
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
@@ -345,8 +351,8 @@ function loadAllFeedbacks() {
                 snapshot.forEach((doc) => {
                     let d = doc.data();
                     cardsHtml += `<div class="feedback-card-item">
-                        <div class="feedback-card-author">👤 ${d.name}</div>
-                        <div class="feedback-card-text">"${d.text}"</div>
+                        <div class="feedback-card-author">👤 ${d.name || "Ẩn danh"}</div>
+                        <div class="feedback-card-text">"${d.text || ""}"</div>
                     </div>`;
                 });
                 if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
@@ -354,5 +360,10 @@ function loadAllFeedbacks() {
                 if (banner) banner.innerHTML = "Chưa có đánh giá nào từ cộng đồng.";
                 if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào.</div>";
             }
+        })
+        .catch((error) => {
+            console.error("Lỗi tải đánh giá:", error);
+            if (banner) banner.innerHTML = "Không thể tải lời nhắn.";
+            if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Lỗi kết nối dữ liệu ý kiến cộng đồng.</div>";
         });
 }
