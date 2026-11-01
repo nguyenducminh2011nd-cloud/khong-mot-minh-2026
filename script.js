@@ -21,7 +21,6 @@ const warnings = [
     "🔥 Cẩn thận: Các đáp án đều được cân bằng độ dài, hãy tư duy logic để vượt ải!"
 ];
 
-// --- HỆ THỐNG XẾP HẠNG RANK THEO THANG ĐIỂM MỚI ---
 function getPlayerRank(score) {
     if (score >= 600) return { name: "🏆 Thách Đấu", color: "#f43f5e" };
     if (score >= 400) return { name: "💎 Kim Cương", color: "#38bdf8" };
@@ -82,7 +81,6 @@ let currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) ||
 let score = parseInt(localStorage.getItem('kmm_score')) || 0;
 let playerName = localStorage.getItem('kmm_player_name') || "";
 let answered = false;
-let autoNextTimeout = null;
 
 document.addEventListener("DOMContentLoaded", function() {
     if (playerName) {
@@ -106,30 +104,22 @@ document.documentElement.setAttribute('data-theme', localStorage.getItem('kmm_th
 window.selectMode = function(mode) {
     selectedMode = mode;
     localStorage.setItem('kmm_mode', mode);
-    
     document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
     const btnElem = document.getElementById(`btn-mode-${mode}`);
     if (btnElem) btnElem.classList.add('active');
 }
 
 window.startGame = function() {
-    const welcome = document.getElementById('welcome-screen');
-    const quiz = document.getElementById('quiz-screen');
-    if (welcome) welcome.style.display = 'none';
-    if (quiz) quiz.style.display = 'block';
-    
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
     currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) || 0;
     loadQuestion();
 }
 
 window.pauseAndSaveGame = function() {
-    if (autoNextTimeout) clearTimeout(autoNextTimeout);
     alert(`⏸️ Đã lưu tiến trình!\n- Chế độ: ${selectedMode.toUpperCase()}\n- Câu hiện tại: ${currentQIndex + 1}\n- Điểm số: ${score}`);
-    
-    const welcome = document.getElementById('welcome-screen');
-    const quiz = document.getElementById('quiz-screen');
-    if (quiz) quiz.style.display = 'none';
-    if (welcome) welcome.style.display = 'block';
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('welcome-screen').style.display = 'block';
     loadLeaderboard();
     loadAllFeedbacks();
 }
@@ -146,34 +136,20 @@ function loadQuestion() {
     if (currentQIndex >= list.length) currentQIndex = 0;
     
     let qData = list[currentQIndex];
-    
-    let randomWarning = warnings[Math.floor(Math.random() * warnings.length)];
-    const warnElem = document.getElementById('warning-banner');
-    if (warnElem) warnElem.innerText = randomWarning;
-
-    const titleElem = document.getElementById('quiz-title-mode');
-    if (titleElem) titleElem.innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Chế độ Khó' : 'Chế độ Hack Não'})`;
-    
-    const counterElem = document.getElementById('question-counter');
-    if (counterElem) counterElem.innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
-    
-    const textElem = document.getElementById('question-text');
-    if (textElem) textElem.innerText = qData.q;
-    
-    const scoreElem = document.getElementById('quiz-score');
-    if (scoreElem) scoreElem.innerText = `Điểm: ${score}`;
+    document.getElementById('warning-banner').innerText = warnings[Math.floor(Math.random() * warnings.length)];
+    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Chế độ Khó' : 'Chế độ Hack Não'})`;
+    document.getElementById('question-counter').innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
+    document.getElementById('question-text').innerText = qData.q;
+    document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
     
     const optContainer = document.getElementById('options-container');
-    if (!optContainer) return;
     optContainer.innerHTML = "";
 
     let shuffled = shuffleOptions(qData.options);
-    let optHtml = "";
     shuffled.forEach((optText, idx) => {
         let isCorrect = (optText === qData.correct);
-        optHtml += `<button class="option-btn" onclick="checkAnswer(this, ${isCorrect})">${String.fromCharCode(65 + idx)}. ${optText}</button>`;
+        optContainer.innerHTML += `<button class="option-btn" onclick="checkAnswer(this, ${isCorrect})">${String.fromCharCode(65 + idx)}. ${optText}</button>`;
     });
-    optContainer.innerHTML = optHtml;
 }
 
 window.checkAnswer = function(btnElement, isCorrect) {
@@ -186,56 +162,132 @@ window.checkAnswer = function(btnElement, isCorrect) {
     
     if (isCorrect) {
         btnElement.classList.add('correct');
-        // Phân định điểm chuẩn xác: Khó = 40đ/câu, Hack Não = 100đ/câu
         let pointsToAdd = (selectedMode === 'hacknao') ? 100 : 40;
         score += pointsToAdd;
         localStorage.setItem('kmm_score', score);
-        const scoreElem = document.getElementById('quiz-score');
-        if (scoreElem) scoreElem.innerText = `Điểm: ${score}`;
+        document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
         updateLeaderboard();
     } else {
         btnElement.classList.add('wrong');
         buttons.forEach(btn => {
-            if (btn.innerText.includes(qData.correct)) {
-                btn.classList.add('correct');
-            }
+            if (btn.innerText.includes(qData.correct)) btn.classList.add('correct');
         });
     }
-
     showExplanationBox(qData.explain);
 };
 
 function showExplanationBox(explainText) {
     let quizArea = document.getElementById('quiz-area');
-    if (quizArea) {
-        let explainDiv = document.createElement('div');
-        explainDiv.style.cssText = "margin-top: 12px; padding: 10px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.88rem; color: #fff;";
-        explainDiv.innerHTML = `<strong>Giải thích an toàn:</strong> ${explainText}`;
-        quizArea.appendChild(explainDiv);
-    }
+    let explainDiv = document.createElement('div');
+    explainDiv.style.cssText = "margin-top: 12px; padding: 10px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.88rem; color: #fff;";
+    explainDiv.innerHTML = `<strong>Giải thích an toàn:</strong> ${explainText}`;
+    quizArea.appendChild(explainDiv);
 }
 
 window.nextQuestion = function() {
-    if (autoNextTimeout) clearTimeout(autoNextTimeout);
     let list = questionPools[selectedMode];
     currentQIndex = (currentQIndex + 1) % list.length;
     localStorage.setItem(`kmm_idx_${selectedMode}`, currentQIndex);
-    
     let oldNotice = document.querySelector('#quiz-area > div[style*="border-left"]');
     if (oldNotice) oldNotice.remove();
-
     loadQuestion();
 };
 
+// --- LOGIC MINIGAME: GỠ BOM MÃ ĐỘC (30S) ---
+let bombTimer = 30;
+let bombInterval = null;
+let correctWireIndex = 0;
+const wireColors = [
+    { name: "Dây Đỏ (Mã Độc Phishing)", bg: "#ef4444" },
+    { name: "Dây Xanh Lục (Khiên Bảo Vệ)", bg: "#10b981" },
+    { name: "Dây Vàng (Mã OTP Ngân Hàng)", bg: "#f59e0b" },
+    { name: "Dây Xanh Dương (Wi-Fi Công Cộng)", bg: "#3b82f6" }
+];
+
+window.openBombMinigame = function() {
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'block';
+    startBombMinigame();
+};
+
+window.closeBombMinigame = function() {
+    if (bombInterval) clearInterval(bombInterval);
+    document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('welcome-screen').style.display = 'block';
+    document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
+};
+
+function startBombMinigame() {
+    bombTimer = 30;
+    document.getElementById('bomb-timer-number').innerText = bombTimer;
+    document.getElementById('bomb-result-msg').style.display = 'none';
+    document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
+    
+    // Ngẫu nhiên chọn 1 dây đúng
+    correctWireIndex = Math.floor(Math.random() * wireColors.length);
+    let clueText = "";
+    if (correctWireIndex === 0) clueText = "🔑 MẬT LỆNH: Cắt dây chứa nguy cơ đánh cắp mật khẩu giả mạo!";
+    else if (correctWireIndex === 1) clueText = "🔑 MẬT LỆNH: Cắt dây mang năng lượng Tường Lửa Bảo Vệ!";
+    else if (correctWireIndex === 2) clueText = "🔑 MẬT LỆNH: Cắt dây chứa Mã OTP xác thực giao dịch!";
+    else clueText = "🔑 MẬT LỆNH: Cắt dây chứa nguy cơ kết nối Wi-Fi mở không mật khẩu!";
+    
+    document.getElementById('bomb-clue').innerText = clueText;
+
+    // Vẽ các dây
+    const wiresGrid = document.getElementById('wires-grid');
+    wiresGrid.innerHTML = "";
+    wireColors.forEach((wire, idx) => {
+        wiresGrid.innerHTML += `<button class="wire-btn" style="background:${wire.bg};" onclick="cutWire(${idx})">✂️ ${wire.name}</button>`;
+    });
+
+    if (bombInterval) clearInterval(bombInterval);
+    bombInterval = setInterval(() => {
+        bombTimer--;
+        document.getElementById('bomb-timer-number').innerText = bombTimer;
+        
+        // Rung lắc khi dưới 10 giây
+        if (bombTimer <= 10) {
+            document.getElementById('bomb-timer-box').classList.add('shake-urgent');
+        }
+        
+        if (bombTimer <= 0) {
+            clearInterval(bombInterval);
+            endBombGame(false, "💥 HẾT GIỜ! Bom mã độc đã nổ tung, toàn bộ dữ liệu bị khóa vĩnh viễn!");
+        }
+    }, 1000);
+}
+
+window.cutWire = function(chosenIdx) {
+    if (bombTimer <= 0) return;
+    clearInterval(bombInterval);
+    
+    if (chosenIdx === correctWireIndex) {
+        score += 150;
+        localStorage.setItem('kmm_score', score);
+        updateLeaderboard();
+        endBombGame(true, "🎉 GÁNH TEAM THÀNH CÔNG! Bạn đã giải mã bom an toàn và được thưởng +150 ĐIỂM!");
+    } else {
+        endBombGame(false, "💥 CẮT NHẦM DÂY! Bom Ransomware đã kích hoạt khóa sạch hệ thống!");
+    }
+};
+
+function endBombGame(isWin, msg) {
+    const resBox = document.getElementById('bomb-result-msg');
+    resBox.style.display = 'block';
+    resBox.style.background = isWin ? "rgba(52, 211, 153, 0.25)" : "rgba(239, 68, 68, 0.25)";
+    resBox.style.color = isWin ? "#34d399" : "#f87171";
+    resBox.style.border = isWin ? "1px solid #34d399" : "1px solid #ef4444";
+    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startBombMinigame()">🔄 Thử Lại Ván Mới</button>`;
+}
+
+// --- FIREBASE DASHBOARD & FEEDBACKS ---
 function updateLeaderboard() {
     if (!playerName) return;
     db.collection("leaderboard").doc(playerName).set({
         name: playerName,
         score: score,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(() => {
-        loadLeaderboard();
-    });
+    }, { merge: true }).then(() => loadLeaderboard());
 }
 
 function loadLeaderboard() {
@@ -267,7 +319,6 @@ window.submitHomeFeedback = function() {
     const textInput = document.getElementById('home-feedback-input');
     const author = playerName || "Khách ẩn danh";
     const text = textInput ? textInput.value.trim() : "";
-    
     if (!text) { alert("Cậu vui lòng viết nhận xét trước nhé!"); return; }
 
     db.collection("feedbacks").add({
@@ -284,7 +335,6 @@ window.submitHomeFeedback = function() {
 function loadAllFeedbacks() {
     const banner = document.getElementById('top-feedback-ticker');
     const cardsContainer = document.getElementById('feedback-cards-container');
-    
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
@@ -302,7 +352,7 @@ function loadAllFeedbacks() {
                 if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
             } else {
                 if (banner) banner.innerHTML = "Chưa có đánh giá nào từ cộng đồng.";
-                if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào. Hãy là người đầu tiên gửi ý kiến!</div>";
+                if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào.</div>";
             }
         });
 }
