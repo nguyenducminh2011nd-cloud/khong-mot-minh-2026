@@ -212,94 +212,116 @@ window.nextQuestion = function() {
     loadQuestion();
 };
 
-// --- LOGIC MINIGAME: GỠ BOM MÃ ĐỘC (30S) ---
-let bombTimer = 30;
-let bombInterval = null;
-let correctWireIndex = 0;
-const wireColors = [
-    { name: "Dây Đỏ (Mã Độc Phishing)", bg: "#ef4444" },
-    { name: "Dây Xanh Lục (Khiên Bảo Vệ)", bg: "#10b981" },
-    { name: "Dây Vàng (Mã OTP Ngân Hàng)", bg: "#f59e0b" },
-    { name: "Dây Xanh Dương (Wi-Fi Công Cộng)", bg: "#3b82f6" }
+// --- LOGIC MINIGAME MỚI: CYBER CIPHER 30S (GIẢI MÃ TƯ DUY LOGIC) ---
+let cipherTimer = 30;
+let cipherInterval = null;
+let secretPin = "";
+let currentEnteredPin = "";
+
+const cipherChallenges = [
+    { clue: "💡 MANH MỐI: Số đầu = 2, số cuối = 8. Hai số giữa bằng nhau và bằng tổng (2+8)/2", target: "2558" },
+    { clue: "💡 MANH MỐI: Mật mã chứa số 1990 + 35 (Năm sinh chuẩn của hacker)", target: "2025" },
+    { clue: "💡 MANH MỐI: 4 chữ số tăng dần liên tiếp bắt đầu bằng số 3", target: "3456" },
+    { clue: "💡 MANH MỐI: Mã OTP xác thực: Số đầu = 9, số thứ hai kém 3 đơn vị, 2 số cuối là 00", target: "9600" },
+    { clue: "💡 MANH MỐI: Số đối xứng (Palindromic): Hai số đầu là 71, hai số cuối đảo ngược lại", target: "7117" },
+    { clue: "💡 MANH MỐI: Tổng 4 chữ số bằng 10, số đầu = 1, số cuối = 4, hai số giữa giống nhau", target: "1224" }
 ];
 
-window.openBombMinigame = function() {
+window.openCipherMinigame = function() {
     document.getElementById('welcome-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'block';
-    startBombMinigame();
+    startCipherMinigame();
 };
 
-window.closeBombMinigame = function() {
-    if (bombInterval) clearInterval(bombInterval);
+window.closeCipherMinigame = function() {
+    if (cipherInterval) clearInterval(cipherInterval);
     document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
-    document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
+    document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
     loadLeaderboard();
     loadAllFeedbacks();
 };
 
-function startBombMinigame() {
-    bombTimer = 30;
-    document.getElementById('bomb-timer-number').innerText = bombTimer;
-    document.getElementById('bomb-result-msg').style.display = 'none';
-    document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
+function startCipherMinigame() {
+    cipherTimer = 30;
+    currentEnteredPin = "";
+    updatePinDisplay();
     
-    correctWireIndex = Math.floor(Math.random() * wireColors.length);
-    let clueText = "";
-    if (correctWireIndex === 0) clueText = "🔑 MẬT LỆNH: Cắt dây chứa nguy cơ đánh cắp mật khẩu giả mạo!";
-    else if (correctWireIndex === 1) clueText = "🔑 MẬT LỆNH: Cắt dây mang năng lượng Tường Lửa Bảo Vệ!";
-    else if (correctWireIndex === 2) clueText = "🔑 MẬT LỆNH: Cắt dây chứa Mã OTP xác thực giao dịch!";
-    else clueText = "🔑 MẬT LỆNH: Cắt dây chứa nguy cơ kết nối Wi-Fi mở không mật khẩu!";
+    document.getElementById('cipher-timer-number').innerText = cipherTimer;
+    document.getElementById('cipher-result-msg').style.display = 'none';
+    document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
     
-    document.getElementById('bomb-clue').innerText = clueText;
+    // Chọn ngẫu nhiên thử thách logic
+    let randomTask = cipherChallenges[Math.floor(Math.random() * cipherChallenges.length)];
+    secretPin = randomTask.target;
+    document.getElementById('cipher-clue').innerText = randomTask.clue;
 
-    const wiresGrid = document.getElementById('wires-grid');
-    wiresGrid.innerHTML = "";
-    wireColors.forEach((wire, idx) => {
-        wiresGrid.innerHTML += `<button class="wire-btn" style="background:${wire.bg};" onclick="cutWire(${idx})">✂️ ${wire.name}</button>`;
-    });
-
-    if (bombInterval) clearInterval(bombInterval);
-    bombInterval = setInterval(() => {
-        bombTimer--;
-        document.getElementById('bomb-timer-number').innerText = bombTimer;
+    if (cipherInterval) clearInterval(cipherInterval);
+    cipherInterval = setInterval(() => {
+        cipherTimer--;
+        document.getElementById('cipher-timer-number').innerText = cipherTimer;
         
-        // Kích hoạt hiệu ứng cảnh báo rúng lắc khi dưới hoặc bằng 10 giây
-        if (bombTimer <= 10) {
-            document.getElementById('bomb-timer-box').classList.add('shake-urgent');
+        if (cipherTimer <= 10) {
+            document.getElementById('cipher-timer-box').classList.add('shake-urgent');
         }
         
-        if (bombTimer <= 0) {
-            clearInterval(bombInterval);
-            endBombGame(false, "💥 HẾT GIỜ! Bom mã độc đã nổ tung, toàn bộ dữ liệu bị khóa vĩnh viễn!");
+        if (cipherTimer <= 0) {
+            clearInterval(cipherInterval);
+            endCipherGame(false, `💥 HẾT GIỜ! Hệ thống đã bị khóa vĩnh viễn! Mật mã đúng là: <strong>${secretPin}</strong>`);
         }
     }, 1000);
 }
 
-window.cutWire = function(chosenIdx) {
-    if (bombTimer <= 0) return;
-    clearInterval(bombInterval);
-    document.getElementById('bomb-timer-box').classList.remove('shake-urgent');
-    
-    if (chosenIdx === correctWireIndex) {
+window.pressNum = function(val) {
+    if (cipherTimer <= 0) return;
+    if (val === 'del') {
+        currentEnteredPin = currentEnteredPin.slice(0, -1);
+    } else if (currentEnteredPin.length < 4) {
+        currentEnteredPin += val;
+    }
+    updatePinDisplay();
+};
+
+function updatePinDisplay() {
+    for (let i = 0; i < 4; i++) {
+        let box = document.getElementById(`pin-digit-${i}`);
+        if (box) box.innerText = currentEnteredPin[i] || "_";
+    }
+}
+
+window.submitCipher = function() {
+    if (cipherTimer <= 0) return;
+    if (currentEnteredPin.length < 4) {
+        alert("Cậu vui lòng nhập đủ 4 chữ số nhé!");
+        return;
+    }
+
+    if (currentEnteredPin === secretPin) {
+        clearInterval(cipherInterval);
+        document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
         score += 150;
         localStorage.setItem('kmm_score', score);
         updateLeaderboard();
-        endBombGame(true, "🎉 GÁNH TEAM THÀNH CÔNG! Bạn đã giải mã bom an toàn và được thưởng +150 ĐIỂM!");
+        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! Bạn đã hack thành công máy chủ và được thưởng +150 ĐIỂM!");
     } else {
-        endBombGame(false, "💥 CẮT NHẦM DÂY! Bom Ransomware đã kích hoạt khóa sạch hệ thống!");
+        // Sai bị phạt trừ 5 giây
+        cipherTimer = Math.max(0, cipherTimer - 5);
+        document.getElementById('cipher-timer-number').innerText = cipherTimer;
+        alert("❌ Mật mã sai! Bạn bị phạt trừ 5 giây!");
+        currentEnteredPin = "";
+        updatePinDisplay();
     }
 };
 
-function endBombGame(isWin, msg) {
-    const resBox = document.getElementById('bomb-result-msg');
+function endCipherGame(isWin, msg) {
+    const resBox = document.getElementById('cipher-result-msg');
     resBox.style.display = 'block';
     resBox.style.background = isWin ? "rgba(52, 211, 153, 0.25)" : "rgba(239, 68, 68, 0.25)";
     resBox.style.color = isWin ? "#34d399" : "#f87171";
     resBox.style.border = isWin ? "1px solid #34d399" : "1px solid #ef4444";
-    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startBombMinigame()">🔄 Thử Lại Ván Mới</button>`;
+    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startCipherMinigame()">🔄 Thử Thử Thách Mới</button>`;
 }
 
 // --- HÀM FIREBASE XẾP HẠNG & ĐÁNH GIÁ ---
