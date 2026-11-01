@@ -47,7 +47,6 @@ body {
     margin-bottom: 5px;
     text-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
     font-weight: 800;
-    letter-spacing: 0.5px;
 }
 
 .app-subtitle {
@@ -59,39 +58,23 @@ body {
 .theme-toggle-btn {
     background: var(--card-bg);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--accent-green);
     color: var(--accent-green);
     padding: 6px 16px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 0.85rem;
-    transition: 0.3s;
-    box-shadow: var(--glass-shadow);
 }
 
-.theme-toggle-btn:hover {
-    background: var(--accent-green);
-    color: #000;
-    box-shadow: 0 0 15px rgba(52, 211, 153, 0.5);
-}
-
-/* HIỆU ỨNG KÍNH MỜ (LIQUID GLASSMORPHISM) CHO CÁC KHỐI THẺ */
 .card-box {
     background-color: var(--card-bg);
     backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--card-border);
     border-top: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 16px;
     padding: 22px;
     margin-bottom: 15px;
     box-shadow: var(--glass-shadow);
-    transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.card-box:hover {
-    border-color: rgba(52, 211, 153, 0.3);
 }
 
 .card-heading {
@@ -102,7 +85,6 @@ body {
     font-weight: 700;
 }
 
-/* BỐ CỤC 2 CỘT */
 .grid-two-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -116,21 +98,15 @@ body {
     gap: 15px;
 }
 
-.left-column-stack .card-box, .right-column-stack .card-box {
-    margin-bottom: 0;
-}
-
 .community-ticker-box {
     background: var(--card-bg);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px dashed rgba(52, 211, 153, 0.4);
     padding: 12px 18px;
     border-radius: 12px;
     margin-bottom: 20px;
     font-size: 0.9rem;
     text-align: center;
-    box-shadow: var(--glass-shadow);
 }
 
 .input-group input, .feedback-box textarea {
@@ -144,17 +120,6 @@ body {
     box-sizing: border-box;
     font-family: inherit;
     margin-bottom: 12px;
-    transition: border-color 0.2s;
-}
-
-[data-theme="light"] .input-group input, 
-[data-theme="light"] .feedback-box textarea {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.input-group input:focus, .feedback-box textarea:focus {
-    outline: none;
-    border-color: var(--accent-green);
 }
 
 .section-label {
@@ -173,13 +138,11 @@ body {
     flex: 1;
     padding: 11px;
     background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
     border: 1px solid var(--card-border);
     color: var(--text-color);
     border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
-    transition: 0.2s;
 }
 
 .mode-btn.active {
@@ -199,13 +162,26 @@ body {
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
-    transition: 0.2s;
-    box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3);
+    margin-bottom: 10px;
 }
 
-.primary-btn:hover {
-    opacity: 0.95;
-    transform: translateY(-1px);
+/* NÚT BẬT MINIGAME CHÁY PHỐ */
+.minigame-launch-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    transition: transform 0.2s;
+}
+
+.minigame-launch-btn:hover {
+    transform: scale(1.02);
 }
 
 .secondary-btn {
@@ -215,24 +191,14 @@ body {
     color: var(--accent-green);
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: 0.2s;
 }
 
-.secondary-btn:hover {
-    background: var(--accent-green);
-    color: #0b0f19;
-}
-
-/* BẢNG XẾP HẠNG & Ô Ý KIẾN HIỆU ỨNG KÍNH */
 .leaderboard-container {
     display: flex;
     flex-direction: column;
     gap: 8px;
     max-height: 250px;
     overflow-y: auto;
-    padding-right: 5px;
 }
 
 .leaderboard-item {
@@ -241,14 +207,8 @@ body {
     align-items: center;
     padding: 10px 14px;
     background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
     border: 1px solid var(--card-border);
     border-radius: 10px;
-    font-size: 0.92rem;
-}
-
-[data-theme="light"] .leaderboard-item {
-    background: rgba(255, 255, 255, 0.4);
 }
 
 .feedback-cards-grid {
@@ -257,166 +217,38 @@ body {
     gap: 10px;
     max-height: 210px;
     overflow-y: auto;
-    padding-right: 5px;
 }
 
 .feedback-card-item {
     background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
     border-left: 3px solid var(--accent-green);
     border-radius: 8px;
     padding: 10px 14px;
     font-size: 0.88rem;
-    border-top: 1px solid var(--card-border);
-    border-right: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
 }
 
-[data-theme="light"] .feedback-card-item {
-    background: rgba(255, 255, 255, 0.4);
+.feedback-card-author { font-weight: 700; color: var(--accent-green); margin-bottom: 4px; }
+.feedback-card-text { color: var(--text-color); }
+
+/* STYLES RIÊNG BOMB MINIGAME (KÍNH MỜ + RUNG LẮC) */
+.bomb-glass-card {
+    position: relative;
+    overflow: hidden;
 }
 
-.feedback-card-author {
-    font-weight: 700;
-    color: var(--accent-green);
-    margin-bottom: 4px;
-}
-
-.feedback-card-text {
-    color: var(--text-color);
-    line-height: 1.4;
-}
-
-/* MÀN HÌNH LÀM BÀI (QUIZ) PHONG CÁCH KÍNH MỜ */
-.quiz-card {
-    background-color: var(--card-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--card-border);
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: var(--glass-shadow);
-}
-
-.quiz-top-bar {
+.bomb-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 18px;
-    font-size: 1rem;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-.warning-ticker {
-    background: rgba(239, 68, 68, 0.12);
-    backdrop-filter: blur(10px);
-    border-left: 4px solid #ef4444;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 0.88rem;
-    color: #f87171;
-    margin-bottom: 18px;
-    border-top: 1px solid rgba(239, 68, 68, 0.2);
-    border-right: 1px solid rgba(239, 68, 68, 0.2);
-    border-bottom: 1px solid rgba(239, 68, 68, 0.2);
-}
-
-.question-meta {
-    font-size: 0.88rem;
-    color: #9ca3af;
-    margin-bottom: 6px;
-}
-
-.question-title {
-    font-size: 1.2rem;
-    margin-bottom: 22px;
-    line-height: 1.5;
-    font-weight: 600;
-}
-
-.options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.option-btn {
-    width: 100%;
-    padding: 14px 18px;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    color: var(--text-color);
-    border-radius: 12px;
-    text-align: left;
-    cursor: pointer;
-    font-size: 0.98rem;
-    transition: all 0.25s ease;
-}
-
-[data-theme="light"] .option-btn {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.option-btn:hover {
-    border-color: var(--accent-green);
-    background: rgba(52, 211, 153, 0.08);
-    transform: translateX(4px);
-}
-
-.option-btn.correct {
-    background: rgba(52, 211, 153, 0.25);
-    border-color: var(--accent-green);
-    color: var(--accent-green);
-    font-weight: bold;
-    box-shadow: 0 0 15px rgba(52, 211, 153, 0.3);
-}
-
-.option-btn.wrong {
-    background: rgba(239, 68, 68, 0.25);
-    border-color: #ef4444;
-    color: #f87171;
-    font-weight: bold;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
-}
-
-.quiz-bottom-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.control-btn {
-    padding: 12px 18px;
-    border-radius: 10px;
-    border: 1px solid var(--card-border);
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(8px);
-    color: var(--text-color);
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-[data-theme="light"] .control-btn {
-    background: rgba(255, 255, 255, 0.6);
-}
-
-.pause-btn:hover {
-    border-color: #ef4444;
+.bomb-title {
+    font-size: 1.15rem;
+    font-weight: 800;
     color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
 }
 
-.next-btn {
-    background: var(--accent-green);
-    color: #0b0f19;
-    border: none;
-    box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3);
-}
-
-.next-btn:hover {
-    opacity: 0.95;
-    transform: translateY(-1px);
-}
+.close-minigame-btn {
+    background:
