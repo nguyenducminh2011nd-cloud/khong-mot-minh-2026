@@ -45,7 +45,8 @@
                             <button id="btn-mode-hacknao" class="mode-btn" onclick="selectMode('hacknao')">⚡ Hack Não (15 câu)</button>
                         </div>
 
-                        <button class="primary-btn glow-btn" onclick="startGame()">VÀO CHƠI NGAY 🎮</button>
+                        <button class="primary-btn glow-btn" onclick="startGame()">VÀO CHƠI ĐẤU TRÍ 🎮</button>
+                        <button class="minigame-launch-btn" onclick="openBombMinigame()">💣 MINI-GAME: GỠ BOM MÃ ĐỘC (30S)</button>
                     </div>
 
                     <div class="card-box">
@@ -57,9 +58,8 @@
                     </div>
                 </div>
 
-                <!-- Cột Phải: Bảng Xếp Hạng Mở Rộng & Danh Sách Đánh Giá Dạng Ô Card -->
+                <!-- Cột Phải: Bảng Xếp Hạng & Ý Kiến Cộng Đồng -->
                 <div class="right-column-stack">
-                    <!-- Bảng Xếp Hạng To & Rộng -->
                     <div class="card-box flex-expand">
                         <h3 class="card-heading">🏆 Bảng Xếp Hạng Cao Thủ</h3>
                         <div id="leaderboard-list" class="leaderboard-container">
@@ -67,7 +67,6 @@
                         </div>
                     </div>
 
-                    <!-- Ô Hiện Các Đánh Giá / Góp Ý Của Cộng Đồng -->
                     <div class="card-box">
                         <h3 class="card-heading">💬 Ý Kiến Từ Cộng Đồng</h3>
                         <div id="feedback-cards-container" class="feedback-cards-grid">
@@ -75,6 +74,41 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH MINIGAME: GỠ BOM MÃ ĐỘC (30S) -->
+        <div id="minigame-screen" class="screen" style="display: none;">
+            <div class="quiz-card bomb-glass-card">
+                <div class="bomb-header">
+                    <span class="bomb-title">💣 CYBER BOMB DEFUSE: CHỐNG HACKER 30S</span>
+                    <button class="close-minigame-btn" onclick="closeBombMinigame()">✖ Thoát</button>
+                </div>
+
+                <!-- Bảng Hướng Dẫn Cách Chơi -->
+                <div class="bomb-rules-box">
+                    <strong>📖 HƯỚNG DẪN CÁCH CHƠI:</strong>
+                    <ol>
+                        <li>Máy chủ bị dính Ransomware! Bạn có <strong>30 giây</strong> để cắt đúng dây cáp giải mã.</li>
+                        <li>Đọc kỹ <strong>Mật lệnh an toàn</strong> bên dưới để tìm dây có màu hoặc ký hiệu chính xác.</li>
+                        <li>Cắt đúng dây trước khi hết giờ ➔ <strong>Thắng ngay +150đ</strong>! Cắt sai hoặc hết giờ ➔ Bom mã độc nổ tan tành!</li>
+                    </ol>
+                </div>
+
+                <div class="timer-display-box" id="bomb-timer-box">
+                    <span>THỜI GIAN CÒN LẠI:</span>
+                    <div id="bomb-timer-number" class="timer-num">30</div>
+                </div>
+
+                <div class="target-clue-box" id="bomb-clue">
+                    🔍 Đang giải mã tín hiệu...
+                </div>
+
+                <div class="wires-container" id="wires-grid">
+                    <!-- Các dây bom sinh ra từ JS -->
+                </div>
+
+                <div id="bomb-result-msg" class="bomb-result-box" style="display: none;"></div>
             </div>
         </div>
 
@@ -96,16 +130,4 @@
 
                 <h2 id="question-text" class="question-title">Đang tải câu hỏi...</h2>
 
-                <div id="options-container" class="options-grid"></div>
-
-                <div class="quiz-bottom-actions">
-                    <button class="control-btn pause-btn" onclick="pauseAndSaveGame()">⏸️ Tạm Dừng & Lưu</button>
-                    <button class="control-btn next-btn" onclick="nextQuestion()">Câu Tiếp Theo ➡️</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                <div id="options-container" class="options-grid
