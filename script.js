@@ -1,4 +1,4 @@
-// --- CẤU HÌNH FIREBASE AN TOÀN ---
+// --- CẤU HÌNH FIREBASE ---
 let db = null;
 try {
     if (typeof firebase !== 'undefined') {
@@ -11,68 +11,109 @@ try {
             appId: "1:391078149804:web:9ba69127156c66e6966909",
             measurementId: "G-BFXSCXN4Q0"
         };
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         db = firebase.firestore();
     }
-} catch (e) {
-    console.warn("Firebase không khả dụng:", e);
+} catch (e) { console.warn("Firebase warning:", e); }
+
+// --- HỆ THỐNG NHẬN DIỆN ADMIN ---
+let authorDeviceKey = localStorage.getItem('kmm_author_token');
+if (!authorDeviceKey) {
+    authorDeviceKey = 'admin_' + Math.random().toString(36).substring(2, 12) + Date.now();
+    localStorage.setItem('kmm_author_token', authorDeviceKey);
 }
 
-// --- HỆ THỐNG ÂM THANH WEB AUDIO API (SFX) ---
+// --- HỆ THỐNG ĐA NGÔN NGỮ (VN / EN) ---
+let currentLang = localStorage.getItem('kmm_lang') || 'vi';
+const translations = {
+    vi: {
+        app_title: "KHÔNG MỘT MÌNH 2026",
+        app_subtitle: "Hệ Thống Đấu Trí Tình Huống An Toàn Mạng & Phòng Chống Lừa Đảo",
+        ticker_lbl: "Góp ý nổi bật:",
+        prep_heading: "🚀 Chuẩn Bị Đấu Trí",
+        select_mode_lbl: "Chọn chế độ thử thách:",
+        start_btn: "VÀO CHƠI ĐẤU TRÍ 🎮",
+        minigame_btn: "🔐 MINI-GAME: CYBER CIPHER (+150Đ)",
+        badges_heading: "🎖️ Huy Chương Của Cậu",
+        contrib_heading: "💡 Đóng Góp Tình Huống Lừa Đảo",
+        contrib_btn: "Gửi Đóng Góp 🚀",
+        leaderboard_heading: "🏆 Bảng Xếp Hạng Cao Thủ",
+        feedback_heading: "✍️ Đánh Giá & Báo Lỗi",
+        opt_fb: "⭐ Đánh giá góp ý",
+        opt_bug: "🚨 Báo lỗi hệ thống (Bug)",
+        send_btn: "Gửi Lên Mây ☁️",
+        community_feed_heading: "💬 Ý Kiến Cộng Đồng"
+    },
+    en: {
+        app_title: "YOU ARE NOT ALONE 2026",
+        app_subtitle: "Cybersecurity Situation Quiz & Scam Prevention System",
+        ticker_lbl: "Featured Feedback:",
+        prep_heading: "🚀 Quiz Preparation",
+        select_mode_lbl: "Select challenge mode:",
+        start_btn: "START QUIZ 🎮",
+        minigame_btn: "🔐 MINI-GAME: CYBER CIPHER (+150 PTS)",
+        badges_heading: "🎖️ Your Badges",
+        contrib_heading: "💡 Contribute Scam Scenario",
+        contrib_btn: "Submit Scenario 🚀",
+        leaderboard_heading: "🏆 Leaderboard",
+        feedback_heading: "✍️ Feedback & Bug Report",
+        opt_fb: "⭐ General Feedback",
+        opt_bug: "🚨 System Bug Report",
+        send_btn: "Submit to Cloud ☁️",
+        community_feed_heading: "💬 Community Feed"
+    }
+};
+
+window.toggleLanguage = function() {
+    playSound('click');
+    currentLang = currentLang === 'vi' ? 'en' : 'vi';
+    localStorage.setItem('kmm_lang', currentLang);
+    applyTranslations();
+}
+
+function applyTranslations() {
+    document.getElementById('current-lang-lbl').innerText = currentLang.toUpperCase();
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        let key = el.getAttribute('data-i18n');
+        if (translations[currentLang][key]) {
+            el.innerText = translations[currentLang][key];
+        }
+    });
+}
+
+// --- HỆ THỐNG ÂM THANH WEB AUDIO API ---
 let soundEnabled = true;
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playSound(type) {
     if (!soundEnabled) return;
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
+    if (audioCtx.state === 'suspended') { audioCtx.resume(); }
     const osc = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
+    osc.connect(gainNode); gainNode.connect(audioCtx.destination);
     let now = audioCtx.currentTime;
+
     if (type === 'click') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(400, now);
-        osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
-        gainNode.gain.setValueAtTime(0.15, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-        osc.start(now);
-        osc.stop(now + 0.08);
+        osc.type = 'sine'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+        gainNode.gain.setValueAtTime(0.1, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
     } else if (type === 'correct') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-        osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-        gainNode.gain.setValueAtTime(0.2, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-        osc.start(now);
-        osc.stop(now + 0.35);
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(659.25, now + 0.1);
+        gainNode.gain.setValueAtTime(0.15, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now); osc.stop(now + 0.3);
     } else if (type === 'wrong') {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(200, now);
-        osc.frequency.setValueAtTime(130, now + 0.15);
-        gainNode.gain.setValueAtTime(0.2, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-        osc.start(now);
-        osc.stop(now + 0.3);
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.setValueAtTime(130, now + 0.15);
+        gainNode.gain.setValueAtTime(0.15, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now); osc.stop(now + 0.25);
     } else if (type === 'win') {
-        osc.type = 'sine';
         let notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
-            let t = now + idx * 0.1;
-            let o = audioCtx.createOscillator();
-            let g = audioCtx.createGain();
+            let t = now + idx * 0.08;
+            let o = audioCtx.createOscillator(); let g = audioCtx.createGain();
             o.connect(g); g.connect(audioCtx.destination);
-            o.frequency.setValueAtTime(freq, t);
-            g.gain.setValueAtTime(0.2, t);
-            g.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
-            o.start(t); o.stop(t + 0.2);
+            o.frequency.setValueAtTime(freq, t); g.gain.setValueAtTime(0.15, t);
+            g.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+            o.start(t); o.stop(t + 0.15);
         });
     }
 }
@@ -80,14 +121,13 @@ function playSound(type) {
 window.toggleAudio = function() {
     soundEnabled = !soundEnabled;
     const btn = document.getElementById('sound-toggle-btn');
-    if (btn) btn.innerText = soundEnabled ? "🔊 Âm thanh: Bật" : "🔇 Âm thanh: Tắt";
+    if (btn) btn.innerText = soundEnabled ? "🔊 Audio" : "🔇 Off";
 }
 
 const warnings = [
     "⚠️ Cảnh báo: Kẻ lừa đảo thường dùng tâm lý hoảng sợ hoặc hám lợi để thao túng bạn!",
     "🚨 Chú ý: Đừng bao giờ cung cấp mã OTP hay mật khẩu cho bất kỳ ai!",
-    "⚡ Thử thách đỉnh cao: Khó (50đ/câu) & Hack Não (100đ/câu), cày điểm bứt phá rank!",
-    "🔥 Cẩn thận: Các đáp án đều được cân bằng độ dài, hãy tư duy logic để vượt ải!"
+    "⚡ Thử thách đỉnh cao: Khó (50đ) & Hack Não (100đ), cày điểm bứt phá rank!"
 ];
 
 function getPlayerRank(score) {
@@ -98,7 +138,7 @@ function getPlayerRank(score) {
     return { name: "🥉 Đồng", color: "#cd7f32" };
 }
 
-// --- KHO 20 CÂU HỎI MỖI CHẾ ĐỘ ---
+// --- KHO CÂU HỎI ---
 const questionPools = {
     kho: [
         { q: "1. Nhận cuộc gọi tự xưng Công an yêu cầu chuyển tiền vào tài khoản tạm giữ để điều tra. Bạn xử lý thế nào?", options: ["Cúp máy ngay lập tức và báo công an địa phương", "Chuyển tiền vào tài khoản để chứng minh trong sạch", "Cung cấp mã OTP qua điện thoại cho người gọi", "Hẹn gặp trực tiếp người gọi ở nơi vắng vẻ"], correct: "Cúp máy ngay lập tức và báo công an địa phương", explain: "💡 Công an không bao giờ làm việc hay yêu cầu chuyển tiền qua điện thoại!" },
@@ -171,6 +211,12 @@ document.addEventListener("DOMContentLoaded", function() {
     loadAllFeedbacks();
     setupOnlineCounter();
     checkBadges();
+    applyTranslations();
+
+    if (authorDeviceKey) {
+        const adminBtn = document.getElementById('admin-trigger-btn');
+        if (adminBtn) adminBtn.style.display = 'inline-block';
+    }
 });
 
 function toggleTheme() {
@@ -195,6 +241,7 @@ window.startGame = function() {
     playSound('click');
     document.getElementById('welcome-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('admin-dashboard-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'block';
     currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) || 0;
     loadQuestion();
@@ -202,13 +249,10 @@ window.startGame = function() {
 
 window.pauseAndSaveGame = function() {
     playSound('click');
-    alert(`⏸️ Đã lưu tiến trình!\n- Chế độ: ${selectedMode.toUpperCase()}\n- Câu hiện tại: ${currentQIndex + 1}\n- Điểm số: ${score}`);
+    alert(`⏸️ Đã lưu tiến trình! Điểm: ${score}`);
     document.getElementById('quiz-screen').style.display = 'none';
-    document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
-    loadLeaderboard();
-    loadAllFeedbacks();
-    checkBadges();
+    loadLeaderboard(); loadAllFeedbacks(); checkBadges();
 }
 
 window.savePlayerName = function(val) {
@@ -224,7 +268,7 @@ function loadQuestion() {
     
     let qData = list[currentQIndex];
     document.getElementById('warning-banner').innerText = warnings[Math.floor(Math.random() * warnings.length)];
-    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Chế độ Khó - 50đ' : 'Chế độ Hack Não - 100đ'})`;
+    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Khó - 50đ' : 'Hack Não - 100đ'})`;
     document.getElementById('question-counter').innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
     document.getElementById('question-text').innerText = qData.q;
     document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
@@ -250,23 +294,15 @@ window.checkAnswer = function(btnElement, isCorrect) {
     if (isCorrect) {
         playSound('correct');
         btnElement.classList.add('correct');
-        let pointsToAdd = (selectedMode === 'hacknao') ? 100 : 50;
-        score += pointsToAdd;
+        score += (selectedMode === 'hacknao') ? 100 : 50;
         localStorage.setItem('kmm_score', score);
         document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
-        updateLeaderboard();
-        checkBadges();
-
-        // Nếu đạt mốc Thách Đấu, bắn pháo hoa
-        if (score >= 3000) {
-            triggerConfetti();
-        }
+        updateLeaderboard(); checkBadges();
+        if (score >= 3000) { confetti(); }
     } else {
         playSound('wrong');
         btnElement.classList.add('wrong');
-        buttons.forEach(btn => {
-            if (btn.innerText.includes(qData.correct)) btn.classList.add('correct');
-        });
+        buttons.forEach(btn => { if (btn.innerText.includes(qData.correct)) btn.classList.add('correct'); });
     }
     showExplanationBox(qData.explain);
 };
@@ -274,8 +310,8 @@ window.checkAnswer = function(btnElement, isCorrect) {
 function showExplanationBox(explainText) {
     let quizArea = document.getElementById('quiz-area');
     let explainDiv = document.createElement('div');
-    explainDiv.style.cssText = "margin-top: 12px; padding: 10px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 8px; font-size: 0.88rem; color: #fff;";
-    explainDiv.innerHTML = `<strong>Giải thích an toàn:</strong> ${explainText}`;
+    explainDiv.style.cssText = "margin-top: 10px; padding: 8px 12px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.85rem; color: #fff;";
+    explainDiv.innerHTML = `<strong>Giải thích:</strong> ${explainText}`;
     quizArea.appendChild(explainDiv);
 }
 
@@ -289,92 +325,43 @@ window.nextQuestion = function() {
     loadQuestion();
 };
 
-// --- QUẢN LÝ HUY HIỆU & PHÁO HOA ---
 function checkBadges() {
-    if (score >= 200) {
-        let b1 = document.getElementById('badge-streak');
-        if (b1) b1.classList.add('unlocked');
-    }
-    if (score >= 1500) {
-        let b2 = document.getElementById('badge-cipher');
-        if (b2) b2.classList.add('unlocked');
-    }
-    if (score >= 3000) {
-        let b3 = document.getElementById('badge-master');
-        if (b3) b3.classList.add('unlocked');
-    }
+    if (score >= 200) document.getElementById('badge-streak')?.classList.add('unlocked');
+    if (score >= 1500) document.getElementById('badge-cipher')?.classList.add('unlocked');
+    if (score >= 3000) document.getElementById('badge-master')?.classList.add('unlocked');
 }
 
-function triggerConfetti() {
-    if (typeof confetti === 'function') {
-        confetti({
-            particleCount: 120,
-            spread: 80,
-            origin: { y: 0.6 }
-        });
-    }
-}
-
-// --- ĐẾM SỐ NGƯỜI ONLINE REAL-TIME ---
+// --- ĐẾM ONLINE ---
 function setupOnlineCounter() {
     const onlineNumElem = document.getElementById('online-count-num');
-    if (!onlineNumElem) return;
-
-    if (!db) {
-        onlineNumElem.innerText = Math.floor(Math.random() * 5) + 3;
-        return;
-    }
-
+    if (!onlineNumElem || !db) return;
     const clientId = 'user_' + Math.random().toString(36).substring(2, 9);
     const onlineRef = db.collection("online_users").doc(clientId);
-
-    onlineRef.set({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).catch(err => {});
-
-    setInterval(() => {
-        onlineRef.set({
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).catch(err => {});
-    }, 20000);
-
+    onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(err => {});
+    setInterval(() => { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(err => {}); }, 20000);
     db.collection("online_users").onSnapshot((snapshot) => {
-        let activeCount = 0;
-        let now = new Date().getTime();
+        let activeCount = 0; let now = new Date().getTime();
         snapshot.forEach(doc => {
             let data = doc.data();
-            if (data.timestamp) {
-                let timeDiff = now - data.timestamp.toDate().getTime();
-                if (timeDiff < 35000) {
-                    activeCount++;
-                }
-            }
+            if (data.timestamp && (now - data.timestamp.toDate().getTime() < 35000)) { activeCount++; }
         });
         onlineNumElem.innerText = Math.max(1, activeCount);
-    }, (error) => {
-        onlineNumElem.innerText = "3";
-    });
+    }, (error) => { onlineNumElem.innerText = "2"; });
 }
 
-// --- LOGIC MINIGAME: CYBER CIPHER ---
-let cipherTimer = 30;
-let cipherInterval = null;
-let secretPin = "";
-let currentEnteredPin = "";
-
+// --- MINIGAME CIPHER ---
+let cipherTimer = 30; let cipherInterval = null; let secretPin = ""; let currentEnteredPin = "";
 const cipherChallenges = [
-    { clue: "💡 MANH MỐI: Số đầu = 2, số cuối = 8. Hai số giữa bằng nhau và bằng tổng (2+8)/2", target: "2558" },
-    { clue: "💡 MANH MỐI: Mật mã chứa số 1990 + 35 (Năm sinh chuẩn của hacker)", target: "2025" },
-    { clue: "💡 MANH MỐI: 4 chữ số tăng dần liên tiếp bắt đầu bằng số 3", target: "3456" },
-    { clue: "💡 MANH MỐI: Mã OTP xác thực: Số đầu = 9, số thứ hai kém 3 đơn vị, 2 số cuối là 00", target: "9600" },
-    { clue: "💡 MANH MỐI: Số đối xứng: Hai số đầu là 71, hai số cuối đảo ngược lại", target: "7117" },
-    { clue: "💡 MANH MỐI: Tổng 4 chữ số bằng 10, số đầu = 1, số cuối = 4, hai số giữa giống nhau", target: "1224" }
+    { clue: "💡 MANH MỐI: Số đầu = 2, số cuối = 8. Hai số giữa bằng nhau và bằng (2+8)/2", target: "2558" },
+    { clue: "💡 MANH MỐI: Mật mã chứa số 1990 + 35", target: "2025" },
+    { clue: "💡 MANH MỐI: 4 chữ số tăng dần liên tiếp bắt đầu bằng số 3", target: "3456" }
 ];
 
 window.openCipherMinigame = function() {
     playSound('click');
     document.getElementById('welcome-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('admin-dashboard-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'block';
     startCipherMinigame();
 };
@@ -383,23 +370,14 @@ window.closeCipherMinigame = function() {
     playSound('click');
     if (cipherInterval) clearInterval(cipherInterval);
     document.getElementById('minigame-screen').style.display = 'none';
-    document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
-    document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
-    loadLeaderboard();
-    loadAllFeedbacks();
-    checkBadges();
+    loadLeaderboard(); loadAllFeedbacks(); checkBadges();
 };
 
 function startCipherMinigame() {
-    cipherTimer = 30;
-    currentEnteredPin = "";
-    updatePinDisplay();
-    
+    cipherTimer = 30; currentEnteredPin = ""; updatePinDisplay();
     document.getElementById('cipher-timer-number').innerText = cipherTimer;
     document.getElementById('cipher-result-msg').style.display = 'none';
-    document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
-    
     let randomTask = cipherChallenges[Math.floor(Math.random() * cipherChallenges.length)];
     secretPin = randomTask.target;
     document.getElementById('cipher-clue').innerText = randomTask.clue;
@@ -408,15 +386,9 @@ function startCipherMinigame() {
     cipherInterval = setInterval(() => {
         cipherTimer--;
         document.getElementById('cipher-timer-number').innerText = cipherTimer;
-        
-        if (cipherTimer <= 10) {
-            document.getElementById('cipher-timer-box').classList.add('shake-urgent');
-        }
-        
         if (cipherTimer <= 0) {
-            clearInterval(cipherInterval);
-            playSound('wrong');
-            endCipherGame(false, `💥 HẾT GIỜ! Mật mã đúng là: <strong>${secretPin}</strong>`);
+            clearInterval(cipherInterval); playSound('wrong');
+            endCipherGame(false, `💥 HẾT GIỜ! Mật mã đúng: <strong>${secretPin}</strong>`);
         }
     }, 1000);
 }
@@ -424,11 +396,8 @@ function startCipherMinigame() {
 window.pressNum = function(val) {
     playSound('click');
     if (cipherTimer <= 0) return;
-    if (val === 'del') {
-        currentEnteredPin = currentEnteredPin.slice(0, -1);
-    } else if (currentEnteredPin.length < 4) {
-        currentEnteredPin += val;
-    }
+    if (val === 'del') { currentEnteredPin = currentEnteredPin.slice(0, -1); }
+    else if (currentEnteredPin.length < 4) { currentEnteredPin += val; }
     updatePinDisplay();
 };
 
@@ -442,33 +411,19 @@ function updatePinDisplay() {
 window.submitCipher = function() {
     playSound('click');
     if (cipherTimer <= 0) return;
-    if (currentEnteredPin.length < 4) {
-        alert("Cậu vui lòng nhập đủ 4 chữ số nhé!");
-        return;
-    }
+    if (currentEnteredPin.length < 4) { alert("Nhập đủ 4 chữ số!"); return; }
 
     if (currentEnteredPin === secretPin) {
-        clearInterval(cipherInterval);
-        playSound('win');
-        triggerConfetti();
-        document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
-        score += 150;
-        localStorage.setItem('kmm_score', score);
-        updateLeaderboard();
-        checkBadges();
-        
-        // Mở huy hiệu Thần Tốc
-        let b2 = document.getElementById('badge-cipher');
-        if (b2) b2.classList.add('unlocked');
-
-        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! Bạn nhận được +150 ĐIỂM thưởng!");
+        clearInterval(cipherInterval); playSound('win'); confetti();
+        score += 150; localStorage.setItem('kmm_score', score);
+        updateLeaderboard(); checkBadges();
+        document.getElementById('badge-cipher')?.classList.add('unlocked');
+        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! +150 ĐIỂM!");
     } else {
-        playSound('wrong');
-        cipherTimer = Math.max(0, cipherTimer - 5);
+        playSound('wrong'); cipherTimer = Math.max(0, cipherTimer - 5);
         document.getElementById('cipher-timer-number').innerText = cipherTimer;
-        alert("❌ Sai mật mã! Bị phạt trừ 5 giây!");
-        currentEnteredPin = "";
-        updatePinDisplay();
+        alert("❌ Sai mật mã! Phạt trừ 5 giây!");
+        currentEnteredPin = ""; updatePinDisplay();
     }
 };
 
@@ -477,111 +432,158 @@ function endCipherGame(isWin, msg) {
     resBox.style.display = 'block';
     resBox.style.background = isWin ? "rgba(52, 211, 153, 0.25)" : "rgba(239, 68, 68, 0.25)";
     resBox.style.color = isWin ? "#34d399" : "#f87171";
-    resBox.style.border = isWin ? "1px solid #34d399" : "1px solid #ef4444";
-    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startCipherMinigame()">🔄 Thử Thách Mới</button>`;
+    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" onclick="startCipherMinigame()">🔄 Thử Lại</button>`;
 }
 
-// --- FIREBASE XẾP HẠNG & ĐÁNH GIÁ ---
-function updateLeaderboard() {
-    if (!playerName || !db) return;
-    db.collection("leaderboard").doc(playerName).set({
-        name: playerName,
-        score: score,
+// --- ĐÓNG GÓP TÌNH HUỐNG & ĐÁNH GIÁ ---
+window.submitCommunityScenario = function() {
+    playSound('click');
+    const qInput = document.getElementById('contrib-q-input');
+    const detailInput = document.getElementById('contrib-detail-input');
+    const author = playerName || "Khách ẩn danh";
+    const qText = qInput ? qInput.value.trim() : "";
+    const detailText = detailInput ? detailInput.value.trim() : "";
+
+    if (!qText || !detailText) { alert("Cậu vui lòng điền đầy đủ tiêu đề và nội dung!"); return; }
+    if (!db) { alert("⚠️ Mất kết nối DB!"); return; }
+
+    db.collection("community_scenarios").add({
+        name: author,
+        title: qText,
+        detail: detailText,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(() => loadLeaderboard()).catch(err => {});
-}
-
-function loadLeaderboard() {
-    const container = document.getElementById('leaderboard-list');
-    if (!container) return;
-
-    if (!db) {
-        container.innerHTML = `<div style="color:#888; font-size:0.85rem;">Chưa kết nối mây.</div>`;
-        return;
-    }
-
-    db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
-        .then((snapshot) => {
-            let html = "";
-            let rank = 1;
-            snapshot.forEach((doc) => {
-                let data = doc.data();
-                let playerRank = getPlayerRank(data.score || 0);
-                html += `<div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
-                        <div>
-                            <strong>${data.name || "Ẩn danh"}</strong>
-                            <div style="font-size: 0.75rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
-                        </div>
-                    </div>
-                    <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0} đ</span>
-                </div>`;
-            });
-            container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ nào.</div>";
-        })
-        .catch((error) => {
-            container.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Lỗi tải dữ liệu xếp hạng.</div>";
-        });
-}
+    }).then(() => {
+        qInput.value = ""; detailInput.value = "";
+        alert("💡 Đã gửi tình huống đóng góp thành công cho Admin!");
+    }).catch(err => alert("Lỗi gửi dữ liệu!"));
+};
 
 window.submitHomeFeedback = function() {
     playSound('click');
     const textInput = document.getElementById('home-feedback-input');
+    const typeSelect = document.getElementById('feedback-type-select');
     const author = playerName || "Khách ẩn danh";
     const text = textInput ? textInput.value.trim() : "";
-    if (!text) { alert("Cậu vui lòng viết nhận xét trước nhé!"); return; }
+    const type = typeSelect ? typeSelect.value : "feedback";
 
-    if (!db) {
-        alert("⚠️ Mất kết nối cơ sở dữ liệu!");
-        return;
-    }
+    if (!text) { alert("Cậu chưa nhập nội dung!"); return; }
+    if (!db) return;
 
     db.collection("feedbacks").add({
-        name: author,
-        text: text,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        name: author, text: text, type: type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
-        if (textInput) textInput.value = "";
-        alert("❤️ Đã gửi đánh giá thành công lên mây!");
+        textInput.value = "";
+        alert("❤️ Gửi thành công!");
         loadAllFeedbacks();
-    }).catch(err => {
-        alert("Lỗi gửi đánh giá, vui lòng thử lại!");
-    });
+    }).catch(err => {});
 };
 
 function loadAllFeedbacks() {
     const banner = document.getElementById('top-feedback-ticker');
     const cardsContainer = document.getElementById('feedback-cards-container');
-
-    if (!db) {
-        if (banner) banner.innerHTML = "Chưa kết nối cơ sở dữ liệu.";
-        if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào.</div>";
-        return;
-    }
+    if (!db) return;
 
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
                 let topDoc = snapshot.docs[0].data();
                 if (banner) banner.innerHTML = `"${topDoc.text}" — <strong>${topDoc.name}</strong>`;
-                
                 let cardsHtml = "";
                 snapshot.forEach((doc) => {
                     let d = doc.data();
-                    cardsHtml += `<div class="feedback-card-item">
-                        <div class="feedback-card-author">👤 ${d.name || "Ẩn danh"}</div>
+                    let prefix = d.type === 'bug' ? '🚨 [BUG] ' : '⭐ ';
+                    cardsHtml += `<div class="feedback-card-item" style="${d.type === 'bug' ? 'border-left-color: #ef4444;' : ''}">
+                        <div class="feedback-card-author">${prefix}${d.name || "Ẩn danh"}</div>
                         <div class="feedback-card-text">"${d.text || ""}"</div>
                     </div>`;
                 });
                 if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
-            } else {
-                if (banner) banner.innerHTML = "Chưa có đánh giá nào từ cộng đồng.";
-                if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có đánh giá nào.</div>";
             }
-        })
-        .catch((error) => {
-            if (banner) banner.innerHTML = "Không thể tải lời nhắn.";
-            if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Lỗi tải ý kiến cộng đồng.</div>";
+        }).catch(err => {});
+}
+
+// --- QUẢN TRỊ ADMIN ---
+window.openAdminDashboard = function() {
+    playSound('click');
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('admin-dashboard-screen').style.display = 'block';
+    loadAdminData();
+};
+
+window.closeAdminDashboard = function() {
+    playSound('click');
+    document.getElementById('admin-dashboard-screen').style.display = 'none';
+    document.getElementById('welcome-screen').style.display = 'block';
+};
+
+function loadAdminData() {
+    const statsBox = document.getElementById('admin-stats-box');
+    const scenariosContainer = document.getElementById('admin-scenarios-list');
+    const feedbacksContainer = document.getElementById('admin-feedbacks-list');
+    if (!db) return;
+
+    db.collection("community_scenarios").get().then((scenSnap) => {
+        db.collection("feedbacks").get().then((fbSnap) => {
+            statsBox.innerHTML = `<p style="margin:2px 0; font-size:0.82rem;">💡 Tình huống đóng góp: <strong>${scenSnap.size}</strong> | 📋 Góp ý/Bug: <strong>${fbSnap.size}</strong></p>`;
+            
+            let scenHtml = "";
+            scenSnap.forEach((doc) => {
+                let d = doc.data();
+                scenHtml += `<div class="admin-item-row">
+                    <div><strong>${d.name}:</strong> [${d.title}] ${d.detail}</div>
+                    <button class="admin-del-btn" onclick="deleteDoc('community_scenarios', '${doc.id}')">Xóa</button>
+                </div>`;
+            });
+            scenariosContainer.innerHTML = scenHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có đóng góp.</div>";
+
+            let fbHtml = "";
+            fbSnap.forEach((doc) => {
+                let d = doc.data();
+                fbHtml += `<div class="admin-item-row">
+                    <div><strong>${d.name}:</strong> ${d.text}</div>
+                    <button class="admin-del-btn" onclick="deleteDoc('feedbacks', '${doc.id}')">Xóa</button>
+                </div>`;
+            });
+            feedbacksContainer.innerHTML = fbHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có phản hồi.</div>";
         });
+    });
+}
+
+window.deleteDoc = function(coll, docId) {
+    if (!confirm("Xóa mục này?")) return;
+    db.collection(coll).doc(docId).delete().then(() => loadAdminData()).catch(err => {});
+};
+
+// --- XẾP HẠNG ---
+function updateLeaderboard() {
+    if (!playerName || !db) return;
+    db.collection("leaderboard").doc(playerName).set({
+        name: playerName, score: score, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true }).then(() => loadLeaderboard()).catch(err => {});
+}
+
+function loadLeaderboard() {
+    const container = document.getElementById('leaderboard-list');
+    if (!container || !db) return;
+    db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
+        .then((snapshot) => {
+            let html = ""; let rank = 1;
+            snapshot.forEach((doc) => {
+                let data = doc.data();
+                let playerRank = getPlayerRank(data.score || 0);
+                html += `<div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
+                        <div>
+                            <strong>${data.name || "Ẩn danh"}</strong>
+                            <div style="font-size: 0.7rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
+                        </div>
+                    </div>
+                    <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0}đ</span>
+                </div>`;
+            });
+            container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ.</div>";
+        }).catch(err => {});
 }
