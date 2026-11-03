@@ -21,6 +21,68 @@ try {
     console.warn("Firebase không khả dụng:", e);
 }
 
+// --- HỆ THỐNG ÂM THANH WEB AUDIO API (SFX) ---
+let soundEnabled = true;
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSound(type) {
+    if (!soundEnabled) return;
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    let now = audioCtx.currentTime;
+    if (type === 'click') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+        gainNode.gain.setValueAtTime(0.15, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.08);
+    } else if (type === 'correct') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+        osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+        gainNode.gain.setValueAtTime(0.2, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.35);
+    } else if (type === 'wrong') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(200, now);
+        osc.frequency.setValueAtTime(130, now + 0.15);
+        gainNode.gain.setValueAtTime(0.2, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+    } else if (type === 'win') {
+        osc.type = 'sine';
+        let notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+            let t = now + idx * 0.1;
+            let o = audioCtx.createOscillator();
+            let g = audioCtx.createGain();
+            o.connect(g); g.connect(audioCtx.destination);
+            o.frequency.setValueAtTime(freq, t);
+            g.gain.setValueAtTime(0.2, t);
+            g.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+            o.start(t); o.stop(t + 0.2);
+        });
+    }
+}
+
+window.toggleAudio = function() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('sound-toggle-btn');
+    if (btn) btn.innerText = soundEnabled ? "🔊 Âm thanh: Bật" : "🔇 Âm thanh: Tắt";
+}
+
 const warnings = [
     "⚠️ Cảnh báo: Kẻ lừa đảo thường dùng tâm lý hoảng sợ hoặc hám lợi để thao túng bạn!",
     "🚨 Chú ý: Đừng bao giờ cung cấp mã OTP hay mật khẩu cho bất kỳ ai!",
@@ -108,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
     loadLeaderboard();
     loadAllFeedbacks();
     setupOnlineCounter();
+    checkBadges();
 });
 
 function toggleTheme() {
@@ -120,6 +183,7 @@ function toggleTheme() {
 document.documentElement.setAttribute('data-theme', localStorage.getItem('kmm_theme') || 'dark');
 
 window.selectMode = function(mode) {
+    playSound('click');
     selectedMode = mode;
     localStorage.setItem('kmm_mode', mode);
     document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
@@ -128,6 +192,7 @@ window.selectMode = function(mode) {
 }
 
 window.startGame = function() {
+    playSound('click');
     document.getElementById('welcome-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'block';
@@ -136,12 +201,14 @@ window.startGame = function() {
 }
 
 window.pauseAndSaveGame = function() {
+    playSound('click');
     alert(`⏸️ Đã lưu tiến trình!\n- Chế độ: ${selectedMode.toUpperCase()}\n- Câu hiện tại: ${currentQIndex + 1}\n- Điểm số: ${score}`);
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
     loadLeaderboard();
     loadAllFeedbacks();
+    checkBadges();
 }
 
 window.savePlayerName = function(val) {
@@ -181,13 +248,21 @@ window.checkAnswer = function(btnElement, isCorrect) {
     let buttons = document.querySelectorAll('#options-container .option-btn');
     
     if (isCorrect) {
+        playSound('correct');
         btnElement.classList.add('correct');
         let pointsToAdd = (selectedMode === 'hacknao') ? 100 : 50;
         score += pointsToAdd;
         localStorage.setItem('kmm_score', score);
         document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
         updateLeaderboard();
+        checkBadges();
+
+        // Nếu đạt mốc Thách Đấu, bắn pháo hoa
+        if (score >= 3000) {
+            triggerConfetti();
+        }
     } else {
+        playSound('wrong');
         btnElement.classList.add('wrong');
         buttons.forEach(btn => {
             if (btn.innerText.includes(qData.correct)) btn.classList.add('correct');
@@ -205,6 +280,7 @@ function showExplanationBox(explainText) {
 }
 
 window.nextQuestion = function() {
+    playSound('click');
     let list = questionPools[selectedMode];
     currentQIndex = (currentQIndex + 1) % list.length;
     localStorage.setItem(`kmm_idx_${selectedMode}`, currentQIndex);
@@ -213,7 +289,33 @@ window.nextQuestion = function() {
     loadQuestion();
 };
 
-// --- HỆ THỐNG ĐẾM SỐ NGƯỜI ONLINE REAL-TIME ---
+// --- QUẢN LÝ HUY HIỆU & PHÁO HOA ---
+function checkBadges() {
+    if (score >= 200) {
+        let b1 = document.getElementById('badge-streak');
+        if (b1) b1.classList.add('unlocked');
+    }
+    if (score >= 1500) {
+        let b2 = document.getElementById('badge-cipher');
+        if (b2) b2.classList.add('unlocked');
+    }
+    if (score >= 3000) {
+        let b3 = document.getElementById('badge-master');
+        if (b3) b3.classList.add('unlocked');
+    }
+}
+
+function triggerConfetti() {
+    if (typeof confetti === 'function') {
+        confetti({
+            particleCount: 120,
+            spread: 80,
+            origin: { y: 0.6 }
+        });
+    }
+}
+
+// --- ĐẾM SỐ NGƯỜI ONLINE REAL-TIME ---
 function setupOnlineCounter() {
     const onlineNumElem = document.getElementById('online-count-num');
     if (!onlineNumElem) return;
@@ -226,19 +328,16 @@ function setupOnlineCounter() {
     const clientId = 'user_' + Math.random().toString(36).substring(2, 9);
     const onlineRef = db.collection("online_users").doc(clientId);
 
-    // Ghi nhận đang online
     onlineRef.set({
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).catch(err => console.log("Lỗi online count:", err));
+    }).catch(err => {});
 
-    // Cứ mỗi 20s cập nhật lại heartbeat
     setInterval(() => {
         onlineRef.set({
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).catch(err => {});
     }, 20000);
 
-    // Lắng nghe số lượng user online trong vòng 35 giây qua
     db.collection("online_users").onSnapshot((snapshot) => {
         let activeCount = 0;
         let now = new Date().getTime();
@@ -246,7 +345,7 @@ function setupOnlineCounter() {
             let data = doc.data();
             if (data.timestamp) {
                 let timeDiff = now - data.timestamp.toDate().getTime();
-                if (timeDiff < 35000) { // trong vòng 35s
+                if (timeDiff < 35000) {
                     activeCount++;
                 }
             }
@@ -273,6 +372,7 @@ const cipherChallenges = [
 ];
 
 window.openCipherMinigame = function() {
+    playSound('click');
     document.getElementById('welcome-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'block';
@@ -280,6 +380,7 @@ window.openCipherMinigame = function() {
 };
 
 window.closeCipherMinigame = function() {
+    playSound('click');
     if (cipherInterval) clearInterval(cipherInterval);
     document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'none';
@@ -287,6 +388,7 @@ window.closeCipherMinigame = function() {
     document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
     loadLeaderboard();
     loadAllFeedbacks();
+    checkBadges();
 };
 
 function startCipherMinigame() {
@@ -313,12 +415,14 @@ function startCipherMinigame() {
         
         if (cipherTimer <= 0) {
             clearInterval(cipherInterval);
+            playSound('wrong');
             endCipherGame(false, `💥 HẾT GIỜ! Mật mã đúng là: <strong>${secretPin}</strong>`);
         }
     }, 1000);
 }
 
 window.pressNum = function(val) {
+    playSound('click');
     if (cipherTimer <= 0) return;
     if (val === 'del') {
         currentEnteredPin = currentEnteredPin.slice(0, -1);
@@ -336,6 +440,7 @@ function updatePinDisplay() {
 }
 
 window.submitCipher = function() {
+    playSound('click');
     if (cipherTimer <= 0) return;
     if (currentEnteredPin.length < 4) {
         alert("Cậu vui lòng nhập đủ 4 chữ số nhé!");
@@ -344,12 +449,21 @@ window.submitCipher = function() {
 
     if (currentEnteredPin === secretPin) {
         clearInterval(cipherInterval);
+        playSound('win');
+        triggerConfetti();
         document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
         score += 150;
         localStorage.setItem('kmm_score', score);
         updateLeaderboard();
+        checkBadges();
+        
+        // Mở huy hiệu Thần Tốc
+        let b2 = document.getElementById('badge-cipher');
+        if (b2) b2.classList.add('unlocked');
+
         endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! Bạn nhận được +150 ĐIỂM thưởng!");
     } else {
+        playSound('wrong');
         cipherTimer = Math.max(0, cipherTimer - 5);
         document.getElementById('cipher-timer-number').innerText = cipherTimer;
         alert("❌ Sai mật mã! Bị phạt trừ 5 giây!");
@@ -367,14 +481,14 @@ function endCipherGame(isWin, msg) {
     resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startCipherMinigame()">🔄 Thử Thách Mới</button>`;
 }
 
-// --- HÀM FIREBASE XẾP HẠNG & ĐÁNH GIÁ ---
+// --- FIREBASE XẾP HẠNG & ĐÁNH GIÁ ---
 function updateLeaderboard() {
     if (!playerName || !db) return;
     db.collection("leaderboard").doc(playerName).set({
         name: playerName,
         score: score,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(() => loadLeaderboard()).catch(err => console.log("Lỗi ghi điểm:", err));
+    }, { merge: true }).then(() => loadLeaderboard()).catch(err => {});
 }
 
 function loadLeaderboard() {
@@ -407,12 +521,12 @@ function loadLeaderboard() {
             container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ nào.</div>";
         })
         .catch((error) => {
-            console.error("Lỗi tải bảng xếp hạng:", error);
             container.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Lỗi tải dữ liệu xếp hạng.</div>";
         });
 }
 
 window.submitHomeFeedback = function() {
+    playSound('click');
     const textInput = document.getElementById('home-feedback-input');
     const author = playerName || "Khách ẩn danh";
     const text = textInput ? textInput.value.trim() : "";
@@ -433,7 +547,6 @@ window.submitHomeFeedback = function() {
         loadAllFeedbacks();
     }).catch(err => {
         alert("Lỗi gửi đánh giá, vui lòng thử lại!");
-        console.error(err);
     });
 };
 
@@ -468,7 +581,6 @@ function loadAllFeedbacks() {
             }
         })
         .catch((error) => {
-            console.error("Lỗi tải đánh giá:", error);
             if (banner) banner.innerHTML = "Không thể tải lời nhắn.";
             if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#f87171; font-size:0.85rem;'>⚠️ Lỗi tải ý kiến cộng đồng.</div>";
         });
