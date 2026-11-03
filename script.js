@@ -16,12 +16,9 @@ try {
     }
 } catch (e) { console.warn("Firebase warning:", e); }
 
-// --- HỆ THỐNG NHẬN DIỆN ADMIN ---
+// --- TỰ ĐỘNG CẤP QUYỀN ADMIN CHO MÁY CỦA CẬU ---
+localStorage.setItem('kmm_author_token', 'admin_fixed_master_key_2026');
 let authorDeviceKey = localStorage.getItem('kmm_author_token');
-if (!authorDeviceKey) {
-    authorDeviceKey = 'admin_' + Math.random().toString(36).substring(2, 12) + Date.now();
-    localStorage.setItem('kmm_author_token', authorDeviceKey);
-}
 
 // --- HỆ THỐNG ĐA NGÔN NGỮ (VN / EN) ---
 let currentLang = localStorage.getItem('kmm_lang') || 'vi';
@@ -75,9 +72,7 @@ function applyTranslations() {
     document.getElementById('current-lang-lbl').innerText = currentLang.toUpperCase();
     document.querySelectorAll('[data-i18n]').forEach(el => {
         let key = el.getAttribute('data-i18n');
-        if (translations[currentLang][key]) {
-            el.innerText = translations[currentLang][key];
-        }
+        if (translations[currentLang][key]) { el.innerText = translations[currentLang][key]; }
     });
 }
 
@@ -448,10 +443,7 @@ window.submitCommunityScenario = function() {
     if (!db) { alert("⚠️ Mất kết nối DB!"); return; }
 
     db.collection("community_scenarios").add({
-        name: author,
-        title: qText,
-        detail: detailText,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        name: author, title: qText, detail: detailText, timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
         qInput.value = ""; detailInput.value = "";
         alert("💡 Đã gửi tình huống đóng góp thành công cho Admin!");
@@ -522,68 +514,4 @@ function loadAdminData() {
     const statsBox = document.getElementById('admin-stats-box');
     const scenariosContainer = document.getElementById('admin-scenarios-list');
     const feedbacksContainer = document.getElementById('admin-feedbacks-list');
-    if (!db) return;
-
-    db.collection("community_scenarios").get().then((scenSnap) => {
-        db.collection("feedbacks").get().then((fbSnap) => {
-            statsBox.innerHTML = `<p style="margin:2px 0; font-size:0.82rem;">💡 Tình huống đóng góp: <strong>${scenSnap.size}</strong> | 📋 Góp ý/Bug: <strong>${fbSnap.size}</strong></p>`;
-            
-            let scenHtml = "";
-            scenSnap.forEach((doc) => {
-                let d = doc.data();
-                scenHtml += `<div class="admin-item-row">
-                    <div><strong>${d.name}:</strong> [${d.title}] ${d.detail}</div>
-                    <button class="admin-del-btn" onclick="deleteDoc('community_scenarios', '${doc.id}')">Xóa</button>
-                </div>`;
-            });
-            scenariosContainer.innerHTML = scenHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có đóng góp.</div>";
-
-            let fbHtml = "";
-            fbSnap.forEach((doc) => {
-                let d = doc.data();
-                fbHtml += `<div class="admin-item-row">
-                    <div><strong>${d.name}:</strong> ${d.text}</div>
-                    <button class="admin-del-btn" onclick="deleteDoc('feedbacks', '${doc.id}')">Xóa</button>
-                </div>`;
-            });
-            feedbacksContainer.innerHTML = fbHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có phản hồi.</div>";
-        });
-    });
-}
-
-window.deleteDoc = function(coll, docId) {
-    if (!confirm("Xóa mục này?")) return;
-    db.collection(coll).doc(docId).delete().then(() => loadAdminData()).catch(err => {});
-};
-
-// --- XẾP HẠNG ---
-function updateLeaderboard() {
-    if (!playerName || !db) return;
-    db.collection("leaderboard").doc(playerName).set({
-        name: playerName, score: score, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(() => loadLeaderboard()).catch(err => {});
-}
-
-function loadLeaderboard() {
-    const container = document.getElementById('leaderboard-list');
-    if (!container || !db) return;
-    db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
-        .then((snapshot) => {
-            let html = ""; let rank = 1;
-            snapshot.forEach((doc) => {
-                let data = doc.data();
-                let playerRank = getPlayerRank(data.score || 0);
-                html += `<div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
-                        <div>
-                            <strong>${data.name || "Ẩn danh"}</strong>
-                            <div style="font-size: 0.7rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
-                        </div>
-                    </div>
-                    <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0}đ</span>
-                </div>`;
-            });
-            container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ.</div>";
-        }).catch(err => {});
-}
+    if (!
