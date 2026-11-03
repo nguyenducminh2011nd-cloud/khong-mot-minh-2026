@@ -4,23 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Không Một Mình 2026 - Hệ Thống Đấu Trí An Toàn Mạng</title>
-    <!-- Firebase App & Firestore -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Lớp lưới ánh sáng nền huyền ảo -->
+    <div class="mesh-background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
     <div class="container">
         <!-- HEADER -->
         <header class="app-header">
             <h1 class="glow-title">KHÔNG MỘT MÌNH 2026</h1>
             <p class="app-subtitle">Hệ Thống Đấu Trí Tình Huống An Toàn Mạng & Phòng Chống Lừa Đảo</p>
+            
+            <!-- Huy hiệu đếm số người online trực tuyến -->
+            <div class="online-counter-badge">
+                <span class="live-pulse-dot"></span>
+                <span>Trực tuyến: <strong id="online-count-num">1</strong> người đang tham chiến</span>
+            </div>
+
             <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 Đổi Giao Diện</button>
         </header>
 
         <!-- MÀN HÌNH CHÍNH (WELCOME) -->
         <div id="welcome-screen" class="screen active">
-            <!-- Dòng chạy chữ đánh giá nổi bật -->
             <div class="community-ticker-box">
                 <span class="ticker-icon">💬</span>
                 <div class="ticker-content">
@@ -29,9 +40,9 @@
             </div>
 
             <div class="grid-two-columns">
-                <!-- Cột Trái: Chuẩn Bị Đấu Trí & Gửi Đánh Giá -->
+                <!-- Cột Trái -->
                 <div class="left-column-stack">
-                    <div class="card-box">
+                    <div class="card-box glass-panel">
                         <h3 class="card-heading">🚀 Chuẩn Bị Đấu Trí</h3>
                         
                         <div class="input-group">
@@ -40,15 +51,15 @@
 
                         <p class="section-label">Chọn chế độ thử thách:</p>
                         <div class="mode-selection">
-                            <button id="btn-mode-kho" class="mode-btn active" onclick="selectMode('kho')">🔥 Khó (20 câu)</button>
-                            <button id="btn-mode-hacknao" class="mode-btn" onclick="selectMode('hacknao')">⚡ Hack Não (20 câu)</button>
+                            <button id="btn-mode-kho" class="mode-btn active" onclick="selectMode('kho')">🔥 Khó (50đ/câu)</button>
+                            <button id="btn-mode-hacknao" class="mode-btn" onclick="selectMode('hacknao')">⚡ Hack Não (100đ/câu)</button>
                         </div>
 
                         <button class="primary-btn glow-btn" onclick="startGame()">VÀO CHƠI ĐẤU TRÍ 🎮</button>
-                        <button class="minigame-launch-btn" onclick="openCipherMinigame()">🔐 MINI-GAME: CYBER CIPHER 30S (HACK NÃO)</button>
+                        <button class="minigame-launch-btn" onclick="openCipherMinigame()">🔐 MINI-GAME: CYBER CIPHER (+150Đ)</button>
                     </div>
 
-                    <div class="card-box">
+                    <div class="card-box glass-panel">
                         <h3 class="card-heading">✍️ Gửi Đánh Giá Của Cậu</h3>
                         <div class="feedback-box">
                             <textarea id="home-feedback-input" placeholder="Cảm nhận của cậu về hệ thống..." rows="2"></textarea>
@@ -57,16 +68,16 @@
                     </div>
                 </div>
 
-                <!-- Cột Phải: Bảng Xếp Hạng & Ý Kiến Cộng Đồng -->
+                <!-- Cột Phải -->
                 <div class="right-column-stack">
-                    <div class="card-box flex-expand">
+                    <div class="card-box glass-panel flex-expand">
                         <h3 class="card-heading">🏆 Bảng Xếp Hạng Cao Thủ</h3>
                         <div id="leaderboard-list" class="leaderboard-container">
                             <div style="color:#888; font-size:0.85rem;">Đang tải bảng xếp hạng...</div>
                         </div>
                     </div>
 
-                    <div class="card-box">
+                    <div class="card-box glass-panel">
                         <h3 class="card-heading">💬 Ý Kiến Từ Cộng Đồng</h3>
                         <div id="feedback-cards-container" class="feedback-cards-grid">
                             <div style="color:#888; font-size:0.85rem;">Đang tải góp ý...</div>
@@ -76,9 +87,9 @@
             </div>
         </div>
 
-        <!-- MÀN HÌNH MINIGAME: CYBER CIPHER 30S (GIẢI MÃ MÃ ĐỘC) -->
+        <!-- MÀN HÌNH MINIGAME: CYBER CIPHER 30S -->
         <div id="minigame-screen" class="screen" style="display: none;">
-            <div class="quiz-card bomb-glass-card">
+            <div class="quiz-card bomb-glass-card glass-panel">
                 <div class="bomb-header">
                     <span class="bomb-title">🔐 CYBER CIPHER: GIẢI MÃ TƯ DUY 30S</span>
                     <button class="close-minigame-btn" onclick="closeCipherMinigame()">✖ Thoát</button>
@@ -102,7 +113,6 @@
                     🔍 Đang phân tích quy luật mã hóa...
                 </div>
 
-                <!-- Ô hiển thị mã vừa nhập -->
                 <div class="cipher-pin-display">
                     <span id="pin-digit-0" class="pin-box">_</span>
                     <span id="pin-digit-1" class="pin-box">_</span>
@@ -110,7 +120,6 @@
                     <span id="pin-digit-3" class="pin-box">_</span>
                 </div>
 
-                <!-- Bàn phím số iOS Kính mờ -->
                 <div class="numpad-grid">
                     <button class="num-btn" onclick="pressNum('1')">1</button>
                     <button class="num-btn" onclick="pressNum('2')">2</button>
@@ -132,7 +141,7 @@
 
         <!-- MÀN HÌNH LÀM BÀI (QUIZ SCREEN) -->
         <div id="quiz-screen" class="screen" style="display: none;">
-            <div class="quiz-card" id="quiz-area">
+            <div class="quiz-card glass-panel" id="quiz-area">
                 <div class="quiz-top-bar">
                     <span id="quiz-title-mode" style="font-weight: bold; color: var(--accent-green);">🧠 Đấu Trí An Toàn Mạng</span>
                     <span id="quiz-score" style="font-weight: bold; color: #fbbf24;">Điểm: 0</span>
