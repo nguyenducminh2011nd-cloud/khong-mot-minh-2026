@@ -24,15 +24,15 @@ try {
 const warnings = [
     "⚠️ Cảnh báo: Kẻ lừa đảo thường dùng tâm lý hoảng sợ hoặc hám lợi để thao túng bạn!",
     "🚨 Chú ý: Đừng bao giờ cung cấp mã OTP hay mật khẩu cho bất kỳ ai!",
-    "⚡ Thử thách đỉnh cao: Khó (40đ/câu) & Hack Não (100đ/câu), cày điểm bứt phá rank!",
+    "⚡ Thử thách đỉnh cao: Khó (50đ/câu) & Hack Não (100đ/câu), cày điểm bứt phá rank!",
     "🔥 Cẩn thận: Các đáp án đều được cân bằng độ dài, hãy tư duy logic để vượt ải!"
 ];
 
 function getPlayerRank(score) {
-    if (score >= 600) return { name: "🏆 Thách Đấu", color: "#f43f5e" };
-    if (score >= 400) return { name: "💎 Kim Cương", color: "#38bdf8" };
-    if (score >= 200) return { name: "🥇 Vàng", color: "#fbbf24" };
-    if (score >= 80)  return { name: "🥈 Bạc", color: "#94a3b8" };
+    if (score >= 3000) return { name: "🏆 Thách Đấu", color: "#f43f5e" };
+    if (score >= 1500) return { name: "💎 Kim Cương", color: "#38bdf8" };
+    if (score >= 700)  return { name: "🥇 Vàng", color: "#fbbf24" };
+    if (score >= 300)  return { name: "🥈 Bạc", color: "#94a3b8" };
     return { name: "🥉 Đồng", color: "#cd7f32" };
 }
 
@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
     selectMode(selectedMode);
     loadLeaderboard();
     loadAllFeedbacks();
+    setupOnlineCounter();
 });
 
 function toggleTheme() {
@@ -156,7 +157,7 @@ function loadQuestion() {
     
     let qData = list[currentQIndex];
     document.getElementById('warning-banner').innerText = warnings[Math.floor(Math.random() * warnings.length)];
-    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Chế độ Khó' : 'Chế độ Hack Não'})`;
+    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Chế độ Khó - 50đ' : 'Chế độ Hack Não - 100đ'})`;
     document.getElementById('question-counter').innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
     document.getElementById('question-text').innerText = qData.q;
     document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
@@ -181,7 +182,7 @@ window.checkAnswer = function(btnElement, isCorrect) {
     
     if (isCorrect) {
         btnElement.classList.add('correct');
-        let pointsToAdd = (selectedMode === 'hacknao') ? 100 : 40;
+        let pointsToAdd = (selectedMode === 'hacknao') ? 100 : 50;
         score += pointsToAdd;
         localStorage.setItem('kmm_score', score);
         document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
@@ -198,7 +199,7 @@ window.checkAnswer = function(btnElement, isCorrect) {
 function showExplanationBox(explainText) {
     let quizArea = document.getElementById('quiz-area');
     let explainDiv = document.createElement('div');
-    explainDiv.style.cssText = "margin-top: 12px; padding: 10px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.88rem; color: #fff;";
+    explainDiv.style.cssText = "margin-top: 12px; padding: 10px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 8px; font-size: 0.88rem; color: #fff;";
     explainDiv.innerHTML = `<strong>Giải thích an toàn:</strong> ${explainText}`;
     quizArea.appendChild(explainDiv);
 }
@@ -212,7 +213,51 @@ window.nextQuestion = function() {
     loadQuestion();
 };
 
-// --- LOGIC MINIGAME MỚI: CYBER CIPHER 30S (GIẢI MÃ TƯ DUY LOGIC) ---
+// --- HỆ THỐNG ĐẾM SỐ NGƯỜI ONLINE REAL-TIME ---
+function setupOnlineCounter() {
+    const onlineNumElem = document.getElementById('online-count-num');
+    if (!onlineNumElem) return;
+
+    if (!db) {
+        onlineNumElem.innerText = Math.floor(Math.random() * 5) + 3;
+        return;
+    }
+
+    const clientId = 'user_' + Math.random().toString(36).substring(2, 9);
+    const onlineRef = db.collection("online_users").doc(clientId);
+
+    // Ghi nhận đang online
+    onlineRef.set({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(err => console.log("Lỗi online count:", err));
+
+    // Cứ mỗi 20s cập nhật lại heartbeat
+    setInterval(() => {
+        onlineRef.set({
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(err => {});
+    }, 20000);
+
+    // Lắng nghe số lượng user online trong vòng 35 giây qua
+    db.collection("online_users").onSnapshot((snapshot) => {
+        let activeCount = 0;
+        let now = new Date().getTime();
+        snapshot.forEach(doc => {
+            let data = doc.data();
+            if (data.timestamp) {
+                let timeDiff = now - data.timestamp.toDate().getTime();
+                if (timeDiff < 35000) { // trong vòng 35s
+                    activeCount++;
+                }
+            }
+        });
+        onlineNumElem.innerText = Math.max(1, activeCount);
+    }, (error) => {
+        onlineNumElem.innerText = "3";
+    });
+}
+
+// --- LOGIC MINIGAME: CYBER CIPHER ---
 let cipherTimer = 30;
 let cipherInterval = null;
 let secretPin = "";
@@ -223,7 +268,7 @@ const cipherChallenges = [
     { clue: "💡 MANH MỐI: Mật mã chứa số 1990 + 35 (Năm sinh chuẩn của hacker)", target: "2025" },
     { clue: "💡 MANH MỐI: 4 chữ số tăng dần liên tiếp bắt đầu bằng số 3", target: "3456" },
     { clue: "💡 MANH MỐI: Mã OTP xác thực: Số đầu = 9, số thứ hai kém 3 đơn vị, 2 số cuối là 00", target: "9600" },
-    { clue: "💡 MANH MỐI: Số đối xứng (Palindromic): Hai số đầu là 71, hai số cuối đảo ngược lại", target: "7117" },
+    { clue: "💡 MANH MỐI: Số đối xứng: Hai số đầu là 71, hai số cuối đảo ngược lại", target: "7117" },
     { clue: "💡 MANH MỐI: Tổng 4 chữ số bằng 10, số đầu = 1, số cuối = 4, hai số giữa giống nhau", target: "1224" }
 ];
 
@@ -253,7 +298,6 @@ function startCipherMinigame() {
     document.getElementById('cipher-result-msg').style.display = 'none';
     document.getElementById('cipher-timer-box').classList.remove('shake-urgent');
     
-    // Chọn ngẫu nhiên thử thách logic
     let randomTask = cipherChallenges[Math.floor(Math.random() * cipherChallenges.length)];
     secretPin = randomTask.target;
     document.getElementById('cipher-clue').innerText = randomTask.clue;
@@ -269,7 +313,7 @@ function startCipherMinigame() {
         
         if (cipherTimer <= 0) {
             clearInterval(cipherInterval);
-            endCipherGame(false, `💥 HẾT GIỜ! Hệ thống đã bị khóa vĩnh viễn! Mật mã đúng là: <strong>${secretPin}</strong>`);
+            endCipherGame(false, `💥 HẾT GIỜ! Mật mã đúng là: <strong>${secretPin}</strong>`);
         }
     }, 1000);
 }
@@ -304,12 +348,11 @@ window.submitCipher = function() {
         score += 150;
         localStorage.setItem('kmm_score', score);
         updateLeaderboard();
-        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! Bạn đã hack thành công máy chủ và được thưởng +150 ĐIỂM!");
+        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! Bạn nhận được +150 ĐIỂM thưởng!");
     } else {
-        // Sai bị phạt trừ 5 giây
         cipherTimer = Math.max(0, cipherTimer - 5);
         document.getElementById('cipher-timer-number').innerText = cipherTimer;
-        alert("❌ Mật mã sai! Bạn bị phạt trừ 5 giây!");
+        alert("❌ Sai mật mã! Bị phạt trừ 5 giây!");
         currentEnteredPin = "";
         updatePinDisplay();
     }
@@ -321,7 +364,7 @@ function endCipherGame(isWin, msg) {
     resBox.style.background = isWin ? "rgba(52, 211, 153, 0.25)" : "rgba(239, 68, 68, 0.25)";
     resBox.style.color = isWin ? "#34d399" : "#f87171";
     resBox.style.border = isWin ? "1px solid #34d399" : "1px solid #ef4444";
-    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startCipherMinigame()">🔄 Thử Thử Thách Mới</button>`;
+    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" style="margin-top:8px; border-color:currentColor; color:currentColor;" onclick="startCipherMinigame()">🔄 Thử Thách Mới</button>`;
 }
 
 // --- HÀM FIREBASE XẾP HẠNG & ĐÁNH GIÁ ---
