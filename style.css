@@ -1,26 +1,25 @@
 :root {
-    --bg-color: #05070c;
-    --card-bg: rgba(15, 23, 42, 0.75);
-    --card-border: rgba(255, 255, 255, 0.08);
+    --bg-color: #030712;
+    --card-bg: rgba(17, 24, 39, 0.55);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --card-border-glow: rgba(52, 211, 153, 0.25);
     --text-color: #f3f4f6;
     --accent-green: #34d399;
-    --glass-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.4);
+    --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 [data-theme="light"] {
-    --bg-color: #f8fafc;
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --card-border: rgba(0, 0, 0, 0.06);
+    --bg-color: #f1f5f9;
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(0, 0, 0, 0.08);
+    --card-border-glow: rgba(5, 150, 105, 0.3);
     --text-color: #1f2937;
     --accent-green: #059669;
-    --glass-shadow: 0 10px 30px 0 rgba(31, 38, 135, 0.08);
+    --glass-shadow: 0 15px 35px rgba(31, 38, 135, 0.1);
 }
 
 body {
     background-color: var(--bg-color);
-    background-image: 
-        radial-gradient(circle at 15% 15%, rgba(52, 211, 153, 0.08) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.08) 0%, transparent 45%);
     color: var(--text-color);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -29,91 +28,142 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.container {
-    width: 100%;
-    max-width: 980px;
+/* Các khối cầu ánh sáng nền giúp kính mờ nổi bật độ sâu */
+.mesh-background {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
 }
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+}
+.orb-1 { width: 450px; height: 450px; background: #34d399; top: -10%; left: -10%; animation: floatOrb 10s infinite alternate; }
+.orb-2 { width: 400px; height: 400px; background: #38bdf8; bottom: -10%; right: -10%; animation: floatOrb 12s infinite alternate-reverse; }
+@keyframes floatOrb {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(40px) scale(1.1); }
+}
+
+.container { width: 100%; max-width: 980px; position: relative; z-index: 1; }
 
 .app-header { text-align: center; margin-bottom: 22px; }
-.glow-title { font-size: 2.2rem; color: var(--accent-green); margin-bottom: 4px; text-shadow: 0 0 20px rgba(52, 211, 153, 0.35); font-weight: 800; }
-.app-subtitle { font-size: 0.92rem; color: #9ca3af; margin-bottom: 12px; }
+.glow-title { font-size: 2.2rem; color: var(--accent-green); margin-bottom: 4px; text-shadow: 0 0 25px rgba(52, 211, 153, 0.4); font-weight: 800; }
+.app-subtitle { font-size: 0.92rem; color: #9ca3af; margin-bottom: 10px; }
+
+/* Huy hiệu online trực tuyến */
+.online-counter-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(52, 211, 153, 0.1); backdrop-filter: blur(10px);
+    border: 1px solid rgba(52, 211, 153, 0.3); padding: 5px 14px;
+    border-radius: 20px; font-size: 0.82rem; color: var(--accent-green);
+    margin-bottom: 10px; box-shadow: 0 0 15px rgba(52, 211, 153, 0.15);
+}
+.live-pulse-dot {
+    width: 8px; height: 8px; background-color: var(--accent-green);
+    border-radius: 50%; box-shadow: 0 0 8px var(--accent-green);
+    animation: pulseGlow 1.5s infinite;
+}
+@keyframes pulseGlow {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px var(--accent-green); }
+    100% { transform: scale(0.95); opacity: 0.8; }
+}
+
 .theme-toggle-btn { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 5px 14px; border-radius: 20px; cursor: pointer; font-size: 0.82rem; }
 
-.card-box {
+/* Thẻ kính mờ Ultra Glassmorphism */
+.glass-panel {
     background-color: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--card-border);
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
     box-shadow: var(--glass-shadow);
 }
 
+.card-box { padding: 20px; margin-bottom: 15px; }
 .card-heading { margin-top: 0; font-size: 1.1rem; color: var(--accent-green); margin-bottom: 14px; font-weight: 700; }
 .grid-two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
 .left-column-stack, .right-column-stack { display: flex; flex-direction: column; gap: 15px; }
 
 .community-ticker-box {
-    background: var(--card-bg); backdrop-filter: blur(12px); border: 1px dashed rgba(52, 211, 153, 0.4); padding: 10px 16px; border-radius: 12px; margin-bottom: 18px; font-size: 0.88rem; text-align: center;
+    background: var(--card-bg); backdrop-filter: blur(16px);
+    border: 1px dashed rgba(52, 211, 153, 0.4); padding: 10px 16px;
+    border-radius: 14px; margin-bottom: 18px; font-size: 0.88rem; text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 .input-group input, .feedback-box textarea {
-    width: 100%; padding: 11px 14px; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--card-border); color: var(--text-color); border-radius: 10px; box-sizing: border-box; font-family: inherit; margin-bottom: 10px; font-size: 0.92rem;
+    width: 100%; padding: 11px 14px; background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px); border: 1px solid var(--card-border);
+    color: var(--text-color); border-radius: 12px; box-sizing: border-box;
+    font-family: inherit; margin-bottom: 10px; font-size: 0.92rem;
+    transition: all 0.3s;
+}
+.input-group input:focus, .feedback-box textarea:focus {
+    border-color: var(--accent-green); box-shadow: 0 0 12px rgba(52, 211, 153, 0.25); outline: none;
 }
 
 .section-label { font-size: 0.88rem; margin-bottom: 6px; color: #9ca3af; }
 .mode-selection { display: flex; gap: 10px; margin-bottom: 14px; }
-.mode-btn { flex: 1; padding: 10px; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--card-border); color: var(--text-color); border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
-.mode-btn.active { background: var(--accent-green); color: #0b0f19; border-color: var(--accent-green); box-shadow: 0 0 12px rgba(52, 211, 153, 0.35); }
+.mode-btn { flex: 1; padding: 10px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--card-border); color: var(--text-color); border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+.mode-btn.active { background: var(--accent-green); color: #0b0f19; border-color: var(--accent-green); box-shadow: 0 0 15px rgba(52, 211, 153, 0.4); }
 
-.primary-btn { width: 100%; padding: 12px; background: var(--accent-green); color: #0b0f19; border: none; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-bottom: 10px; }
-.minigame-launch-btn { width: 100%; padding: 11px; background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); color: #fff; border: none; border-radius: 10px; font-weight: 800; font-size: 0.92rem; cursor: pointer; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35); transition: transform 0.2s; }
-.minigame-launch-btn:hover { transform: scale(1.02); }
-.secondary-btn { padding: 8px 14px; background: transparent; border: 1px solid var(--accent-green); color: var(--accent-green); border-radius: 8px; cursor: pointer; font-size: 0.88rem; }
+.primary-btn { width: 100%; padding: 12px; background: var(--accent-green); color: #0b0f19; border: none; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(52, 211, 153, 0.3); transition: transform 0.2s; }
+.primary-btn:hover { transform: translateY(-2px); }
+
+.minigame-launch-btn { width: 100%; padding: 11px; background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); color: #fff; border: none; border-radius: 12px; font-weight: 800; font-size: 0.92rem; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); transition: transform 0.2s; }
+.minigame-launch-btn:hover { transform: translateY(-2px); }
+
+.secondary-btn { padding: 8px 14px; background: transparent; border: 1px solid var(--accent-green); color: var(--accent-green); border-radius: 10px; cursor: pointer; font-size: 0.88rem; transition: background 0.2s; }
+.secondary-btn:hover { background: rgba(52, 211, 153, 0.1); }
 
 .leaderboard-container { display: flex; flex-direction: column; gap: 8px; max-height: 230px; overflow-y: auto; }
-.leaderboard-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--card-border); border-radius: 9px; font-size: 0.9rem; }
+.leaderboard-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--card-border); border-radius: 10px; font-size: 0.9rem; }
 
 .feedback-cards-grid { display: flex; flex-direction: column; gap: 8px; max-height: 190px; overflow-y: auto; }
-.feedback-card-item { background: rgba(0, 0, 0, 0.15); border-left: 3px solid var(--accent-green); border-radius: 8px; padding: 9px 12px; font-size: 0.85rem; }
+.feedback-card-item { background: rgba(0, 0, 0, 0.2); border-left: 3px solid var(--accent-green); border-radius: 10px; padding: 9px 12px; font-size: 0.85rem; }
 .feedback-card-author { font-weight: 700; color: var(--accent-green); margin-bottom: 3px; }
 .feedback-card-text { color: var(--text-color); }
 
-/* --- GIAO DIỆN CYBER CIPHER GAME --- */
-.bomb-glass-card { max-width: 580px; margin: 0 auto; background-color: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--card-border); border-top: 1px solid rgba(255, 255, 255, 0.18); border-radius: 20px; padding: 22px; box-shadow: var(--glass-shadow); }
+/* --- MINIGAME CYBER CIPHER --- */
+.bomb-glass-card { max-width: 580px; margin: 0 auto; padding: 22px; }
 .bomb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
 .bomb-title { font-size: 1.05rem; font-weight: 800; color: #ef4444; }
-.close-minigame-btn { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 5px 10px; border-radius: 7px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+.close-minigame-btn { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
 
-.bomb-rules-box { background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 14px; line-height: 1.4; color: #d1d5db; }
+.bomb-rules-box { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 14px; line-height: 1.4; color: #d1d5db; }
 .bomb-rules-box ol { margin: 4px 0 0 16px; padding: 0; }
 
-.timer-display-box { text-align: center; background: rgba(239, 68, 68, 0.12); border: 2px solid #ef4444; border-radius: 12px; padding: 8px; margin-bottom: 12px; transition: background 0.3s; }
+.timer-display-box { text-align: center; background: rgba(239, 68, 68, 0.15); border: 2px solid #ef4444; border-radius: 14px; padding: 8px; margin-bottom: 12px; }
 .timer-display-box span { font-size: 0.8rem; color: #f87171; font-weight: 700; }
-.timer-num { font-size: 2.5rem; font-weight: 900; color: #ef4444; font-family: monospace; text-shadow: 0 0 12px rgba(239, 68, 68, 0.4); line-height: 1.1; }
+.timer-num { font-size: 2.5rem; font-weight: 900; color: #ef4444; font-family: monospace; text-shadow: 0 0 15px rgba(239, 68, 68, 0.5); line-height: 1.1; }
 
-.target-clue-box { background: rgba(56, 189, 248, 0.15); border-left: 4px solid #38bdf8; padding: 10px 14px; border-radius: 8px; font-size: 0.92rem; font-weight: 700; color: #38bdf8; text-align: center; margin-bottom: 14px; line-height: 1.4; }
+.target-clue-box { background: rgba(56, 189, 248, 0.15); border-left: 4px solid #38bdf8; padding: 10px 14px; border-radius: 10px; font-size: 0.92rem; font-weight: 700; color: #38bdf8; text-align: center; margin-bottom: 14px; line-height: 1.4; }
 
-/* Ô hiển thị 4 chữ số PIN */
 .cipher-pin-display { display: flex; justify-content: center; gap: 12px; margin-bottom: 16px; }
-.pin-box { width: 50px; height: 55px; background: rgba(0, 0, 0, 0.3); border: 2px solid var(--card-border); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: 800; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+.pin-box { width: 50px; height: 55px; background: rgba(0, 0, 0, 0.35); border: 2px solid var(--card-border); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: 800; color: #38bdf8; text-shadow: 0 0 12px rgba(56, 189, 248, 0.6); }
 
-/* Bàn phím số iOS 3x4 */
 .numpad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-.num-btn { padding: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; font-size: 1.2rem; font-weight: 700; border-radius: 12px; cursor: pointer; transition: all 0.15s; }
-.num-btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.03); }
+.num-btn { padding: 14px; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--card-border); color: #fff; font-size: 1.2rem; font-weight: 700; border-radius: 14px; cursor: pointer; transition: all 0.15s; }
+.num-btn:hover { background: rgba(255, 255, 255, 0.18); transform: scale(1.03); }
 .num-btn:active { transform: scale(0.95); }
-.action-del { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171; font-size: 0.95rem; }
+.action-del { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #f87171; font-size: 0.95rem; }
 .action-submit { background: var(--accent-green); color: #0b0f19; font-size: 0.95rem; font-weight: 800; border-color: var(--accent-green); }
 
-.bomb-result-box { text-align: center; padding: 12px; border-radius: 10px; font-size: 0.95rem; font-weight: bold; }
+.bomb-result-box { text-align: center; padding: 12px; border-radius: 12px; font-size: 0.95rem; font-weight: bold; }
 
-/* Rung lắc đếm ngược khẩn cấp dưới 10s */
-.shake-urgent { animation: shake 0.25s infinite; background: rgba(239, 68, 68, 0.3) !important; border-color: #ff0000 !important; }
+.shake-urgent { animation: shake 0.25s infinite; background: rgba(239, 68, 68, 0.35) !important; border-color: #ff0000 !important; }
 @keyframes shake {
     0% { transform: translate(2px, 2px) rotate(0deg); }
     20% { transform: translate(-3px, 0px) rotate(-1deg); }
@@ -124,17 +174,17 @@ body {
 }
 
 /* QUIZ STYLES */
-.quiz-card { background-color: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--card-border); border-top: 1px solid rgba(255, 255, 255, 0.18); border-radius: 20px; padding: 26px; box-shadow: var(--glass-shadow); }
+.quiz-card { padding: 26px; }
 .quiz-top-bar { display: flex; justify-content: space-between; margin-bottom: 15px; }
-.warning-ticker { background: rgba(239, 68, 68, 0.12); border-left: 4px solid #ef4444; padding: 10px; border-radius: 8px; font-size: 0.85rem; color: #f87171; margin-bottom: 16px; }
+.warning-ticker { background: rgba(239, 68, 68, 0.15); border-left: 4px solid #ef4444; padding: 10px; border-radius: 10px; font-size: 0.85rem; color: #f87171; margin-bottom: 16px; }
 .question-meta { font-size: 0.85rem; color: #9ca3af; margin-bottom: 6px; }
 .question-title { font-size: 1.15rem; margin-bottom: 18px; line-height: 1.45; font-weight: 600; }
 .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
-.option-btn { width: 100%; padding: 12px 16px; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); border: 1px solid var(--card-border); color: var(--text-color); border-radius: 10px; text-align: left; cursor: pointer; font-size: 0.95rem; transition: all 0.2s ease; }
-.option-btn:hover { border-color: var(--accent-green); background: rgba(52, 211, 153, 0.08); transform: translateX(3px); }
+.option-btn { width: 100%; padding: 12px 16px; background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(10px); border: 1px solid var(--card-border); color: var(--text-color); border-radius: 12px; text-align: left; cursor: pointer; font-size: 0.95rem; transition: all 0.2s ease; }
+.option-btn:hover { border-color: var(--accent-green); background: rgba(52, 211, 153, 0.1); transform: translateX(3px); }
 .option-btn.correct { background: rgba(52, 211, 153, 0.25); border-color: var(--accent-green); color: var(--accent-green); font-weight: bold; }
 .option-btn.wrong { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #f87171; font-weight: bold; }
 .quiz-bottom-actions { display: flex; justify-content: space-between; gap: 12px; }
-.control-btn { padding: 11px 16px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(0, 0, 0, 0.2); color: var(--text-color); cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+.control-btn { padding: 11px 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(0, 0, 0, 0.25); color: var(--text-color); cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s; }
 .pause-btn:hover { border-color: #ef4444; color: #ef4444; }
 .next-btn { background: var(--accent-green); color: #0b0f19; border: none; }
