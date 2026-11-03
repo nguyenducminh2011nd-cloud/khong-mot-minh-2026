@@ -6,6 +6,8 @@
     <title>Không Một Mình 2026 - Hệ Thống Đấu Trí An Toàn Mạng</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Thư viện pháo hoa chúc mừng Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,13 +23,16 @@
             <h1 class="glow-title">KHÔNG MỘT MÌNH 2026</h1>
             <p class="app-subtitle">Hệ Thống Đấu Trí Tình Huống An Toàn Mạng & Phòng Chống Lừa Đảo</p>
             
-            <!-- Huy hiệu đếm số người online trực tuyến -->
-            <div class="online-counter-badge">
-                <span class="live-pulse-dot"></span>
-                <span>Trực tuyến: <strong id="online-count-num">1</strong> người đang tham chiến</span>
+            <div class="header-badges-bar">
+                <!-- Huy hiệu đếm số người online -->
+                <div class="online-counter-badge">
+                    <span class="live-pulse-dot"></span>
+                    <span>Trực tuyến: <strong id="online-count-num">1</strong> người</span>
+                </div>
+                <!-- Nút bật/tắt âm thanh -->
+                <button id="sound-toggle-btn" class="sound-toggle-btn" onclick="toggleAudio()">🔊 Âm thanh: Bật</button>
+                <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 Đổi Giao Diện</button>
             </div>
-
-            <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 Đổi Giao Diện</button>
         </header>
 
         <!-- MÀN HÌNH CHÍNH (WELCOME) -->
@@ -59,6 +64,16 @@
                         <button class="minigame-launch-btn" onclick="openCipherMinigame()">🔐 MINI-GAME: CYBER CIPHER (+150Đ)</button>
                     </div>
 
+                    <!-- Hub Kiến Thức & Huy Chương Của Bạn -->
+                    <div class="card-box glass-panel">
+                        <h3 class="card-heading">🎖️ Huy Chương & Thành Tựu</h3>
+                        <div id="badges-container" class="badges-grid">
+                            <div class="badge-item locked" id="badge-streak" title="Giữ chuỗi trả lời đúng">🛡️ Vệ Sĩ Mạng</div>
+                            <div class="badge-item locked" id="badge-cipher" title="Giải mã Cyber Cipher tốc độ">⚡ Thần Tốc Mã</div>
+                            <div class="badge-item locked" id="badge-master" title="Đạt mốc Thách Đấu">👑 Bậc Thầy An Toàn</div>
+                        </div>
+                    </div>
+
                     <div class="card-box glass-panel">
                         <h3 class="card-heading">✍️ Gửi Đánh Giá Của Cậu</h3>
                         <div class="feedback-box">
@@ -74,6 +89,16 @@
                         <h3 class="card-heading">🏆 Bảng Xếp Hạng Cao Thủ</h3>
                         <div id="leaderboard-list" class="leaderboard-container">
                             <div style="color:#888; font-size:0.85rem;">Đang tải bảng xếp hạng...</div>
+                        </div>
+                    </div>
+
+                    <!-- Thư viện Cảnh Báo Lừa Đảo (Cyber Security Hub) -->
+                    <div class="card-box glass-panel">
+                        <h3 class="card-heading">📚 Cẩm Nang Nhận Diện Bẫy Mạng</h3>
+                        <div class="cyber-tips-box">
+                            <div class="tip-item">🚨 <strong>Deepfake Giả Mạo:</strong> Video/Giọng nói AI gọi mượn tiền cần xác thực bằng câu hỏi riêng tư.</div>
+                            <div class="tip-item">🔗 <strong>SMS Spoofing:</strong> Tin nhắn giả mạo brandname ngân hàng chứa link độc hại.</div>
+                            <div class="tip-item">🛑 <strong>Mã QR Độc Hại:</strong> Cẩn thận mã QR dán đè tại các điểm gửi xe, quán nước công cộng.</div>
                         </div>
                     </div>
 
