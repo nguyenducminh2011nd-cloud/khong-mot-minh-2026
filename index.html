@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Không Một Mình 2026 - Hệ Thống Đấu Trí An Toàn Mạng</title>
+    <!-- Cấu hình PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#34d399">
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <!-- Thư viện pháo hoa chúc mừng Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Lớp lưới ánh sáng nền huyền ảo -->
     <div class="mesh-background">
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
@@ -20,18 +21,19 @@
     <div class="container">
         <!-- HEADER -->
         <header class="app-header">
-            <h1 class="glow-title">KHÔNG MỘT MÌNH 2026</h1>
-            <p class="app-subtitle">Hệ Thống Đấu Trí Tình Huống An Toàn Mạng & Phòng Chống Lừa Đảo</p>
+            <h1 class="glow-title" data-i18n="app_title">KHÔNG MỘT MÌNH 2026</h1>
+            <p class="app-subtitle" data-i18n="app_subtitle">Hệ Thống Đấu Trí Tình Huống An Toàn Mạng & Phòng Chống Lừa Đảo</p>
             
             <div class="header-badges-bar">
-                <!-- Huy hiệu đếm số người online -->
                 <div class="online-counter-badge">
                     <span class="live-pulse-dot"></span>
-                    <span>Trực tuyến: <strong id="online-count-num">1</strong> người</span>
+                    <span>Online: <strong id="online-count-num">1</strong></span>
                 </div>
-                <!-- Nút bật/tắt âm thanh -->
-                <button id="sound-toggle-btn" class="sound-toggle-btn" onclick="toggleAudio()">🔊 Âm thanh: Bật</button>
-                <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 Đổi Giao Diện</button>
+                <button id="sound-toggle-btn" class="sound-toggle-btn" onclick="toggleAudio()">🔊 Audio</button>
+                <button class="theme-toggle-btn" onclick="toggleTheme()">🌓 Theme</button>
+                <button class="lang-toggle-btn" onclick="toggleLanguage()"><span id="current-lang-lbl">VN/EN</span></button>
+                <!-- NÚT ADMIN ẨN -->
+                <button id="admin-trigger-btn" class="admin-quick-btn" onclick="openAdminDashboard()" style="display: none;">⚙️ Admin</button>
             </div>
         </header>
 
@@ -40,7 +42,7 @@
             <div class="community-ticker-box">
                 <span class="ticker-icon">💬</span>
                 <div class="ticker-content">
-                    <span>Lời Nhắn Nổi Bật: <strong id="top-feedback-ticker">Đang tải đánh giá cộng đồng...</strong></span>
+                    <span><span data-i18n="ticker_lbl">Góp ý nổi bật:</span> <strong id="top-feedback-ticker">Đang tải...</strong></span>
                 </div>
             </div>
 
@@ -48,37 +50,39 @@
                 <!-- Cột Trái -->
                 <div class="left-column-stack">
                     <div class="card-box glass-panel">
-                        <h3 class="card-heading">🚀 Chuẩn Bị Đấu Trí</h3>
+                        <h3 class="card-heading" data-i18n="prep_heading">🚀 Chuẩn Bị Đấu Trí</h3>
                         
                         <div class="input-group">
                             <input type="text" id="player-name-input" placeholder="Nhập tên định danh của cậu..." oninput="savePlayerName(this.value)">
                         </div>
 
-                        <p class="section-label">Chọn chế độ thử thách:</p>
+                        <p class="section-label" data-i18n="select_mode_lbl">Chọn chế độ thử thách:</p>
                         <div class="mode-selection">
-                            <button id="btn-mode-kho" class="mode-btn active" onclick="selectMode('kho')">🔥 Khó (50đ/câu)</button>
-                            <button id="btn-mode-hacknao" class="mode-btn" onclick="selectMode('hacknao')">⚡ Hack Não (100đ/câu)</button>
+                            <button id="btn-mode-kho" class="mode-btn active" onclick="selectMode('kho')">🔥 Khó (50đ)</button>
+                            <button id="btn-mode-hacknao" class="mode-btn" onclick="selectMode('hacknao')">⚡ Hack Não (100đ)</button>
                         </div>
 
-                        <button class="primary-btn glow-btn" onclick="startGame()">VÀO CHƠI ĐẤU TRÍ 🎮</button>
-                        <button class="minigame-launch-btn" onclick="openCipherMinigame()">🔐 MINI-GAME: CYBER CIPHER (+150Đ)</button>
+                        <button class="primary-btn glow-btn" onclick="startGame()" data-i18n="start_btn">VÀO CHƠI ĐẤU TRÍ 🎮</button>
+                        <button class="minigame-launch-btn" onclick="openCipherMinigame()" data-i18n="minigame_btn">🔐 MINI-GAME: CYBER CIPHER (+150Đ)</button>
                     </div>
 
-                    <!-- Hub Kiến Thức & Huy Chương Của Bạn -->
+                    <!-- Huy hiệu thành tựu -->
                     <div class="card-box glass-panel">
-                        <h3 class="card-heading">🎖️ Huy Chương & Thành Tựu</h3>
+                        <h3 class="card-heading" data-i18n="badges_heading">🎖️ Huy Chương Của Cậu</h3>
                         <div id="badges-container" class="badges-grid">
-                            <div class="badge-item locked" id="badge-streak" title="Giữ chuỗi trả lời đúng">🛡️ Vệ Sĩ Mạng</div>
-                            <div class="badge-item locked" id="badge-cipher" title="Giải mã Cyber Cipher tốc độ">⚡ Thần Tốc Mã</div>
-                            <div class="badge-item locked" id="badge-master" title="Đạt mốc Thách Đấu">👑 Bậc Thầy An Toàn</div>
+                            <div class="badge-item locked" id="badge-streak">🛡️ Vệ Sĩ Mạng</div>
+                            <div class="badge-item locked" id="badge-cipher">⚡ Thần Tốc Mã</div>
+                            <div class="badge-item locked" id="badge-master">👑 Thách Đấu</div>
                         </div>
                     </div>
 
+                    <!-- Góc Đóng Góp Tình Huống Thực Tế (Community Submission) -->
                     <div class="card-box glass-panel">
-                        <h3 class="card-heading">✍️ Gửi Đánh Giá Của Cậu</h3>
+                        <h3 class="card-heading" data-i18n="contrib_heading">💡 Đóng Góp Tình Huống Lừa Đảo</h3>
                         <div class="feedback-box">
-                            <textarea id="home-feedback-input" placeholder="Cảm nhận của cậu về hệ thống..." rows="2"></textarea>
-                            <button class="secondary-btn" onclick="submitHomeFeedback()">Gửi Lên Mây ☁️</button>
+                            <input type="text" id="contrib-q-input" placeholder="Nhóm tình huống (VD: Giả mạo ngân hàng...)" style="margin-bottom:6px;">
+                            <textarea id="contrib-detail-input" placeholder="Mô tả chi tiết câu chuyện/bẫy lừa đảo cậu từng gặp..." rows="2" style="margin-bottom:6px;"></textarea>
+                            <button class="secondary-btn" onclick="submitCommunityScenario()" data-i18n="contrib_btn">Gửi Đóng Góp 🚀</button>
                         </div>
                     </div>
                 </div>
@@ -86,33 +90,53 @@
                 <!-- Cột Phải -->
                 <div class="right-column-stack">
                     <div class="card-box glass-panel flex-expand">
-                        <h3 class="card-heading">🏆 Bảng Xếp Hạng Cao Thủ</h3>
+                        <h3 class="card-heading" data-i18n="leaderboard_heading">🏆 Bảng Xếp Hạng Cao Thủ</h3>
                         <div id="leaderboard-list" class="leaderboard-container">
-                            <div style="color:#888; font-size:0.85rem;">Đang tải bảng xếp hạng...</div>
+                            <div style="color:#888; font-size:0.85rem;">Đang tải...</div>
                         </div>
                     </div>
 
-                    <!-- Thư viện Cảnh Báo Lừa Đảo (Cyber Security Hub) -->
+                    <!-- Gửi Đánh Giá & Báo Lỗi Gộp Chung -->
                     <div class="card-box glass-panel">
-                        <h3 class="card-heading">📚 Cẩm Nang Nhận Diện Bẫy Mạng</h3>
-                        <div class="cyber-tips-box">
-                            <div class="tip-item">🚨 <strong>Deepfake Giả Mạo:</strong> Video/Giọng nói AI gọi mượn tiền cần xác thực bằng câu hỏi riêng tư.</div>
-                            <div class="tip-item">🔗 <strong>SMS Spoofing:</strong> Tin nhắn giả mạo brandname ngân hàng chứa link độc hại.</div>
-                            <div class="tip-item">🛑 <strong>Mã QR Độc Hại:</strong> Cẩn thận mã QR dán đè tại các điểm gửi xe, quán nước công cộng.</div>
+                        <h3 class="card-heading" data-i18n="feedback_heading">✍️ Đánh Giá & Báo Lỗi</h3>
+                        <div class="feedback-box">
+                            <select id="feedback-type-select" class="compact-select">
+                                <option value="feedback" data-i18n="opt_fb">⭐ Đánh giá góp ý</option>
+                                <option value="bug" data-i18n="opt_bug">🚨 Báo lỗi hệ thống (Bug)</option>
+                            </select>
+                            <textarea id="home-feedback-input" placeholder="Nhập nội dung ý kiến hoặc mô tả lỗi..." rows="2"></textarea>
+                            <button class="secondary-btn" onclick="submitHomeFeedback()" data-i18n="send_btn">Gửi Lên Mây ☁️</button>
                         </div>
                     </div>
 
                     <div class="card-box glass-panel">
-                        <h3 class="card-heading">💬 Ý Kiến Từ Cộng Đồng</h3>
+                        <h3 class="card-heading" data-i18n="community_feed_heading">💬 Ý Kiến Cộng Đồng</h3>
                         <div id="feedback-cards-container" class="feedback-cards-grid">
-                            <div style="color:#888; font-size:0.85rem;">Đang tải góp ý...</div>
+                            <div style="color:#888; font-size:0.85rem;">Đang tải...</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MÀN HÌNH MINIGAME: CYBER CIPHER 30S -->
+        <!-- MÀN HÌNH QUẢN TRỊ ADMIN -->
+        <div id="admin-dashboard-screen" class="screen" style="display: none;">
+            <div class="quiz-card bomb-glass-card glass-panel">
+                <div class="bomb-header">
+                    <span class="bomb-title">⚙️ BẢNG ĐIỀU KHIỂN QUẢN TRỊ (ADMIN)</span>
+                    <button class="close-minigame-btn" onclick="closeAdminDashboard()">✖ Đóng</button>
+                </div>
+                <div class="admin-stats-summary" id="admin-stats-box">
+                    <p>📊 Đang tổng hợp dữ liệu...</p>
+                </div>
+                <h4 style="color: var(--accent-green); margin: 8px 0 4px 0; font-size: 0.9rem;">📥 Đóng Góp Tình Huống Từ Người Chơi:</h4>
+                <div id="admin-scenarios-list" class="admin-list-container" style="max-height:130px; margin-bottom:8px;"></div>
+                <h4 style="color: var(--accent-green); margin: 8px 0 4px 0; font-size: 0.9rem;">📋 Báo Lỗi & Góp Ý:</h4>
+                <div id="admin-feedbacks-list" class="admin-list-container" style="max-height:130px;"></div>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH MINIGAME: CYBER CIPHER -->
         <div id="minigame-screen" class="screen" style="display: none;">
             <div class="quiz-card bomb-glass-card glass-panel">
                 <div class="bomb-header">
@@ -123,9 +147,8 @@
                 <div class="bomb-rules-box">
                     <strong>📖 LỆNH HACK MÁY CHỦ:</strong>
                     <ol>
-                        <li>Suy luận manh mối logic bên dưới để tìm ra **Mật mã 4 chữ số PIN**.</li>
-                        <li>Bấm bàn phím số để nhập mã và ấn **[🔓 GIẢI MÃ]** trước khi hết 30s.</li>
-                        <li>Giải thành công ➔ **+150đ**. Nhập sai ➔ **Trừ 5 giây** phạt khẩn cấp!</li>
+                        <li>Suy luận manh mối logic tìm ra **Mật mã 4 chữ số PIN**.</li>
+                        <li>Bấm bàn phím số và ấn **[🔓 GIẢI MÃ]** trước khi hết 30s (+150đ).</li>
                     </ol>
                 </div>
 
@@ -173,7 +196,7 @@
                 </div>
 
                 <div id="warning-banner" class="warning-ticker">
-                    ⚠️ Đang tải cảnh báo an toàn...
+                    ⚠️ Đang tải cảnh báo...
                 </div>
 
                 <div class="question-meta">
