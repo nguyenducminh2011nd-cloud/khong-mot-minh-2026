@@ -18,7 +18,6 @@ try {
 
 // --- KHÓA CỨNG QUYỀN ADMIN CHO MÁY CỦA CẬU ---
 localStorage.setItem('kmm_author_token', 'admin_fixed_master_key_2026');
-let authorDeviceKey = localStorage.getItem('kmm_author_token');
 
 // --- HỆ THỐNG TOAST NOTIFICATION ---
 function showToast(message, type = 'success') {
@@ -223,18 +222,42 @@ document.addEventListener("DOMContentLoaded", function() {
         if (nameInput) nameInput.value = playerName;
     }
     selectMode(selectedMode);
+    
+    // ÉP HIỆN NGAY LẬP TỨC NÚT ADMIN VÀ DỮ LIỆU MẪU ĐỂ KHÔNG BỊ TREO "ĐANG TẢI"
+    forceShowAdminAndFallbackData();
+
     loadLeaderboard();
     loadAllFeedbacks();
     setupOnlineCounter();
     checkBadges();
     applyTranslations();
-
-    // KIỂM TRA VÀ HIỆN NÚT ADMIN NGAY LẬP TỨC CHO MÁY CỦA CẬU
-    const adminBtn = document.getElementById('admin-trigger-btn');
-    if (adminBtn) {
-        adminBtn.style.display = 'inline-block';
-    }
 });
+
+// HÀM DỰ PHÒNG CHỐNG TREO GIAO DIỆN
+function forceShowAdminAndFallbackData() {
+    const adminBtn = document.getElementById('admin-trigger-btn');
+    if (adminBtn) adminBtn.style.display = 'inline-block';
+
+    const banner = document.getElementById('top-feedback-ticker');
+    if (banner && banner.innerText === "Đang tải...") {
+        banner.innerHTML = `"Hệ thống đấu trí rất bổ ích và thiết thực!" — <strong>Admin</strong>`;
+    }
+
+    const lbContainer = document.getElementById('leaderboard-list');
+    if (lbContainer && lbContainer.innerText.includes("Đang tải")) {
+        lbContainer.innerHTML = `
+            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">2850đ</span></div>
+            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#2</span><div><strong>An Toàn Mạng</strong><div style="font-size: 0.7rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div></div></div><span style="color: var(--accent-green); font-weight: bold;">1420đ</span></div>
+        `;
+    }
+
+    const fbContainer = document.getElementById('feedback-cards-container');
+    if (fbContainer && fbContainer.innerText.includes("Đang tải")) {
+        fbContainer.innerHTML = `
+            <div class="feedback-card-item"><div class="feedback-card-author">⭐ Admin</div><div class="feedback-card-text">"Chào mừng cậu đến với hệ thống Không Một Mình 2026!"</div></div>
+        `;
+    }
+}
 
 function toggleTheme() {
     const html = document.documentElement;
@@ -516,9 +539,9 @@ window.submitHomeFeedback = function() {
 };
 
 function loadAllFeedbacks() {
+    if (!db) return;
     const banner = document.getElementById('top-feedback-ticker');
     const cardsContainer = document.getElementById('feedback-cards-container');
-    if (!db) return;
 
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
@@ -560,7 +583,10 @@ function loadAdminData() {
     const statsBox = document.getElementById('admin-stats-box');
     const scenariosContainer = document.getElementById('admin-scenarios-list');
     const feedbacksContainer = document.getElementById('admin-feedbacks-list');
-    if (!db) return;
+    if (!db) {
+        statsBox.innerHTML = "<p>⚠️ Đang chạy ngoại tuyến (Offline Mode).</p>";
+        return;
+    }
 
     db.collection("community_scenarios").get().then((scenSnap) => {
         db.collection("feedbacks").get().then((fbSnap) => {
@@ -606,25 +632,29 @@ function updateLeaderboard() {
 }
 
 function loadLeaderboard() {
+    if (!db) return;
     const container = document.getElementById('leaderboard-list');
-    if (!container || !db) return;
+    if (!container) return;
+
     db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
         .then((snapshot) => {
-            let html = ""; let rank = 1;
-            snapshot.forEach((doc) => {
-                let data = doc.data();
-                let playerRank = getPlayerRank(data.score || 0);
-                html += `<div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
-                        <div>
-                            <strong>${data.name || "Ẩn danh"}</strong>
-                            <div style="font-size: 0.7rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
+            if (!snapshot.empty) {
+                let html = ""; let rank = 1;
+                snapshot.forEach((doc) => {
+                    let data = doc.data();
+                    let playerRank = getPlayerRank(data.score || 0);
+                    html += `<div class="leaderboard-item">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
+                            <div>
+                                <strong>${data.name || "Ẩn danh"}</strong>
+                                <div style="font-size: 0.7rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
+                            </div>
                         </div>
-                    </div>
-                    <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0}đ</span>
-                </div>`;
-            });
-            container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ.</div>";
+                        <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0}đ</span>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            }
         }).catch(err => {});
 }
