@@ -39,7 +39,7 @@ function showToast(message, type = 'success') {
     setTimeout(() => { toast.remove(); }, 3000);
 }
 
-// --- ĐA NGÔN NGỮ (VN / EN) ---
+// --- HỆ THỐNG ĐA NGÔN NGỮ (VN / EN) ---
 let currentLang = localStorage.getItem('kmm_lang') || 'vi';
 const translations = {
     vi: {
@@ -199,28 +199,6 @@ const questionPools = {
         { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
         { q: "19. Khi nhận được thông báo trúng thưởng lớn từ một tổ chức quốc tế yêu cầu đóng trước một khoản phí nhỏ bằng tiền điện tử (Crypto), bạn nên làm gì?", options: ["Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", "Nộp tiền điện tử ngay để kịp nhận giải thưởng lớn", "Đăng ký thông tin cá nhân chi tiết để nhận quà", "Chia sẻ cơ hội trúng thưởng cho bạn bè cùng tham gia"], correct: "Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", explain: "💡 Không có phần thưởng quốc tế nào yêu cầu người trúng tự nộp phí bằng tiền điện tử trước cả." },
         { q: "20. Điều gì là quan trọng nhất để bảo vệ bản thân và cộng đồng trước sự bùng nổ của các hình thức lừa đảo trực tuyến hiện nay?", options: ["Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", "Tuyệt đối không sử dụng điện thoại thông minh và mạng xã hội", "Chỉ kết bạn và giao lưu với những người quen biết ngoài đời thực", "Thay đổi mật khẩu thiết bị liên tục mỗi phút mỗi giây"], correct: "Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", explain: "💡 Kiến thức và sự tỉnh táo chính là chiếc khiên bảo vệ vững chắc nhất trong kỷ nguyên số!" }
-    ],
-    hacknao: [
-        { q: "1. Nhận tin nhắn từ chính số điện thoại của mình giục nợ và đe dọa tống tiền. Hiện tượng này do đâu?", options: ["Kẻ gian dùng trạm phát sóng giả IMSI Catcher hoặc SMS Spoofing", "Điện thoại tự động phát tán tin nhắn lúc nửa đêm", "Nhà mạng đang thử nghiệm hệ thống tin nhắn mới", "Do cài đặt lịch hẹn giờ gửi tin nhắn từ trước"], correct: "Kẻ gian dùng trạm phát sóng giả IMSI Catcher hoặc SMS Spoofing", explain: "💡 Kẻ gian dùng công nghệ giả mạo số điện thoại người gửi để gây hoang mang tột độ!" },
-        { q: "2. Rau bán iPhone đời mới giá rẻ bất ngờ với lý do hàng trưng bày không dùng đến. Bạn đánh giá sao?", options: ["Chắc chắn là lừa đảo nhận cọc rồi chiếm đoạt tài sản", "Cơ hội hiếm có nên cần chuyển khoản cọc liền", "Hàng chính hãng uy tín nên mới có giá rẻ như vậy", "Mua trực tiếp vì hàng trưng bày luôn siêu rẻ"], correct: "Chắc chắn là lừa đảo nhận cọc rồi chiếm đoạt tài sản", explain: "💡 Không có chiếc iPhone giá trị cao nào bán rẻ như cho. Đừng để lòng tham mờ mắt!" },
-        { q: "3. Người quen qua mạng chưa gặp mặt muốn gửi quà lớn nhưng bắt đóng thuế hải quan qua tài khoản cá nhân. Xử lý thế nào?", options: ["Chặn liên lạc ngay vì đây là bẫy Romance Scam", "Chuyển khoản ngay vì quà giá trị lớn hơn thuế", "Nhờ người thân góp tiền đóng thuế nhận quà", "Yêu cầu họ trừ tiền thuế vào giá trị món quà"], correct: "Chặn liên lạc ngay vì đây là bẫy Romance Scam", explain: "💡 Hải quan nhà nước không bao giờ yêu cầu chuyển tiền thuế vào tài khoản cá nhân!" },
-        { q: "4. Nhận email từ quản trị viên yêu cầu xác nhận mật khẩu qua liên kết lạ vì nâng cấp hệ thống. Bạn làm gì?", options: ["Bỏ qua và xóa email vì đây là chiêu trò Phishing", "Làm theo hướng dẫn ngay để không bị khóa máy", "Gửi mật khẩu qua email phản hồi để xác thực", "Chuyển tiếp email cho toàn bộ thành viên khác"], correct: "Bỏ qua và xóa email vì đây là chiêu trò Phishing", explain: "💡 Quản trị viên hệ thống không bao giờ yêu cầu người dùng gửi mật khẩu qua email." },
-        { q: "5. Xem web phim lậu xuất hiện liên tục các tab quảng cáo cờ bạc cá độ chớp nháy. Hành động an toàn là?", options: ["Đóng ngay lập tức tab lạ, tuyệt đối không click", "Click vào xem thử có trúng thưởng thật không", "Tải ứng dụng quảng cáo theo yêu cầu trên trang", "Để nguyên các tab chạy ngầm để giải trí thêm"], correct: "Đóng ngay lập tức tab lạ, tuyệt đối không click", explain: "💡 Các trang web lậu thường gắn mã độc và banner quảng cáo dụ dỗ đánh bạc trực tuyến." },
-        { q: "6. Kẻ lừa đảo mạng thường nhắm vào tử huyệt cảm xúc nào lớn nhất của con người để thao túng chuyển tiền?", options: ["Lòng tham hám lợi và Nỗi sợ hãi đe dọa pháp luật", "Sự vui vẻ thích khám phá công nghệ số hiện đại", "Lòng yêu thương động vật và thiên nhiên hoang dã", "Sự kiên nhẫn và ham học hỏi kiến thức đời sống"], correct: "Lòng tham hám lợi và Nỗi sợ hãi đe dọa pháp luật", explain: "💡 Kẻ gian luôn đánh vào nỗi sợ hãi hoặc lòng tham để làm sập nguồn lý trí người chơi!" },
-        { q: "7. Tại sao người lớn tuổi lại rất dễ sập bẫy các chiêu trò lừa đảo qua mạng xã hội hơn giới trẻ hiện nay?", options: ["Ít tiếp cận thông tin cảnh báo, dễ tin người và ngại kiểm chứng", "Vì người lớn tuổi có nhiều tiền trong tài khoản hơn", "Vì điện thoại của họ cấu hình yếu dễ bị nhiễm virus", "Vì các nền tảng ưu tiên hiển thị lừa đảo cho người già"], correct: "Ít tiếp cận thông tin cảnh báo, dễ tin người và ngại kiểm chứng", explain: "💡 Người lớn tuổi thường thiếu kinh nghiệm nhận diện bẫy công nghệ thời đại số." },
-        { q: "8. Vì sao mã OTP được ví như chìa khóa két sắt của tài khoản ngân hàng và không được đưa cho người khác?", options: ["Vì đây là bước xác thực cuối cùng cho phép rút tiền", "Vì mã OTP giúp nạp tiền điện thoại miễn phí nhanh", "Vì lộ mã OTP sẽ khiến thẻ bị khóa vĩnh viễn ngay", "Vì mã OTP chỉ có hiệu lực sử dụng trong vòng 10 năm"], correct: "Vì đây là bước xác thực cuối cùng cho phép rút tiền", explain: "💡 Mã OTP là chốt chặn cuối cùng bảo vệ tài sản của bạn. Mất OTP là mất tiền!" },
-        { q: "9. Người lạ tự xưng hacker giỏi giúp lấy lại tiền bị lừa với điều kiện nộp phí dịch vụ trước. Bản chất là gì?", options: ["Chiêu trò lừa đảo lần hai nhắm vào nạn nhân tiếc tiền", "Dịch vụ hỗ trợ an ninh mạng chính thống nhà nước", "Cơ hội duy nhất để thu hồi trọn vẹn số tiền đã mất", "Chương trình đền bù rủi ro tài chính của ngân hàng"], correct: "Chiêu trò lừa đảo lần hai nhắm vào nạn nhân tiếc tiền", explain: "💡 Kẻ gian lợi dụng sự tuyệt vọng của nạn nhân để tiếp tục chiếm đoạt khoản phí mới!" },
-        { q: "10. Sử dụng chung một mật khẩu duy nhất cho mọi tài khoản mạng xã hội và ngân hàng ẩn chứa hiểm họa gì?", options: ["Lộ một tài khoản yếu sẽ khiến hacker chiếm toàn bộ", "Tốc độ kết nối mạng internet sẽ bị chậm rõ rệt", "Thiết bị di động tự động xóa bớt các ứng dụng", "Mật khẩu sẽ bị hết hiệu lực sử dụng sau 30 ngày"], correct: "Lộ một tài khoản yếu sẽ khiến hacker chiếm toàn bộ", explain: "💡 Kẻ gian sẽ dùng mật khẩu lộ diện để thử đăng nhập chéo vào tất cả các hệ thống khác!" },
-        { q: "11. Nhận được thông báo từ ứng dụng ngân hàng về giao dịch trừ tiền lạ lúc 2 giờ đêm. Hướng giải quyết khôn ngoan nhất là:", options: ["Khóa thẻ khẩn cấp qua app và gọi tổng đài ngân hàng", "Chờ đến sáng hôm sau ra phòng giao dịch hỏi chuyện", "Đăng status than thở lên mạng xã hội để xin ý kiến", "Xóa ứng dụng ngân hàng đi rồi tải lại từ đầu"], correct: "Khóa thẻ khẩn cấp qua app và gọi tổng đài ngân hàng", explain: "💡 Hành động nhanh chóng giúp ngăn chặn kịp thời việc kẻ gian tiếp tục rút sạch tiền." },
-        { q: "12. Khi bạn vô tình quét mã QR tại các điểm dán đè ở bãi xe hoặc quán nước công cộng, hiểm họa tiềm ẩn là gì?", options: ["Dẫn tới các trang web độc hại đánh cắp dữ liệu hoặc cài mã độc", "Điện thoại sẽ tự động sập nguồn vĩnh viễn không mở lại", "Tài khoản mạng xã hội tự động kết bạn với hàng nghìn người", "Dung lượng bộ nhớ điện thoại bị đầy lên tức thì"], correct: "Dẫn tới các trang web độc hại đánh cắp dữ liệu hoặc cài mã độc", explain: "💡 Kẻ gian thường dán đè mã QR giả mạo mã độc để lừa người dùng truy cập." },
-        { q: "13. Một tài khoản game uy tín rao bán với giá rẻ bằng 1/10 giá trị thực kèm cam kết 'bảo hành vĩnh viễn'. Bản chất là gì?", options: ["Chiêu trò thu hồi lại tài khoản qua email gốc sau khi đã nhận tiền", "Cơ hội săn sale có một không hai trong năm cho game thủ", "Người bán thực sự tốt bụng muốn thanh lý nhanh nghỉ game", "Chính sách ưu đãi tri ân khách hàng của nhà phát hành"], correct: "Chiêu trò thu hồi lại tài khoản qua email gốc sau khi đã nhận tiền", explain: "💡 Kẻ lừa đảo thường dùng chính thông tin đăng ký gốc để lấy lại tài khoản sau khi bán." },
-        { q: "14. Tại sao các vụ lừa đảo qua mạng thường sử dụng các tài khoản ngân hàng 'ảo' hoặc mua lại danh tính người khác?", options: ["Để xóa dấu vết dòng tiền và tránh sự truy vết của cơ quan chức năng", "Vì ngân hàng tặng nhiều ưu đãi cho người mở nhiều tài khoản", "Giúp người chuyển tiền nhận được nhiều điểm thưởng hơn", "Để giảm bớt thuế thu nhập cá nhân phải đóng hàng năm"], correct: "Để xóa dấu vết dòng tiền và tránh sự truy vết của cơ quan chức năng", explain: "💡 Việc sử dụng tài khoản trung gian giúp kẻ gian che giấu danh tính thực sự của mình." },
-        { q: "15. Khi nhận được lời mời tham gia hội nhóm đầu tư tài chính sinh lời 200% mỗi ngày chỉ bằng chiếc điện thoại, bạn nên:", options: ["Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", "Bỏ ra số vốn nhỏ để thử vận may đổi đời", "Vay mượn bạn bè người thân để đầu tư thu lời lớn", "Hỏi thêm kinh nghiệm của họ trước khi tham gia"], correct: "Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", explain: "💡 Lợi nhuận siêu cao luôn đi kèm rủi ro siêu lớn hoặc 100% là mô hình lừa đảo Ponzi." },
-        { q: "16. Kẻ xấu sử dụng công nghệ Deepfake để giả mạo hình ảnh và giọng nói của người thân gọi điện nhờ chuyển tiền. Cách nhận diện tốt nhất là gì?", options: ["Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", "Tin tưởng ngay vì đúng hình ảnh và giọng nói thật của người thân", "Chuyển tiền nhanh chóng vì sợ người thân gặp chuyện gấp", "Tắt máy và không bao giờ nghe điện thoại nữa"], correct: "Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", explain: "💡 Công nghệ Deepfake đôi khi có độ trễ hoặc lỗi hình ảnh khi chuyển động, đặt câu hỏi kiểm chứng là cách khắc phục." },
-        { q: "17. Khi điện thoại tự động cài đặt các tệp tin APK lạ từ nguồn không rõ ràng, mối nguy hiểm lớn nhất là gì?", options: ["Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", "Làm cho điện thoại sạc pin nhanh hơn bình thường", "Giúp tăng tốc độ kết nối mạng 5G của máy", "Tự động dọn dẹp các tệp tin rác trong bộ nhớ"], correct: "Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", explain: "💡 File APK ngoài cửa hàng ứng dụng chính thức tiềm ẩn mã độc kiểm soát toàn diện thiết bị." },
-        { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
-        { q: "19. Khi nhận được thông báo trúng thưởng lớn từ một tổ chức quốc tế yêu cầu đóng trước một khoản phí nhỏ bằng tiền điện tử (Crypto), bạn nên làm gì?", options: ["Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", "Nộp tiền điện tử ngay để kịp nhận giải thưởng lớn", "Đăng ký thông tin cá nhân chi tiết để nhận quà", "Chia sẻ cơ hội trúng thưởng cho bạn bè cùng tham gia"], correct: "Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", explain: "💡 Không có phần thưởng quốc tế nào yêu cầu người trúng tự nộp phí bằng tiền điện tử trước cả." },
-        { q: "20. Điều gì là quan trọng nhất để bảo vệ bản thân và cộng đồng trước sự bùng nổ của các hình thức lừa đảo trực tuyến hiện nay?", options: ["Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", "Tuyệt đối không sử dụng điện thoại thông minh và mạng xã hội", "Chỉ kết bạn và giao lưu với những người quen biết ngoài đời thực", "Thay đổi mật khẩu thiết bị liên tục mỗi phút mỗi giây"], correct: "Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", explain: "💡 Kiến thức và sự tỉnh táo chính là chiếc khiên bảo vệ vững chắc nhất trong kỷ nguyên số!" }
     ]
 };
 
@@ -251,9 +229,10 @@ document.addEventListener("DOMContentLoaded", function() {
     checkBadges();
     applyTranslations();
 
-    if (authorDeviceKey) {
-        const adminBtn = document.getElementById('admin-trigger-btn');
-        if (adminBtn) adminBtn.style.display = 'inline-block';
+    // KIỂM TRA VÀ HIỆN NÚT ADMIN NGAY LẬP TỨC CHO MÁY CỦA CẬU
+    const adminBtn = document.getElementById('admin-trigger-btn');
+    if (adminBtn) {
+        adminBtn.style.display = 'inline-block';
     }
 });
 
@@ -308,4 +287,344 @@ function loadQuestion() {
     if (currentQIndex >= list.length) currentQIndex = 0;
     
     let qData = list[currentQIndex];
-    document.
+    document.getElementById('warning-banner').innerText = warnings[Math.floor(Math.random() * warnings.length)];
+    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Khó - 50đ' : 'Hack Não - 100đ'})`;
+    document.getElementById('question-counter').innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
+    document.getElementById('question-text').innerText = qData.q;
+    document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
+    
+    const optContainer = document.getElementById('options-container');
+    optContainer.innerHTML = "";
+
+    let shuffled = shuffleOptions(qData.options);
+    shuffled.forEach((optText, idx) => {
+        let isCorrect = (optText === qData.correct);
+        optContainer.innerHTML += `<button class="option-btn" onclick="checkAnswer(this, ${isCorrect}, event)">${String.fromCharCode(65 + idx)}. ${optText}</button>`;
+    });
+}
+
+function showFloatingScore(event, text) {
+    let target = event ? event.target : document.getElementById('quiz-score');
+    let rect = target.getBoundingClientRect();
+    let floatDiv = document.createElement('div');
+    floatDiv.className = 'floating-score';
+    floatDiv.innerText = text;
+    floatDiv.style.left = (rect.left + rect.width / 2) + 'px';
+    floatDiv.style.top = rect.top + 'px';
+    document.body.appendChild(floatDiv);
+    setTimeout(() => { floatDiv.remove(); }, 800);
+}
+
+window.checkAnswer = function(btnElement, isCorrect, event) {
+    if (answered) return;
+    answered = true;
+    
+    let list = questionPools[selectedMode];
+    let qData = list[currentQIndex];
+    let buttons = document.querySelectorAll('#options-container .option-btn');
+    
+    if (isCorrect) {
+        playSound('correct');
+        btnElement.classList.add('correct');
+        let pts = (selectedMode === 'hacknao') ? 100 : 50;
+        score += pts;
+        localStorage.setItem('kmm_score', score);
+        document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
+        showFloatingScore(event, `+${pts}đ 🎉`);
+        updateLeaderboard(); checkBadges();
+        if (score >= 3000) { confetti(); }
+    } else {
+        playSound('wrong');
+        btnElement.classList.add('wrong');
+        buttons.forEach(btn => { if (btn.innerText.includes(qData.correct)) btn.classList.add('correct'); });
+        showToast("❌ Trả lời chưa chính xác!", "error");
+    }
+    showExplanationBox(qData.explain);
+};
+
+function showExplanationBox(explainText) {
+    let quizArea = document.getElementById('quiz-area');
+    let explainDiv = document.createElement('div');
+    explainDiv.style.cssText = "margin-top: 10px; padding: 8px 12px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.85rem; color: #fff;";
+    explainDiv.innerHTML = `<strong>Giải thích:</strong> ${explainText}`;
+    quizArea.appendChild(explainDiv);
+}
+
+window.nextQuestion = function() {
+    playSound('click');
+    let list = questionPools[selectedMode];
+    currentQIndex = (currentQIndex + 1) % list.length;
+    localStorage.setItem(`kmm_idx_${selectedMode}`, currentQIndex);
+    let oldNotice = document.querySelector('#quiz-area > div[style*="border-left"]');
+    if (oldNotice) oldNotice.remove();
+    loadQuestion();
+};
+
+function checkBadges() {
+    if (score >= 200) document.getElementById('badge-streak')?.classList.add('unlocked');
+    if (score >= 1500) document.getElementById('badge-cipher')?.classList.add('unlocked');
+    if (score >= 3000) document.getElementById('badge-master')?.classList.add('unlocked');
+}
+
+// --- ĐẾM ONLINE ---
+function setupOnlineCounter() {
+    const onlineNumElem = document.getElementById('online-count-num');
+    if (!onlineNumElem) return;
+    if (!db) { onlineNumElem.innerText = "1"; return; }
+    
+    const clientId = 'user_' + Math.random().toString(36).substring(2, 9);
+    const onlineRef = db.collection("online_users").doc(clientId);
+    onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(err => {});
+    setInterval(() => { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(err => {}); }, 20000);
+    
+    db.collection("online_users").onSnapshot((snapshot) => {
+        let activeCount = 0; let now = new Date().getTime();
+        snapshot.forEach(doc => {
+            let data = doc.data();
+            if (data.timestamp && (now - data.timestamp.toDate().getTime() < 35000)) { activeCount++; }
+        });
+        onlineNumElem.innerText = Math.max(1, activeCount);
+    }, (error) => { onlineNumElem.innerText = "1"; });
+}
+
+// --- MINIGAME CIPHER ---
+let cipherTimer = 30; let cipherInterval = null; let secretPin = ""; let currentEnteredPin = "";
+const cipherChallenges = [
+    { clue: "💡 MANH MỐI: Số đầu = 2, số cuối = 8. Hai số giữa bằng nhau và bằng (2+8)/2", target: "2558" },
+    { clue: "💡 MANH MỐI: Mật mã chứa số 1990 + 35", target: "2025" },
+    { clue: "💡 MANH MỐI: 4 chữ số tăng dần liên tiếp bắt đầu bằng số 3", target: "3456" }
+];
+
+window.openCipherMinigame = function() {
+    playSound('click');
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('admin-dashboard-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'block';
+    startCipherMinigame();
+    showToast("Mở giao diện giải mã Cyber Cipher! 🔐");
+};
+
+window.closeCipherMinigame = function() {
+    playSound('click');
+    if (cipherInterval) clearInterval(cipherInterval);
+    document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('welcome-screen').style.display = 'block';
+    loadLeaderboard(); loadAllFeedbacks(); checkBadges();
+};
+
+function startCipherMinigame() {
+    cipherTimer = 30; currentEnteredPin = ""; updatePinDisplay();
+    document.getElementById('cipher-timer-number').innerText = cipherTimer;
+    document.getElementById('cipher-result-msg').style.display = 'none';
+    let randomTask = cipherChallenges[Math.floor(Math.random() * cipherChallenges.length)];
+    secretPin = randomTask.target;
+    document.getElementById('cipher-clue').innerText = randomTask.clue;
+
+    if (cipherInterval) clearInterval(cipherInterval);
+    cipherInterval = setInterval(() => {
+        cipherTimer--;
+        document.getElementById('cipher-timer-number').innerText = cipherTimer;
+        if (cipherTimer <= 0) {
+            clearInterval(cipherInterval); playSound('wrong');
+            endCipherGame(false, `💥 HẾT GIỜ! Mật mã đúng: <strong>${secretPin}</strong>`);
+        }
+    }, 1000);
+}
+
+window.pressNum = function(val) {
+    playSound('click');
+    if (cipherTimer <= 0) return;
+    if (val === 'del') { currentEnteredPin = currentEnteredPin.slice(0, -1); }
+    else if (currentEnteredPin.length < 4) { currentEnteredPin += val; }
+    updatePinDisplay();
+};
+
+function updatePinDisplay() {
+    for (let i = 0; i < 4; i++) {
+        let box = document.getElementById(`pin-digit-${i}`);
+        if (box) box.innerText = currentEnteredPin[i] || "_";
+    }
+}
+
+window.submitCipher = function() {
+    playSound('click');
+    if (cipherTimer <= 0) return;
+    if (currentEnteredPin.length < 4) { showToast("Vui lòng nhập đủ 4 chữ số!", "error"); return; }
+
+    if (currentEnteredPin === secretPin) {
+        clearInterval(cipherInterval); playSound('win'); confetti();
+        score += 150; localStorage.setItem('kmm_score', score);
+        updateLeaderboard(); checkBadges();
+        document.getElementById('badge-cipher')?.classList.add('unlocked');
+        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! +150 ĐIỂM!");
+        showToast("🎉 Giải mã thành công +150đ!");
+    } else {
+        playSound('wrong'); cipherTimer = Math.max(0, cipherTimer - 5);
+        document.getElementById('cipher-timer-number').innerText = cipherTimer;
+        showToast("❌ Sai mật mã! Phạt trừ 5 giây!", "error");
+        currentEnteredPin = ""; updatePinDisplay();
+    }
+};
+
+function endCipherGame(isWin, msg) {
+    const resBox = document.getElementById('cipher-result-msg');
+    resBox.style.display = 'block';
+    resBox.style.background = isWin ? "rgba(52, 211, 153, 0.25)" : "rgba(239, 68, 68, 0.25)";
+    resBox.style.color = isWin ? "#34d399" : "#f87171";
+    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" onclick="startCipherMinigame()">🔄 Thử Lại</button>`;
+}
+
+// --- ĐÓNG GÓP TÌNH HUỐNG & ĐÁNH GIÁ ---
+window.submitCommunityScenario = function() {
+    playSound('click');
+    const qInput = document.getElementById('contrib-q-input');
+    const detailInput = document.getElementById('contrib-detail-input');
+    const author = playerName || "Khách ẩn danh";
+    const qText = qInput ? qInput.value.trim() : "";
+    const detailText = detailInput ? detailInput.value.trim() : "";
+
+    if (!qText || !detailText) { showToast("Vui lòng điền đầy đủ tiêu đề và nội dung!", "error"); return; }
+    if (!db) { showToast("⚠️ Đang chạy ngoại tuyến.", "error"); return; }
+
+    db.collection("community_scenarios").add({
+        name: author, title: qText, detail: detailText, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        qInput.value = ""; detailInput.value = "";
+        showToast("💡 Đã gửi tình huống đóng góp thành công!");
+    }).catch(err => showToast("Lỗi gửi dữ liệu!", "error"));
+};
+
+window.submitHomeFeedback = function() {
+    playSound('click');
+    const textInput = document.getElementById('home-feedback-input');
+    const typeSelect = document.getElementById('feedback-type-select');
+    const author = playerName || "Khách ẩn danh";
+    const text = textInput ? textInput.value.trim() : "";
+    const type = typeSelect ? typeSelect.value : "feedback";
+
+    if (!text) { showToast("Cậu chưa nhập nội dung!", "error"); return; }
+    if (!db) { showToast("⚠️ Đang ở chế độ offline.", "error"); return; }
+
+    db.collection("feedbacks").add({
+        name: author, text: text, type: type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        textInput.value = "";
+        showToast("❤️ Gửi đánh giá thành công!");
+        loadAllFeedbacks();
+    }).catch(err => {});
+};
+
+function loadAllFeedbacks() {
+    const banner = document.getElementById('top-feedback-ticker');
+    const cardsContainer = document.getElementById('feedback-cards-container');
+    if (!db) return;
+
+    db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
+        .then((snapshot) => {
+            if (!snapshot.empty) {
+                let topDoc = snapshot.docs[0].data();
+                if (banner) banner.innerHTML = `"${topDoc.text}" — <strong>${topDoc.name}</strong>`;
+                let cardsHtml = "";
+                snapshot.forEach((doc) => {
+                    let d = doc.data();
+                    let prefix = d.type === 'bug' ? '🚨 [BUG] ' : '⭐ ';
+                    cardsHtml += `<div class="feedback-card-item" style="${d.type === 'bug' ? 'border-left-color: #ef4444;' : ''}">
+                        <div class="feedback-card-author">${prefix}${d.name || "Ẩn danh"}</div>
+                        <div class="feedback-card-text">"${d.text || ""}"</div>
+                    </div>`;
+                });
+                if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
+            }
+        }).catch(err => {});
+}
+
+// --- QUẢN TRỊ ADMIN ---
+window.openAdminDashboard = function() {
+    playSound('click');
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('admin-dashboard-screen').style.display = 'block';
+    loadAdminData();
+    showToast("Đã mở bảng điều khiển Admin ⚙️");
+};
+
+window.closeAdminDashboard = function() {
+    playSound('click');
+    document.getElementById('admin-dashboard-screen').style.display = 'none';
+    document.getElementById('welcome-screen').style.display = 'block';
+};
+
+function loadAdminData() {
+    const statsBox = document.getElementById('admin-stats-box');
+    const scenariosContainer = document.getElementById('admin-scenarios-list');
+    const feedbacksContainer = document.getElementById('admin-feedbacks-list');
+    if (!db) return;
+
+    db.collection("community_scenarios").get().then((scenSnap) => {
+        db.collection("feedbacks").get().then((fbSnap) => {
+            statsBox.innerHTML = `<p style="margin:2px 0; font-size:0.82rem;">💡 Tình huống đóng góp: <strong>${scenSnap.size}</strong> | 📋 Góp ý/Bug: <strong>${fbSnap.size}</strong></p>`;
+            
+            let scenHtml = "";
+            scenSnap.forEach((doc) => {
+                let d = doc.data();
+                scenHtml += `<div class="admin-item-row">
+                    <div><strong>${d.name}:</strong> [${d.title}] ${d.detail}</div>
+                    <button class="admin-del-btn" onclick="deleteDoc('community_scenarios', '${doc.id}')">Xóa</button>
+                </div>`;
+            });
+            scenariosContainer.innerHTML = scenHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có đóng góp.</div>";
+
+            let fbHtml = "";
+            fbSnap.forEach((doc) => {
+                let d = doc.data();
+                fbHtml += `<div class="admin-item-row">
+                    <div><strong>${d.name}:</strong> ${d.text}</div>
+                    <button class="admin-del-btn" onclick="deleteDoc('feedbacks', '${doc.id}')">Xóa</button>
+                </div>`;
+            });
+            feedbacksContainer.innerHTML = fbHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có phản hồi.</div>";
+        });
+    });
+}
+
+window.deleteDoc = function(coll, docId) {
+    if (!confirm("Xóa mục này?")) return;
+    db.collection(coll).doc(docId).delete().then(() => {
+        loadAdminData();
+        showToast("Đã xóa mục thành công!");
+    }).catch(err => {});
+};
+
+// --- XẾP HẠNG ---
+function updateLeaderboard() {
+    if (!playerName || !db) return;
+    db.collection("leaderboard").doc(playerName).set({
+        name: playerName, score: score, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true }).then(() => loadLeaderboard()).catch(err => {});
+}
+
+function loadLeaderboard() {
+    const container = document.getElementById('leaderboard-list');
+    if (!container || !db) return;
+    db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
+        .then((snapshot) => {
+            let html = ""; let rank = 1;
+            snapshot.forEach((doc) => {
+                let data = doc.data();
+                let playerRank = getPlayerRank(data.score || 0);
+                html += `<div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
+                        <div>
+                            <strong>${data.name || "Ẩn danh"}</strong>
+                            <div style="font-size: 0.7rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
+                        </div>
+                    </div>
+                    <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0}đ</span>
+                </div>`;
+            });
+            container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ.</div>";
+        }).catch(err => {});
+}
