@@ -195,7 +195,7 @@ const questionPools = {
         { q: "15. Khi nhận được lời mời tham gia hội nhóm đầu tư tài chính sinh lời 200% mỗi ngày chỉ bằng chiếc điện thoại, bạn nên:", options: ["Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", "Bỏ ra số vốn nhỏ để thử vận may đổi đời", "Vay mượn bạn bè người thân để đầu tư thu lời lớn", "Hỏi thêm kinh nghiệm của họ trước khi tham gia"], correct: "Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", explain: "💡 Lợi nhuận siêu cao luôn đi kèm rủi ro siêu lớn hoặc 100% là mô hình lừa đảo Ponzi." },
         { q: "16. Kẻ xấu sử dụng công nghệ Deepfake để giả mạo hình ảnh và giọng nói của người thân gọi điện nhờ chuyển tiền. Cách nhận diện tốt nhất là gì?", options: ["Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", "Tin tưởng ngay vì đúng hình ảnh và giọng nói thật của người thân", "Chuyển tiền nhanh chóng vì sợ người thân gặp chuyện gấp", "Tắt máy và không bao giờ nghe điện thoại nữa"], correct: "Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", explain: "💡 Công nghệ Deepfake đôi khi có độ trễ hoặc lỗi hình ảnh khi chuyển động, đặt câu hỏi kiểm chứng là cách khắc phục." },
         { q: "17. Khi điện thoại tự động cài đặt các tệp tin APK lạ từ nguồn không rõ ràng, mối nguy hiểm lớn nhất là gì?", options: ["Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", "Làm cho điện thoại sạc pin nhanh hơn bình thường", "Giúp tăng tốc độ kết nối mạng 5G của máy", "Tự động dọn dẹp các tệp tin rác trong bộ nhớ"], correct: "Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", explain: "💡 File APK ngoài cửa hàng ứng dụng chính thức tiềm ẩn mã độc kiểm soát toàn diện thiết bị." },
-        { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
+        { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Can be investigated criminally...", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
         { q: "19. Khi nhận được thông báo trúng thưởng lớn từ một tổ chức quốc tế yêu cầu đóng trước một khoản phí nhỏ bằng tiền điện tử (Crypto), bạn nên làm gì?", options: ["Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", "Nộp tiền điện tử ngay để kịp nhận giải thưởng lớn", "Đăng ký thông tin cá nhân chi tiết để nhận quà", "Chia sẻ cơ hội trúng thưởng cho bạn bè cùng tham gia"], correct: "Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", explain: "💡 Không có phần thưởng quốc tế nào yêu cầu người trúng tự nộp phí bằng tiền điện tử trước cả." },
         { q: "20. Điều gì là quan trọng nhất để bảo vệ bản thân và cộng đồng trước sự bùng nổ của các hình thức lừa đảo trực tuyến hiện nay?", options: ["Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", "Tuyệt đối không sử dụng điện thoại thông minh và mạng xã hội", "Chỉ kết bạn và giao lưu với những người quen biết ngoài đời thực", "Thay đổi mật khẩu thiết bị liên tục mỗi phút mỗi giây"], correct: "Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", explain: "💡 Kiến thức và sự tỉnh táo chính là chiếc khiên bảo vệ vững chắc nhất trong kỷ nguyên số!" }
     ]
@@ -223,40 +223,44 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     selectMode(selectedMode);
     
-    // ÉP HIỆN NGAY LẬP TỨC NÚT ADMIN VÀ DỮ LIỆU MẪU ĐỂ KHÔNG BỊ TREO "ĐANG TẢI"
-    forceShowAdminAndFallbackData();
-
-    loadLeaderboard();
-    loadAllFeedbacks();
-    setupOnlineCounter();
-    checkBadges();
-    applyTranslations();
+    // GỌI HÀM KHỞI TẠO AN TOÀN - CHỐNG TREO GIAO DIỆN 100%
+    initSafeUI();
 });
 
-// HÀM DỰ PHÒNG CHỐNG TREO GIAO DIỆN
-function forceShowAdminAndFallbackData() {
+// HÀM KHỞI TẠO VÀ RENDER GIAO DIỆN AN TOÀN (BẤT CHẤP LỖI MẠNG HAY FIREBASE)
+function initSafeUI() {
+    // 1. Hiện nút Admin ngay lập tức
     const adminBtn = document.getElementById('admin-trigger-btn');
     if (adminBtn) adminBtn.style.display = 'inline-block';
 
+    // 2. Render dữ liệu ticker góp ý nổi bật
     const banner = document.getElementById('top-feedback-ticker');
-    if (banner && banner.innerText === "Đang tải...") {
-        banner.innerHTML = `"Hệ thống đấu trí rất bổ ích và thiết thực!" — <strong>Admin</strong>`;
+    if (banner) {
+        if (db) {
+            db.collection("feedbacks").orderBy("timestamp", "desc").limit(1).get().then(snap => {
+                if (!snap.empty) {
+                    let d = snap.docs[0].data();
+                    banner.innerHTML = `"${d.text}" — <strong>${d.name}</strong>`;
+                } else {
+                    banner.innerHTML = `"Hệ thống đấu trí an toàn mạng 2026 hoạt động ổn định!" — <strong>Admin</strong>`;
+                }
+            }).catch(() => {
+                banner.innerHTML = `"Chào mừng đến với hệ thống Không Một Mình 2026!" — <strong>Admin</strong>`;
+            });
+        } else {
+            banner.innerHTML = `"Hệ thống đấu trí an toàn mạng 2026 hoạt động ổn định!" — <strong>Admin</strong>`;
+        }
     }
 
-    const lbContainer = document.getElementById('leaderboard-list');
-    if (lbContainer && lbContainer.innerText.includes("Đang tải")) {
-        lbContainer.innerHTML = `
-            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">2850đ</span></div>
-            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#2</span><div><strong>An Toàn Mạng</strong><div style="font-size: 0.7rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div></div></div><span style="color: var(--accent-green); font-weight: bold;">1420đ</span></div>
-        `;
-    }
+    // 3. Render Bảng xếp hạng an toàn
+    loadLeaderboard();
 
-    const fbContainer = document.getElementById('feedback-cards-container');
-    if (fbContainer && fbContainer.innerText.includes("Đang tải")) {
-        fbContainer.innerHTML = `
-            <div class="feedback-card-item"><div class="feedback-card-author">⭐ Admin</div><div class="feedback-card-text">"Chào mừng cậu đến với hệ thống Không Một Mình 2026!"</div></div>
-        `;
-    }
+    // 4. Render Ý kiến cộng đồng an toàn
+    loadAllFeedbacks();
+
+    setupOnlineCounter();
+    checkBadges();
+    applyTranslations();
 }
 
 function toggleTheme() {
@@ -539,15 +543,17 @@ window.submitHomeFeedback = function() {
 };
 
 function loadAllFeedbacks() {
-    if (!db) return;
-    const banner = document.getElementById('top-feedback-ticker');
     const cardsContainer = document.getElementById('feedback-cards-container');
+    if (!cardsContainer) return;
+
+    if (!db) {
+        cardsContainer.innerHTML = `<div class="feedback-card-item"><div class="feedback-card-author">⭐ Admin</div><div class="feedback-card-text">"Hệ thống hoạt động ổn định ở chế độ cục bộ."</div></div>`;
+        return;
+    }
 
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
             if (!snapshot.empty) {
-                let topDoc = snapshot.docs[0].data();
-                if (banner) banner.innerHTML = `"${topDoc.text}" — <strong>${topDoc.name}</strong>`;
                 let cardsHtml = "";
                 snapshot.forEach((doc) => {
                     let d = doc.data();
@@ -557,9 +563,13 @@ function loadAllFeedbacks() {
                         <div class="feedback-card-text">"${d.text || ""}"</div>
                     </div>`;
                 });
-                if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
+                cardsContainer.innerHTML = cardsHtml;
+            } else {
+                cardsContainer.innerHTML = `<div class="feedback-card-item"><div class="feedback-card-author">⭐ Hệ thống</div><div class="feedback-card-text">"Chưa có ý kiến phản hồi nào."</div></div>`;
             }
-        }).catch(err => {});
+        }).catch(() => {
+            cardsContainer.innerHTML = `<div class="feedback-card-item"><div class="feedback-card-author">⭐ Hệ thống</div><div class="feedback-card-text">"Đang hoạt động trực quan an toàn."</div></div>`;
+        });
 }
 
 // --- QUẢN TRỊ ADMIN ---
@@ -632,9 +642,16 @@ function updateLeaderboard() {
 }
 
 function loadLeaderboard() {
-    if (!db) return;
     const container = document.getElementById('leaderboard-list');
     if (!container) return;
+
+    if (!db) {
+        container.innerHTML = `
+            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">2850đ</span></div>
+            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#2</span><div><strong>An Toàn Mạng</strong><div style="font-size: 0.7rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div></div></div><span style="color: var(--accent-green); font-weight: bold;">1420đ</span></div>
+        `;
+        return;
+    }
 
     db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
         .then((snapshot) => {
@@ -655,6 +672,12 @@ function loadLeaderboard() {
                     </div>`;
                 });
                 container.innerHTML = html;
+            } else {
+                container.innerHTML = `<div class="leaderboard-item"><span>Chưa có cao thủ nào.</span></div>`;
             }
-        }).catch(err => {});
+        }).catch(() => {
+            container.innerHTML = `
+                <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">2850đ</span></div>
+            `;
+        });
 }
