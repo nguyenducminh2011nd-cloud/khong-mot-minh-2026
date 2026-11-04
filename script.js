@@ -1,4 +1,4 @@
-// --- CẤU HÌNH FIREBASE AN TOÀN ---
+// --- KHỞI TẠO AN TOÀN TUỆ ĐỐI ---
 let db = null;
 try {
     if (typeof firebase !== 'undefined') {
@@ -14,12 +14,9 @@ try {
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         db = firebase.firestore();
     }
-} catch (e) { console.warn("Firebase warning:", e); }
+} catch (e) { console.warn("Firebase bypass active"); }
 
-// --- KHÓA CỨNG QUYỀN ADMIN CHO MÁY CỦA CẬU ---
-localStorage.setItem('kmm_author_token', 'admin_fixed_master_key_2026');
-
-// --- HỆ THỐNG TOAST NOTIFICATION ---
+// --- HỆ THỐNG TOAST THÔNG BÁO ---
 function showToast(message, type = 'success') {
     let container = document.getElementById('toast-container');
     if (!container) {
@@ -38,7 +35,7 @@ function showToast(message, type = 'success') {
     setTimeout(() => { toast.remove(); }, 3000);
 }
 
-// --- HỆ THỐNG ĐA NGÔN NGỮ (VN / EN) ---
+// --- ĐA NGÔN NGỮ & GIAO DIỆN ---
 let currentLang = localStorage.getItem('kmm_lang') || 'vi';
 const translations = {
     vi: {
@@ -88,48 +85,51 @@ window.toggleLanguage = function() {
 }
 
 function applyTranslations() {
-    document.getElementById('current-lang-lbl').innerText = currentLang.toUpperCase();
+    const langLbl = document.getElementById('current-lang-lbl');
+    if (langLbl) langLbl.innerText = currentLang.toUpperCase();
     document.querySelectorAll('[data-i18n]').forEach(el => {
         let key = el.getAttribute('data-i18n');
         if (translations[currentLang][key]) { el.innerText = translations[currentLang][key]; }
     });
 }
 
-// --- ÂM THANH ---
+// --- ÂM THANH MƯỢT MÀ ---
 let soundEnabled = true;
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playSound(type) {
     if (!soundEnabled) return;
-    if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-    let now = audioCtx.currentTime;
+    try {
+        if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        let now = audioCtx.currentTime;
 
-    if (type === 'click') {
-        osc.type = 'sine'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
-        gainNode.gain.setValueAtTime(0.1, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-        osc.start(now); osc.stop(now + 0.08);
-    } else if (type === 'correct') {
-        osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(659.25, now + 0.1);
-        gainNode.gain.setValueAtTime(0.15, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-        osc.start(now); osc.stop(now + 0.3);
-    } else if (type === 'wrong') {
-        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.setValueAtTime(130, now + 0.15);
-        gainNode.gain.setValueAtTime(0.15, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-        osc.start(now); osc.stop(now + 0.25);
-    } else if (type === 'win') {
-        let notes = [523.25, 659.25, 783.99, 1046.50];
-        notes.forEach((freq, idx) => {
-            let t = now + idx * 0.08;
-            let o = audioCtx.createOscillator(); let g = audioCtx.createGain();
-            o.connect(g); g.connect(audioCtx.destination);
-            o.frequency.setValueAtTime(freq, t); g.gain.setValueAtTime(0.15, t);
-            g.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
-            o.start(t); o.stop(t + 0.15);
-        });
-    }
+        if (type === 'click') {
+            osc.type = 'sine'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+            gainNode.gain.setValueAtTime(0.1, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+            osc.start(now); osc.stop(now + 0.08);
+        } else if (type === 'correct') {
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(659.25, now + 0.1);
+            gainNode.gain.setValueAtTime(0.15, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            osc.start(now); osc.stop(now + 0.3);
+        } else if (type === 'wrong') {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.setValueAtTime(130, now + 0.15);
+            gainNode.gain.setValueAtTime(0.15, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+            osc.start(now); osc.stop(now + 0.25);
+        } else if (type === 'win') {
+            let notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, idx) => {
+                let t = now + idx * 0.08;
+                let o = audioCtx.createOscillator(); let g = audioCtx.createGain();
+                o.connect(g); g.connect(audioCtx.destination);
+                o.frequency.setValueAtTime(freq, t); g.gain.setValueAtTime(0.15, t);
+                g.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+                o.start(t); o.stop(t + 0.15);
+            });
+        }
+    } catch (err) {}
 }
 
 window.toggleAudio = function() {
@@ -153,7 +153,7 @@ function getPlayerRank(score) {
     return { name: "🥉 Đồng", color: "#cd7f32" };
 }
 
-// --- KHO CÂU HỎI ---
+// --- KHO CÂU HỎI ĐẦY ĐỦ ---
 const questionPools = {
     kho: [
         { q: "1. Nhận cuộc gọi tự xưng Công an yêu cầu chuyển tiền vào tài khoản tạm giữ để điều tra. Bạn xử lý thế nào?", options: ["Cúp máy ngay lập tức và báo công an địa phương", "Chuyển tiền vào tài khoản để chứng minh trong sạch", "Cung cấp mã OTP qua điện thoại cho người gọi", "Hẹn gặp trực tiếp người gọi ở nơi vắng vẻ"], correct: "Cúp máy ngay lập tức và báo công an địa phương", explain: "💡 Công an không bao giờ làm việc hay yêu cầu chuyển tiền qua điện thoại!" },
@@ -196,339 +196,4 @@ const questionPools = {
         { q: "16. Kẻ xấu sử dụng công nghệ Deepfake để giả mạo hình ảnh và giọng nói của người thân gọi điện nhờ chuyển tiền. Cách nhận diện tốt nhất là gì?", options: ["Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", "Tin tưởng ngay vì đúng hình ảnh và giọng nói thật của người thân", "Chuyển tiền nhanh chóng vì sợ người thân gặp chuyện gấp", "Tắt máy và không bao giờ nghe điện thoại nữa"], correct: "Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", explain: "💡 Công nghệ Deepfake đôi khi có độ trễ hoặc lỗi hình ảnh khi chuyển động, đặt câu hỏi kiểm chứng là cách khắc phục." },
         { q: "17. Khi điện thoại tự động cài đặt các tệp tin APK lạ từ nguồn không rõ ràng, mối nguy hiểm lớn nhất là gì?", options: ["Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", "Làm cho điện thoại sạc pin nhanh hơn bình thường", "Giúp tăng tốc độ kết nối mạng 5G của máy", "Tự động dọn dẹp các tệp tin rác trong bộ nhớ"], correct: "Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", explain: "💡 File APK ngoài cửa hàng ứng dụng chính thức tiềm ẩn mã độc kiểm soát toàn diện thiết bị." },
         { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
-        { q: "19. Khi nhận được thông báo trúng thưởng lớn từ một tổ chức quốc tế yêu cầu đóng trước một khoản phí nhỏ bằng tiền điện tử (Crypto), bạn nên làm gì?", options: ["Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", "Nộp tiền điện tử ngay để kịp nhận giải thưởng lớn", "Đăng ký thông tin cá nhân chi tiết để nhận quà", "Chia sẻ cơ hội trúng thưởng cho bạn bè cùng tham gia"], correct: "Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", explain: "💡 Không có phần thưởng quốc tế nào yêu cầu người trúng tự nộp phí bằng tiền điện tử trước cả." },
-        { q: "20. Điều gì là quan trọng nhất để bảo vệ bản thân và cộng đồng trước sự bùng nổ của các hình thức lừa đảo trực tuyến hiện nay?", options: ["Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", "Tuyệt đối không sử dụng điện thoại thông minh và mạng xã hội", "Chỉ kết bạn và giao lưu với những người quen biết ngoài đời thực", "Thay đổi mật khẩu thiết bị liên tục mỗi phút mỗi giây"], correct: "Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", explain: "💡 Kiến thức và sự tỉnh táo chính là chiếc khiên bảo vệ vững chắc nhất trong kỷ nguyên số!" }
-    ]
-};
-
-function shuffleOptions(array) {
-    let arr = [...array];
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-}
-
-let selectedMode = localStorage.getItem('kmm_mode') || 'kho';
-let currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) || 0;
-let score = parseInt(localStorage.getItem('kmm_score')) || 0;
-let playerName = localStorage.getItem('kmm_player_name') || "";
-let answered = false;
-
-document.addEventListener("DOMContentLoaded", function() {
-    if (playerName) {
-        const nameInput = document.getElementById('player-name-input');
-        if (nameInput) nameInput.value = playerName;
-    }
-    selectMode(selectedMode);
-    
-    // ÉP HIỆN Giao diện tức thì bằng dữ liệu mẫu an toàn (bất chấp lỗi kết nối cloud)
-    forceRenderSafeUI();
-});
-
-function forceRenderSafeUI() {
-    // 1. Luôn hiện nút Admin
-    const adminBtn = document.getElementById('admin-trigger-btn');
-    if (adminBtn) adminBtn.style.display = 'inline-block';
-
-    // 2. Render Ticker
-    const banner = document.getElementById('top-feedback-ticker');
-    if (banner) {
-        banner.innerHTML = `"Hệ thống đấu trí an toàn mạng hoạt động cực kỳ mượt mà!" — <strong>Admin</strong>`;
-    }
-
-    // 3. Render Leaderboard mẫu ngay lập tức
-    const lbContainer = document.getElementById('leaderboard-list');
-    if (lbContainer) {
-        lbContainer.innerHTML = `
-            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">3200đ</span></div>
-            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#2</span><div><strong>An Toàn Mạng</strong><div style="font-size: 0.7rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div></div></div><span style="color: var(--accent-green); font-weight: bold;">1650đ</span></div>
-            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#3</span><div><strong>Bảo Mật 2026</strong><div style="font-size: 0.7rem; color: #fbbf24; font-weight: bold;">🥇 Vàng</div></div></div><span style="color: var(--accent-green); font-weight: bold;">850đ</span></div>
-        `;
-    }
-
-    // 4. Render Community Feed mẫu ngay lập tức
-    const cardsContainer = document.getElementById('feedback-cards-container');
-    if (cardsContainer) {
-        cardsContainer.innerHTML = `
-            <div class="feedback-card-item"><div class="feedback-card-author">⭐ Admin</div><div class="feedback-card-text">"Chào mừng cậu đến với dự án Không Một Mình 2026!"</div></div>
-            <div class="feedback-card-item" style="border-left-color: #ef4444;"><div class="feedback-card-author">🚨 [BUG] Hệ thống</div><div class="feedback-card-text">"Đã cấu hình bảo mật thành công."</div></div>
-        `;
-    }
-
-    setupOnlineCounter();
-    checkBadges();
-    applyTranslations();
-}
-
-function toggleTheme() {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('kmm_theme', newTheme);
-    showToast(newTheme === 'dark' ? "Đã bật giao diện Tối 🌙" : "Đã bật giao diện Sáng ☀️");
-}
-document.documentElement.setAttribute('data-theme', localStorage.getItem('kmm_theme') || 'dark');
-
-window.selectMode = function(mode) {
-    playSound('click');
-    selectedMode = mode;
-    localStorage.setItem('kmm_mode', mode);
-    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-    const btnElem = document.getElementById(`btn-mode-${mode}`);
-    if (btnElem) btnElem.classList.add('active');
-    showToast(`Đã chọn chế độ: ${mode === 'kho' ? 'Khó (50đ)' : 'Hack Não (100đ)'}`);
-}
-
-window.startGame = function() {
-    playSound('click');
-    document.getElementById('welcome-screen').style.display = 'none';
-    document.getElementById('minigame-screen').style.display = 'none';
-    document.getElementById('admin-dashboard-screen').style.display = 'none';
-    document.getElementById('quiz-screen').style.display = 'block';
-    currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) || 0;
-    loadQuestion();
-    showToast("Bắt đầu thử thách đấu trí! 🚀");
-}
-
-window.pauseAndSaveGame = function() {
-    playSound('click');
-    showToast(`⏸️ Đã lưu tiến trình! Điểm hiện tại: ${score}`);
-    document.getElementById('quiz-screen').style.display = 'none';
-    document.getElementById('welcome-screen').style.display = 'block';
-}
-
-window.savePlayerName = function(val) {
-    playerName = val.trim();
-    localStorage.setItem('kmm_player_name', playerName);
-}
-
-function loadQuestion() {
-    answered = false;
-    let list = questionPools[selectedMode];
-    if (currentQIndex >= list.length) currentQIndex = 0;
-    
-    let qData = list[currentQIndex];
-    document.getElementById('warning-banner').innerText = warnings[Math.floor(Math.random() * warnings.length)];
-    document.getElementById('quiz-title-mode').innerText = `🧠 Đấu Trí (${selectedMode === 'kho' ? 'Khó - 50đ' : 'Hack Não - 100đ'})`;
-    document.getElementById('question-counter').innerText = `Tình huống ${currentQIndex + 1} / ${list.length}`;
-    document.getElementById('question-text').innerText = qData.q;
-    document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
-    
-    const optContainer = document.getElementById('options-container');
-    optContainer.innerHTML = "";
-
-    let shuffled = shuffleOptions(qData.options);
-    shuffled.forEach((optText, idx) => {
-        let isCorrect = (optText === qData.correct);
-        optContainer.innerHTML += `<button class="option-btn" onclick="checkAnswer(this, ${isCorrect}, event)">${String.fromCharCode(65 + idx)}. ${optText}</button>`;
-    });
-}
-
-function showFloatingScore(event, text) {
-    let target = event ? event.target : document.getElementById('quiz-score');
-    let rect = target.getBoundingClientRect();
-    let floatDiv = document.createElement('div');
-    floatDiv.className = 'floating-score';
-    floatDiv.innerText = text;
-    floatDiv.style.left = (rect.left + rect.width / 2) + 'px';
-    floatDiv.style.top = rect.top + 'px';
-    document.body.appendChild(floatDiv);
-    setTimeout(() => { floatDiv.remove(); }, 800);
-}
-
-window.checkAnswer = function(btnElement, isCorrect, event) {
-    if (answered) return;
-    answered = true;
-    
-    let list = questionPools[selectedMode];
-    let qData = list[currentQIndex];
-    let buttons = document.querySelectorAll('#options-container .option-btn');
-    
-    if (isCorrect) {
-        playSound('correct');
-        btnElement.classList.add('correct');
-        let pts = (selectedMode === 'hacknao') ? 100 : 50;
-        score += pts;
-        localStorage.setItem('kmm_score', score);
-        document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
-        showFloatingScore(event, `+${pts}đ 🎉`);
-        checkBadges();
-        if (score >= 3000) { confetti(); }
-    } else {
-        playSound('wrong');
-        btnElement.classList.add('wrong');
-        buttons.forEach(btn => { if (btn.innerText.includes(qData.correct)) btn.classList.add('correct'); });
-        showToast("❌ Trả lời chưa chính xác!", "error");
-    }
-    showExplanationBox(qData.explain);
-};
-
-function showExplanationBox(explainText) {
-    let quizArea = document.getElementById('quiz-area');
-    let explainDiv = document.createElement('div');
-    explainDiv.style.cssText = "margin-top: 10px; padding: 8px 12px; background: rgba(52, 211, 153, 0.15); border-left: 4px solid var(--accent-green); border-radius: 6px; font-size: 0.85rem; color: #fff;";
-    explainDiv.innerHTML = `<strong>Giải thích:</strong> ${explainText}`;
-    quizArea.appendChild(explainDiv);
-}
-
-window.nextQuestion = function() {
-    playSound('click');
-    let list = questionPools[selectedMode];
-    currentQIndex = (currentQIndex + 1) % list.length;
-    localStorage.setItem(`kmm_idx_${selectedMode}`, currentQIndex);
-    let oldNotice = document.querySelector('#quiz-area > div[style*="border-left"]');
-    if (oldNotice) oldNotice.remove();
-    loadQuestion();
-};
-
-function checkBadges() {
-    if (score >= 200) document.getElementById('badge-streak')?.classList.add('unlocked');
-    if (score >= 1500) document.getElementById('badge-cipher')?.classList.add('unlocked');
-    if (score >= 3000) document.getElementById('badge-master')?.classList.add('unlocked');
-}
-
-// --- ĐẾM ONLINE ---
-function setupOnlineCounter() {
-    const onlineNumElem = document.getElementById('online-count-num');
-    if (!onlineNumElem) return;
-    onlineNumElem.innerText = "1";
-}
-
-// --- MINIGAME CIPHER ---
-let cipherTimer = 30; let cipherInterval = null; let secretPin = ""; let currentEnteredPin = "";
-const cipherChallenges = [
-    { clue: "💡 MANH MỐI: Số đầu = 2, số cuối = 8. Hai số giữa bằng nhau và bằng (2+8)/2", target: "2558" },
-    { clue: "💡 MANH MỐI: Mật mã chứa số 1990 + 35", target: "2025" },
-    { clue: "💡 MANH MỐI: 4 chữ số tăng dần liên tiếp bắt đầu bằng số 3", target: "3456" }
-];
-
-window.openCipherMinigame = function() {
-    playSound('click');
-    document.getElementById('welcome-screen').style.display = 'none';
-    document.getElementById('quiz-screen').style.display = 'none';
-    document.getElementById('admin-dashboard-screen').style.display = 'none';
-    document.getElementById('minigame-screen').style.display = 'block';
-    startCipherMinigame();
-    showToast("Mở giao diện giải mã Cyber Cipher! 🔐");
-};
-
-window.closeCipherMinigame = function() {
-    playSound('click');
-    if (cipherInterval) clearInterval(cipherInterval);
-    document.getElementById('minigame-screen').style.display = 'none';
-    document.getElementById('welcome-screen').style.display = 'block';
-};
-
-function startCipherMinigame() {
-    cipherTimer = 30; currentEnteredPin = ""; updatePinDisplay();
-    document.getElementById('cipher-timer-number').innerText = cipherTimer;
-    document.getElementById('cipher-result-msg').style.display = 'none';
-    let randomTask = cipherChallenges[Math.floor(Math.random() * cipherChallenges.length)];
-    secretPin = randomTask.target;
-    document.getElementById('cipher-clue').innerText = randomTask.clue;
-
-    if (cipherInterval) clearInterval(cipherInterval);
-    cipherInterval = setInterval(() => {
-        cipherTimer--;
-        document.getElementById('cipher-timer-number').innerText = cipherTimer;
-        if (cipherTimer <= 0) {
-            clearInterval(cipherInterval); playSound('wrong');
-            endCipherGame(false, `💥 HẾT GIỜ! Mật mã đúng: <strong>${secretPin}</strong>`);
-        }
-    }, 1000);
-}
-
-window.pressNum = function(val) {
-    playSound('click');
-    if (cipherTimer <= 0) return;
-    if (val === 'del') { currentEnteredPin = currentEnteredPin.slice(0, -1); }
-    else if (currentEnteredPin.length < 4) { currentEnteredPin += val; }
-    updatePinDisplay();
-};
-
-function updatePinDisplay() {
-    for (let i = 0; i < 4; i++) {
-        let box = document.getElementById(`pin-digit-${i}`);
-        if (box) box.innerText = currentEnteredPin[i] || "_";
-    }
-}
-
-window.submitCipher = function() {
-    playSound('click');
-    if (cipherTimer <= 0) return;
-    if (currentEnteredPin.length < 4) { showToast("Vui lòng nhập đủ 4 chữ số!", "error"); return; }
-
-    if (currentEnteredPin === secretPin) {
-        clearInterval(cipherInterval); playSound('win'); confetti();
-        score += 150; localStorage.setItem('kmm_score', score);
-        checkBadges();
-        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! +150 ĐIỂM!");
-        showToast("🎉 Giải mã thành công +150đ!");
-    } else {
-        playSound('wrong'); cipherTimer = Math.max(0, cipherTimer - 5);
-        document.getElementById('cipher-timer-number').innerText = cipherTimer;
-        showToast("❌ Sai mật mã! Phạt trừ 5 giây!", "error");
-        currentEnteredPin = ""; updatePinDisplay();
-    }
-};
-
-function endCipherGame(isWin, msg) {
-    const resBox = document.getElementById('cipher-result-msg');
-    resBox.style.display = 'block';
-    resBox.style.background = isWin ? "rgba(52, 211, 153, 0.25)" : "rgba(239, 68, 68, 0.25)";
-    resBox.style.color = isWin ? "#34d399" : "#f87171";
-    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" onclick="startCipherMinigame()">🔄 Thử Lại</button>`;
-}
-
-// --- ĐÓNG GÓP TÌNH HUỐNG & ĐÁNH GIÁ ---
-window.submitCommunityScenario = function() {
-    playSound('click');
-    const qInput = document.getElementById('contrib-q-input');
-    const detailInput = document.getElementById('contrib-detail-input');
-    if (!qInput.value.trim() || !detailInput.value.trim()) { showToast("Vui lòng điền đầy đủ tiêu đề và nội dung!", "error"); return; }
-    qInput.value = ""; detailInput.value = "";
-    showToast("💡 Đã gửi tình huống đóng góp thành công!");
-};
-
-window.submitHomeFeedback = function() {
-    playSound('click');
-    const textInput = document.getElementById('home-feedback-input');
-    if (!textInput.value.trim()) { showToast("Cậu chưa nhập nội dung!", "error"); return; }
-    textInput.value = "";
-    showToast("❤️ Gửi đánh giá thành công!");
-};
-
-// --- QUẢN TRỊ ADMIN ---
-window.openAdminDashboard = function() {
-    playSound('click');
-    document.getElementById('welcome-screen').style.display = 'none';
-    document.getElementById('quiz-screen').style.display = 'none';
-    document.getElementById('minigame-screen').style.display = 'none';
-    document.getElementById('admin-dashboard-screen').style.display = 'block';
-    loadAdminData();
-    showToast("Đã mở bảng điều khiển Admin ⚙️");
-};
-
-window.closeAdminDashboard = function() {
-    playSound('click');
-    document.getElementById('admin-dashboard-screen').style.display = 'none';
-    document.getElementById('welcome-screen').style.display = 'block';
-};
-
-function loadAdminData() {
-    const statsBox = document.getElementById('admin-stats-box');
-    const scenariosContainer = document.getElementById('admin-scenarios-list');
-    const feedbacksContainer = document.getElementById('admin-feedbacks-list');
-    
-    statsBox.innerHTML = `<p style="margin:2px 0; font-size:0.82rem;">💡 Tình huống đóng góp: <strong>3</strong> | 📋 Góp ý/Bug: <strong>2</strong></p>`;
-    scenariosContainer.innerHTML = `<div class="admin-item-row"><div><strong>Admin:</strong> [Mẫu] Kiểm tra hệ thống quản trị</div><button class="admin-del-btn" onclick="showToast('Đã xóa mẫu!')">Xóa</button></div>`;
-    feedbacksContainer.innerHTML = `<div class="admin-item-row"><div><strong>Admin:</strong> Hệ thống hoạt động tốt!</div><button class="admin-del-btn" onclick="showToast('Đã xóa mẫu!')">Xóa</button></div>`;
-}
-
-window.deleteDoc = function(coll, docId) {
-    if (!confirm("Xóa mục này?")) return;
-    showToast("Đã xóa mục thành công!");
-};
+        { q: "1
