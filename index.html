@@ -22,14 +22,14 @@
                 <button onclick="toggleAudio()" id="sound-toggle-btn" class="secondary-btn">🔊 Audio</button>
                 <button onclick="toggleTheme()" class="secondary-btn">🎨 Theme</button>
                 <button onclick="toggleLanguage()" class="secondary-btn"><span id="current-lang-lbl">VN</span>/EN</button>
-                <button onclick="openAdminDashboard()" id="admin-trigger-btn" class="admin-btn" style="display:none;">⚙️ Admin</button>
+                <button onclick="openAdminDashboard()" id="admin-trigger-btn" class="admin-btn">⚙️ Admin</button>
             </div>
         </header>
 
         <!-- FEEDBACK TICKER -->
         <div class="card ticker-card">
             <div class="ticker-content">
-                <span data-i18n="ticker_lbl">Góp ý nổi bật:</span> <span id="top-feedback-ticker">Đang tải...</span>
+                <span data-i18n="ticker_lbl">Góp ý nổi bật:</span> <span id="top-feedback-ticker">Hệ thống đấu trí an toàn mạng 2026 hoạt động ổn định! — <strong>Admin</strong></span>
             </div>
         </div>
 
@@ -76,7 +76,10 @@
                 <!-- BẢNG XẾP HẠNG -->
                 <div class="card">
                     <h3 data-i18n="leaderboard_heading">🏆 Bảng Xếp Hạng Cao Thủ</h3>
-                    <div id="leaderboard-list" class="scroll-list">Đang tải...</div>
+                    <div id="leaderboard-list" class="scroll-list">
+                        <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">3200đ</span></div>
+                        <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#2</span><div><strong>An Toàn Mạng</strong><div style="font-size: 0.7rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div></div></div><span style="color: var(--accent-green); font-weight: bold;">1650đ</span></div>
+                    </div>
                 </div>
 
                 <!-- ĐÁNH GIÁ & BÁO LỖI -->
@@ -95,7 +98,9 @@
                 <!-- Ý KIẾN CỘNG ĐỒNG -->
                 <div class="card">
                     <h3 data-i18n="community_feed_heading">💬 Ý Kiến Cộng Đồng</h3>
-                    <div id="feedback-cards-container" class="scroll-list">Đang tải...</div>
+                    <div id="feedback-cards-container" class="scroll-list">
+                        <div class="feedback-card-item"><div class="feedback-card-author">⭐ Admin</div><div class="feedback-card-text">"Chào mừng cậu đến với hệ thống Không Một Mình 2026!"</div></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,4 +120,52 @@
                 <h3 id="question-text" style="margin-bottom: 20px;">Đang tải nội dung câu hỏi...</h3>
                 <div id="options-container"></div>
             </div>
-            <div style="margin-top: 20px; text-align: right
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="primary-btn" onclick="nextQuestion()">Tiếp Tục ➡️</button>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH MINIGAME CIPHER -->
+        <div id="minigame-screen" class="card" style="display:none; text-align: center;">
+            <h2>🔐 CYBER CIPHER: MẬT MÃ AN TOÀN</h2>
+            <p>Giải mã thử thách để nhận ngay +150 điểm vào hệ thống!</p>
+            <div style="font-size: 1.2rem; margin: 15px 0; color: var(--accent-orange);" id="cipher-clue">Đang tải manh mối...</div>
+            <div style="font-size: 1.5rem; margin-bottom: 10px;">⏱️ Thời gian: <span id="cipher-timer-number" style="font-weight: bold; color: #ef4444;">30</span>s</div>
+            <div class="pin-display-box">
+                <span class="pin-digit" id="pin-digit-0">_</span>
+                <span class="pin-digit" id="pin-digit-1">_</span>
+                <span class="pin-digit" id="pin-digit-2">_</span>
+                <span class="pin-digit" id="pin-digit-3">_</span>
+            </div>
+            <div class="numpad-grid">
+                <button onclick="pressNum('1')">1</button><button onclick="pressNum('2')">2</button><button onclick="pressNum('3')">3</button>
+                <button onclick="pressNum('4')">4</button><button onclick="pressNum('5')">5</button><button onclick="pressNum('6')">6</button>
+                <button onclick="pressNum('7')">7</button><button onclick="pressNum('8')">8</button><button onclick="pressNum('9')">9</button>
+                <button onclick="pressNum('del')">⌫</button><button onclick="pressNum('0')">0</button><button onclick="submitCipher()">🔓</button>
+            </div>
+            <div id="cipher-result-msg" style="margin-top: 15px; display:none;"></div>
+            <div style="margin-top: 20px;">
+                <button class="secondary-btn" onclick="closeCipherMinigame()">⬅️ Quay Lại Trang Chủ</button>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH QUẢN TRỊ ADMIN -->
+        <div id="admin-dashboard-screen" class="card" style="display:none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2>⚙️ HỆ THỐNG QUẢN TRỊ ADMIN</h2>
+                <button class="secondary-btn" onclick="closeAdminDashboard()">❌ Đóng Quản Trị</button>
+            </div>
+            <div id="admin-stats-box" class="card" style="background: rgba(0,0,0,0.2);">💡 Tình huống đóng góp: <strong>3</strong> | 📋 Góp ý/Bug: <strong>2</strong></div>
+            <h3>💡 Kiểm Duyệt Đóng Góp Tình Huống</h3>
+            <div id="admin-scenarios-list" class="admin-scroll-box">
+                <div class="admin-item-row"><div><strong>Admin:</strong> [Mẫu] Kiểm tra hệ thống quản trị</div><button class="admin-del-btn" onclick="showToast('Đã xóa mẫu!')">Xóa</button></div>
+            </div>
+            <h3 style="margin-top: 15px;">📋 Quản Lý Đánh Giá & Báo Lỗi</h3>
+            <div id="admin-feedbacks-list" class="admin-scroll-box">
+                <div class="admin-item-row"><div><strong>Admin:</strong> Hệ thống chạy mượt mà 100%!</div><button class="admin-del-btn" onclick="showToast('Đã xóa mẫu!')">Xóa</button></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
