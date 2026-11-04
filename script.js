@@ -20,7 +20,26 @@ try {
 localStorage.setItem('kmm_author_token', 'admin_fixed_master_key_2026');
 let authorDeviceKey = localStorage.getItem('kmm_author_token');
 
-// --- ĐA NGÔN NGỮ (VN / EN) ---
+// --- HỆ THỐNG TOAST NOTIFICATION ĐẸP MẮT ---
+function showToast(message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast-msg';
+    if (type === 'error') {
+        toast.style.borderColor = '#ef4444';
+        toast.style.color = '#f87171';
+    }
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 3000);
+}
+
+// --- HỆ THỐNG ĐA NGÔN NGỮ (VN / EN) ---
 let currentLang = localStorage.getItem('kmm_lang') || 'vi';
 const translations = {
     vi: {
@@ -66,6 +85,7 @@ window.toggleLanguage = function() {
     currentLang = currentLang === 'vi' ? 'en' : 'vi';
     localStorage.setItem('kmm_lang', currentLang);
     applyTranslations();
+    showToast(currentLang === 'vi' ? "Đã chuyển sang Tiếng Việt 🇻🇳" : "Switched to English 🇬🇧");
 }
 
 function applyTranslations() {
@@ -117,6 +137,7 @@ window.toggleAudio = function() {
     soundEnabled = !soundEnabled;
     const btn = document.getElementById('sound-toggle-btn');
     if (btn) btn.innerText = soundEnabled ? "🔊 Audio" : "🔇 Off";
+    showToast(soundEnabled ? "Đã bật âm thanh 🔊" : "Đã tắt âm thanh 🔇");
 }
 
 const warnings = [
@@ -220,6 +241,7 @@ function toggleTheme() {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     html.setAttribute('data-theme', newTheme);
     localStorage.setItem('kmm_theme', newTheme);
+    showToast(newTheme === 'dark' ? "Đã bật giao diện Tối 🌙" : "Đã bật giao diện Sáng ☀️");
 }
 document.documentElement.setAttribute('data-theme', localStorage.getItem('kmm_theme') || 'dark');
 
@@ -230,6 +252,7 @@ window.selectMode = function(mode) {
     document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
     const btnElem = document.getElementById(`btn-mode-${mode}`);
     if (btnElem) btnElem.classList.add('active');
+    showToast(`Đã chọn chế độ: ${mode === 'kho' ? 'Khó (50đ)' : 'Hack Não (100đ)'}`);
 }
 
 window.startGame = function() {
@@ -240,11 +263,12 @@ window.startGame = function() {
     document.getElementById('quiz-screen').style.display = 'block';
     currentQIndex = parseInt(localStorage.getItem(`kmm_idx_${selectedMode}`)) || 0;
     loadQuestion();
+    showToast("Bắt đầu thử thách đấu trí! 🚀");
 }
 
 window.pauseAndSaveGame = function() {
     playSound('click');
-    alert(`⏸️ Đã lưu tiến trình! Điểm: ${score}`);
+    showToast(`⏸️ Đã lưu tiến trình! Điểm hiện tại: ${score}`);
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
     loadLeaderboard(); loadAllFeedbacks(); checkBadges();
@@ -274,11 +298,24 @@ function loadQuestion() {
     let shuffled = shuffleOptions(qData.options);
     shuffled.forEach((optText, idx) => {
         let isCorrect = (optText === qData.correct);
-        optContainer.innerHTML += `<button class="option-btn" onclick="checkAnswer(this, ${isCorrect})">${String.fromCharCode(65 + idx)}. ${optText}</button>`;
+        optContainer.innerHTML += `<button class="option-btn" onclick="checkAnswer(this, ${isCorrect}, event)">${String.fromCharCode(65 + idx)}. ${optText}</button>`;
     });
 }
 
-window.checkAnswer = function(btnElement, isCorrect) {
+// Hàm tạo hiệu ứng chữ bay khi cộng điểm
+function showFloatingScore(event, text) {
+    let target = event ? event.target : document.getElementById('quiz-score');
+    let rect = target.getBoundingClientRect();
+    let floatDiv = document.createElement('div');
+    floatDiv.className = 'floating-score';
+    floatDiv.innerText = text;
+    floatDiv.style.left = (rect.left + rect.width / 2) + 'px';
+    floatDiv.style.top = rect.top + 'px';
+    document.body.appendChild(floatDiv);
+    setTimeout(() => { floatDiv.remove(); }, 800);
+}
+
+window.checkAnswer = function(btnElement, isCorrect, event) {
     if (answered) return;
     answered = true;
     
@@ -289,15 +326,18 @@ window.checkAnswer = function(btnElement, isCorrect) {
     if (isCorrect) {
         playSound('correct');
         btnElement.classList.add('correct');
-        score += (selectedMode === 'hacknao') ? 100 : 50;
+        let pts = (selectedMode === 'hacknao') ? 100 : 50;
+        score += pts;
         localStorage.setItem('kmm_score', score);
         document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
+        showFloatingScore(event, `+${pts}đ 🎉`);
         updateLeaderboard(); checkBadges();
         if (score >= 3000) { confetti(); }
     } else {
         playSound('wrong');
         btnElement.classList.add('wrong');
         buttons.forEach(btn => { if (btn.innerText.includes(qData.correct)) btn.classList.add('correct'); });
+        showToast("❌ Trả lời chưa chính xác!", "error");
     }
     showExplanationBox(qData.explain);
 };
@@ -362,6 +402,7 @@ window.openCipherMinigame = function() {
     document.getElementById('admin-dashboard-screen').style.display = 'none';
     document.getElementById('minigame-screen').style.display = 'block';
     startCipherMinigame();
+    showToast("Mở giao diện giải mã Cyber Cipher! 🔐");
 };
 
 window.closeCipherMinigame = function() {
@@ -409,7 +450,7 @@ function updatePinDisplay() {
 window.submitCipher = function() {
     playSound('click');
     if (cipherTimer <= 0) return;
-    if (currentEnteredPin.length < 4) { alert("Nhập đủ 4 chữ số!"); return; }
+    if (currentEnteredPin.length < 4) { showToast("Vui lòng nhập đủ 4 chữ số!", "error"); return; }
 
     if (currentEnteredPin === secretPin) {
         clearInterval(cipherInterval); playSound('win'); confetti();
@@ -417,10 +458,11 @@ window.submitCipher = function() {
         updateLeaderboard(); checkBadges();
         document.getElementById('badge-cipher')?.classList.add('unlocked');
         endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! +150 ĐIỂM!");
+        showToast("🎉 Giải mã thành công +150đ!");
     } else {
         playSound('wrong'); cipherTimer = Math.max(0, cipherTimer - 5);
         document.getElementById('cipher-timer-number').innerText = cipherTimer;
-        alert("❌ Sai mật mã! Phạt trừ 5 giây!");
+        showToast("❌ Sai mật mã! Phạt trừ 5 giây!", "error");
         currentEnteredPin = ""; updatePinDisplay();
     }
 };
@@ -442,15 +484,15 @@ window.submitCommunityScenario = function() {
     const qText = qInput ? qInput.value.trim() : "";
     const detailText = detailInput ? detailInput.value.trim() : "";
 
-    if (!qText || !detailText) { alert("Cậu vui lòng điền đầy đủ tiêu đề và nội dung!"); return; }
-    if (!db) { alert("⚠️ Lưu ý: Web đang chạy ngoại tuyến (Offline Mode)."); return; }
+    if (!qText || !detailText) { showToast("Vui lòng điền đầy đủ tiêu đề và nội dung!", "error"); return; }
+    if (!db) { showToast("⚠️ Đang chạy ngoại tuyến.", "error"); return; }
 
     db.collection("community_scenarios").add({
         name: author, title: qText, detail: detailText, timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
         qInput.value = ""; detailInput.value = "";
-        alert("💡 Đã gửi tình huống đóng góp thành công cho Admin!");
-    }).catch(err => alert("Lỗi gửi dữ liệu!"));
+        showToast("💡 Đã gửi tình huống đóng góp thành công!");
+    }).catch(err => showToast("Lỗi gửi dữ liệu!", "error"));
 };
 
 window.submitHomeFeedback = function() {
@@ -461,14 +503,14 @@ window.submitHomeFeedback = function() {
     const text = textInput ? textInput.value.trim() : "";
     const type = typeSelect ? typeSelect.value : "feedback";
 
-    if (!text) { alert("Cậu chưa nhập nội dung!"); return; }
-    if (!db) { alert("⚠️ Đang ở chế độ offline."); return; }
+    if (!text) { showToast("Cậu chưa nhập nội dung!", "error"); return; }
+    if (!db) { showToast("⚠️ Đang ở chế độ offline.", "error"); return; }
 
     db.collection("feedbacks").add({
         name: author, text: text, type: type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
         textInput.value = "";
-        alert("❤️ Gửi thành công!");
+        showToast("❤️ Gửi đánh giá thành công!");
         loadAllFeedbacks();
     }).catch(err => {});
 };
@@ -476,12 +518,7 @@ window.submitHomeFeedback = function() {
 function loadAllFeedbacks() {
     const banner = document.getElementById('top-feedback-ticker');
     const cardsContainer = document.getElementById('feedback-cards-container');
-    
-    if (!db) {
-        if (banner) banner.innerHTML = "Chưa có kết nối cơ sở dữ liệu (Offline Mode).";
-        if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Đang chạy độc lập trên trình duyệt.</div>";
-        return;
-    }
+    if (!db) return;
 
     db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
         .then((snapshot) => {
@@ -498,14 +535,8 @@ function loadAllFeedbacks() {
                     </div>`;
                 });
                 if (cardsContainer) cardsContainer.innerHTML = cardsHtml;
-            } else {
-                if (banner) banner.innerHTML = "Chưa có đánh giá nào từ cộng đồng.";
-                if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Chưa có dữ liệu phản hồi.</div>";
             }
-        }).catch(err => {
-            if (banner) banner.innerHTML = "Hệ thống đang hoạt động độc lập.";
-            if (cardsContainer) cardsContainer.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Đã kết nối giao diện an toàn.</div>";
-        });
+        }).catch(err => {});
 }
 
 // --- QUẢN TRỊ ADMIN ---
@@ -516,6 +547,7 @@ window.openAdminDashboard = function() {
     document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('admin-dashboard-screen').style.display = 'block';
     loadAdminData();
+    showToast("Đã mở bảng điều khiển Admin ⚙️");
 };
 
 window.closeAdminDashboard = function() {
@@ -528,10 +560,7 @@ function loadAdminData() {
     const statsBox = document.getElementById('admin-stats-box');
     const scenariosContainer = document.getElementById('admin-scenarios-list');
     const feedbacksContainer = document.getElementById('admin-feedbacks-list');
-    if (!db) {
-        statsBox.innerHTML = "<p>⚠️ Firebase chưa sẵn sàng.</p>";
-        return;
-    }
+    if (!db) return;
 
     db.collection("community_scenarios").get().then((scenSnap) => {
         db.collection("feedbacks").get().then((fbSnap) => {
@@ -548,60 +577,4 @@ function loadAdminData() {
             scenariosContainer.innerHTML = scenHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có đóng góp.</div>";
 
             let fbHtml = "";
-            fbSnap.forEach((doc) => {
-                let d = doc.data();
-                fbHtml += `<div class="admin-item-row">
-                    <div><strong>${d.name}:</strong> ${d.text}</div>
-                    <button class="admin-del-btn" onclick="deleteDoc('feedbacks', '${doc.id}')">Xóa</button>
-                </div>`;
-            });
-            feedbacksContainer.innerHTML = fbHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có phản hồi.</div>";
-        });
-    }).catch(err => {
-        statsBox.innerHTML = "<p style='color:#ef4444;'>Lỗi tải dữ liệu Admin từ Database.</p>";
-    });
-}
-
-window.deleteDoc = function(coll, docId) {
-    if (!confirm("Xóa mục này?")) return;
-    db.collection(coll).doc(docId).delete().then(() => loadAdminData()).catch(err => {});
-};
-
-// --- XẾP HẠNG ---
-function updateLeaderboard() {
-    if (!playerName || !db) return;
-    db.collection("leaderboard").doc(playerName).set({
-        name: playerName, score: score, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(() => loadLeaderboard()).catch(err => {});
-}
-
-function loadLeaderboard() {
-    const container = document.getElementById('leaderboard-list');
-    if (!container) return;
-    if (!db) {
-        container.innerHTML = "<div style='color:#888; font-size:0.85rem;'>1. Cậu (Đang lưu cục bộ): <strong>" + score + "đ</strong></div>";
-        return;
-    }
-    
-    db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
-        .then((snapshot) => {
-            let html = ""; let rank = 1;
-            snapshot.forEach((doc) => {
-                let data = doc.data();
-                let playerRank = getPlayerRank(data.score || 0);
-                html += `<div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
-                        <div>
-                            <strong>${data.name || "Ẩn danh"}</strong>
-                            <div style="font-size: 0.7rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
-                        </div>
-                    </div>
-                    <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0}đ</span>
-                </div>`;
-            });
-            container.innerHTML = html || "<div style='color:#888; font-size:0.85rem;'>Chưa có cao thủ.</div>";
-        }).catch(err => {
-            container.innerHTML = "<div style='color:#888; font-size:0.85rem;'>Điểm của cậu: <strong>" + score + "đ</strong></div>";
-        });
-}
+            fbSnap.
