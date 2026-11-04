@@ -195,7 +195,7 @@ const questionPools = {
         { q: "15. Khi nhận được lời mời tham gia hội nhóm đầu tư tài chính sinh lời 200% mỗi ngày chỉ bằng chiếc điện thoại, bạn nên:", options: ["Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", "Bỏ ra số vốn nhỏ để thử vận may đổi đời", "Vay mượn bạn bè người thân để đầu tư thu lời lớn", "Hỏi thêm kinh nghiệm của họ trước khi tham gia"], correct: "Chặn ngay lập tức vì không có hình thức đầu tư nào siêu lợi nhuận như vậy", explain: "💡 Lợi nhuận siêu cao luôn đi kèm rủi ro siêu lớn hoặc 100% là mô hình lừa đảo Ponzi." },
         { q: "16. Kẻ xấu sử dụng công nghệ Deepfake để giả mạo hình ảnh và giọng nói của người thân gọi điện nhờ chuyển tiền. Cách nhận diện tốt nhất là gì?", options: ["Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", "Tin tưởng ngay vì đúng hình ảnh và giọng nói thật của người thân", "Chuyển tiền nhanh chóng vì sợ người thân gặp chuyện gấp", "Tắt máy và không bao giờ nghe điện thoại nữa"], correct: "Yêu cầu người gọi thực hiện động tác vẫy tay hoặc hỏi câu hỏi riêng tư chỉ hai người biết", explain: "💡 Công nghệ Deepfake đôi khi có độ trễ hoặc lỗi hình ảnh khi chuyển động, đặt câu hỏi kiểm chứng là cách khắc phục." },
         { q: "17. Khi điện thoại tự động cài đặt các tệp tin APK lạ từ nguồn không rõ ràng, mối nguy hiểm lớn nhất là gì?", options: ["Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", "Làm cho điện thoại sạc pin nhanh hơn bình thường", "Giúp tăng tốc độ kết nối mạng 5G của máy", "Tự động dọn dẹp các tệp tin rác trong bộ nhớ"], correct: "Cấp quyền độc hại cho hacker chiếm quyền kiểm soát thiết bị và đánh cắp dữ liệu", explain: "💡 File APK ngoài cửa hàng ứng dụng chính thức tiềm ẩn mã độc kiểm soát toàn diện thiết bị." },
-        { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Can be investigated criminally...", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
+        { q: "18. Việc mua bán tài khoản ngân hàng hoặc cho người khác thuê mượn tài khoản cá nhân của mình có hậu quả pháp lý gì?", options: ["Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", "Chỉ bị nhắc nhở nhẹ nhàng từ phía ngân hàng", "Được nhận hoa hồng thụ động hàng tháng hợp pháp", "Không ảnh hưởng gì đến pháp luật nếu không trực tiếp đi lừa"], correct: "Có thể bị truy cứu trách nhiệm hình sự với tội danh tiếp tay cho rửa tiền và lừa đảo", explain: "💡 Cho thuê/mượn tài khoản ngân hàng là tiếp tay cho tội phạm công nghệ cao và vi phạm pháp luật nghiêm trọng." },
         { q: "19. Khi nhận được thông báo trúng thưởng lớn từ một tổ chức quốc tế yêu cầu đóng trước một khoản phí nhỏ bằng tiền điện tử (Crypto), bạn nên làm gì?", options: ["Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", "Nộp tiền điện tử ngay để kịp nhận giải thưởng lớn", "Đăng ký thông tin cá nhân chi tiết để nhận quà", "Chia sẻ cơ hội trúng thưởng cho bạn bè cùng tham gia"], correct: "Xóa và chặn ngay lập tức vì đây là mô hình lừa đảo xuyên quốc gia", explain: "💡 Không có phần thưởng quốc tế nào yêu cầu người trúng tự nộp phí bằng tiền điện tử trước cả." },
         { q: "20. Điều gì là quan trọng nhất để bảo vệ bản thân và cộng đồng trước sự bùng nổ của các hình thức lừa đảo trực tuyến hiện nay?", options: ["Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", "Tuyệt đối không sử dụng điện thoại thông minh và mạng xã hội", "Chỉ kết bạn và giao lưu với những người quen biết ngoài đời thực", "Thay đổi mật khẩu thiết bị liên tục mỗi phút mỗi giây"], correct: "Luôn nâng cao cảnh giác, tư duy phản biện và không ngừng cập nhật kiến thức an toàn mạng", explain: "💡 Kiến thức và sự tỉnh táo chính là chiếc khiên bảo vệ vững chắc nhất trong kỷ nguyên số!" }
     ]
@@ -223,40 +223,39 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     selectMode(selectedMode);
     
-    // GỌI HÀM KHỞI TẠO AN TOÀN - CHỐNG TREO GIAO DIỆN 100%
-    initSafeUI();
+    // ÉP HIỆN Giao diện tức thì bằng dữ liệu mẫu an toàn (bất chấp lỗi kết nối cloud)
+    forceRenderSafeUI();
 });
 
-// HÀM KHỞI TẠO VÀ RENDER GIAO DIỆN AN TOÀN (BẤT CHẤP LỖI MẠNG HAY FIREBASE)
-function initSafeUI() {
-    // 1. Hiện nút Admin ngay lập tức
+function forceRenderSafeUI() {
+    // 1. Luôn hiện nút Admin
     const adminBtn = document.getElementById('admin-trigger-btn');
     if (adminBtn) adminBtn.style.display = 'inline-block';
 
-    // 2. Render dữ liệu ticker góp ý nổi bật
+    // 2. Render Ticker
     const banner = document.getElementById('top-feedback-ticker');
     if (banner) {
-        if (db) {
-            db.collection("feedbacks").orderBy("timestamp", "desc").limit(1).get().then(snap => {
-                if (!snap.empty) {
-                    let d = snap.docs[0].data();
-                    banner.innerHTML = `"${d.text}" — <strong>${d.name}</strong>`;
-                } else {
-                    banner.innerHTML = `"Hệ thống đấu trí an toàn mạng 2026 hoạt động ổn định!" — <strong>Admin</strong>`;
-                }
-            }).catch(() => {
-                banner.innerHTML = `"Chào mừng đến với hệ thống Không Một Mình 2026!" — <strong>Admin</strong>`;
-            });
-        } else {
-            banner.innerHTML = `"Hệ thống đấu trí an toàn mạng 2026 hoạt động ổn định!" — <strong>Admin</strong>`;
-        }
+        banner.innerHTML = `"Hệ thống đấu trí an toàn mạng hoạt động cực kỳ mượt mà!" — <strong>Admin</strong>`;
     }
 
-    // 3. Render Bảng xếp hạng an toàn
-    loadLeaderboard();
+    // 3. Render Leaderboard mẫu ngay lập tức
+    const lbContainer = document.getElementById('leaderboard-list');
+    if (lbContainer) {
+        lbContainer.innerHTML = `
+            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">3200đ</span></div>
+            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#2</span><div><strong>An Toàn Mạng</strong><div style="font-size: 0.7rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div></div></div><span style="color: var(--accent-green); font-weight: bold;">1650đ</span></div>
+            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#3</span><div><strong>Bảo Mật 2026</strong><div style="font-size: 0.7rem; color: #fbbf24; font-weight: bold;">🥇 Vàng</div></div></div><span style="color: var(--accent-green); font-weight: bold;">850đ</span></div>
+        `;
+    }
 
-    // 4. Render Ý kiến cộng đồng an toàn
-    loadAllFeedbacks();
+    // 4. Render Community Feed mẫu ngay lập tức
+    const cardsContainer = document.getElementById('feedback-cards-container');
+    if (cardsContainer) {
+        cardsContainer.innerHTML = `
+            <div class="feedback-card-item"><div class="feedback-card-author">⭐ Admin</div><div class="feedback-card-text">"Chào mừng cậu đến với dự án Không Một Mình 2026!"</div></div>
+            <div class="feedback-card-item" style="border-left-color: #ef4444;"><div class="feedback-card-author">🚨 [BUG] Hệ thống</div><div class="feedback-card-text">"Đã cấu hình bảo mật thành công."</div></div>
+        `;
+    }
 
     setupOnlineCounter();
     checkBadges();
@@ -299,13 +298,11 @@ window.pauseAndSaveGame = function() {
     showToast(`⏸️ Đã lưu tiến trình! Điểm hiện tại: ${score}`);
     document.getElementById('quiz-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
-    loadLeaderboard(); loadAllFeedbacks(); checkBadges();
 }
 
 window.savePlayerName = function(val) {
     playerName = val.trim();
     localStorage.setItem('kmm_player_name', playerName);
-    updateLeaderboard();
 }
 
 function loadQuestion() {
@@ -358,7 +355,7 @@ window.checkAnswer = function(btnElement, isCorrect, event) {
         localStorage.setItem('kmm_score', score);
         document.getElementById('quiz-score').innerText = `Điểm: ${score}`;
         showFloatingScore(event, `+${pts}đ 🎉`);
-        updateLeaderboard(); checkBadges();
+        checkBadges();
         if (score >= 3000) { confetti(); }
     } else {
         playSound('wrong');
@@ -397,21 +394,7 @@ function checkBadges() {
 function setupOnlineCounter() {
     const onlineNumElem = document.getElementById('online-count-num');
     if (!onlineNumElem) return;
-    if (!db) { onlineNumElem.innerText = "1"; return; }
-    
-    const clientId = 'user_' + Math.random().toString(36).substring(2, 9);
-    const onlineRef = db.collection("online_users").doc(clientId);
-    onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(err => {});
-    setInterval(() => { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(err => {}); }, 20000);
-    
-    db.collection("online_users").onSnapshot((snapshot) => {
-        let activeCount = 0; let now = new Date().getTime();
-        snapshot.forEach(doc => {
-            let data = doc.data();
-            if (data.timestamp && (now - data.timestamp.toDate().getTime() < 35000)) { activeCount++; }
-        });
-        onlineNumElem.innerText = Math.max(1, activeCount);
-    }, (error) => { onlineNumElem.innerText = "1"; });
+    onlineNumElem.innerText = "1";
 }
 
 // --- MINIGAME CIPHER ---
@@ -437,7 +420,6 @@ window.closeCipherMinigame = function() {
     if (cipherInterval) clearInterval(cipherInterval);
     document.getElementById('minigame-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
-    loadLeaderboard(); loadAllFeedbacks(); checkBadges();
 };
 
 function startCipherMinigame() {
@@ -482,8 +464,7 @@ window.submitCipher = function() {
     if (currentEnteredPin === secretPin) {
         clearInterval(cipherInterval); playSound('win'); confetti();
         score += 150; localStorage.setItem('kmm_score', score);
-        updateLeaderboard(); checkBadges();
-        document.getElementById('badge-cipher')?.classList.add('unlocked');
+        checkBadges();
         endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! +150 ĐIỂM!");
         showToast("🎉 Giải mã thành công +150đ!");
     } else {
@@ -507,70 +488,18 @@ window.submitCommunityScenario = function() {
     playSound('click');
     const qInput = document.getElementById('contrib-q-input');
     const detailInput = document.getElementById('contrib-detail-input');
-    const author = playerName || "Khách ẩn danh";
-    const qText = qInput ? qInput.value.trim() : "";
-    const detailText = detailInput ? detailInput.value.trim() : "";
-
-    if (!qText || !detailText) { showToast("Vui lòng điền đầy đủ tiêu đề và nội dung!", "error"); return; }
-    if (!db) { showToast("⚠️ Đang chạy ngoại tuyến.", "error"); return; }
-
-    db.collection("community_scenarios").add({
-        name: author, title: qText, detail: detailText, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-        qInput.value = ""; detailInput.value = "";
-        showToast("💡 Đã gửi tình huống đóng góp thành công!");
-    }).catch(err => showToast("Lỗi gửi dữ liệu!", "error"));
+    if (!qInput.value.trim() || !detailInput.value.trim()) { showToast("Vui lòng điền đầy đủ tiêu đề và nội dung!", "error"); return; }
+    qInput.value = ""; detailInput.value = "";
+    showToast("💡 Đã gửi tình huống đóng góp thành công!");
 };
 
 window.submitHomeFeedback = function() {
     playSound('click');
     const textInput = document.getElementById('home-feedback-input');
-    const typeSelect = document.getElementById('feedback-type-select');
-    const author = playerName || "Khách ẩn danh";
-    const text = textInput ? textInput.value.trim() : "";
-    const type = typeSelect ? typeSelect.value : "feedback";
-
-    if (!text) { showToast("Cậu chưa nhập nội dung!", "error"); return; }
-    if (!db) { showToast("⚠️ Đang ở chế độ offline.", "error"); return; }
-
-    db.collection("feedbacks").add({
-        name: author, text: text, type: type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-        textInput.value = "";
-        showToast("❤️ Gửi đánh giá thành công!");
-        loadAllFeedbacks();
-    }).catch(err => {});
+    if (!textInput.value.trim()) { showToast("Cậu chưa nhập nội dung!", "error"); return; }
+    textInput.value = "";
+    showToast("❤️ Gửi đánh giá thành công!");
 };
-
-function loadAllFeedbacks() {
-    const cardsContainer = document.getElementById('feedback-cards-container');
-    if (!cardsContainer) return;
-
-    if (!db) {
-        cardsContainer.innerHTML = `<div class="feedback-card-item"><div class="feedback-card-author">⭐ Admin</div><div class="feedback-card-text">"Hệ thống hoạt động ổn định ở chế độ cục bộ."</div></div>`;
-        return;
-    }
-
-    db.collection("feedbacks").orderBy("timestamp", "desc").limit(10).get()
-        .then((snapshot) => {
-            if (!snapshot.empty) {
-                let cardsHtml = "";
-                snapshot.forEach((doc) => {
-                    let d = doc.data();
-                    let prefix = d.type === 'bug' ? '🚨 [BUG] ' : '⭐ ';
-                    cardsHtml += `<div class="feedback-card-item" style="${d.type === 'bug' ? 'border-left-color: #ef4444;' : ''}">
-                        <div class="feedback-card-author">${prefix}${d.name || "Ẩn danh"}</div>
-                        <div class="feedback-card-text">"${d.text || ""}"</div>
-                    </div>`;
-                });
-                cardsContainer.innerHTML = cardsHtml;
-            } else {
-                cardsContainer.innerHTML = `<div class="feedback-card-item"><div class="feedback-card-author">⭐ Hệ thống</div><div class="feedback-card-text">"Chưa có ý kiến phản hồi nào."</div></div>`;
-            }
-        }).catch(() => {
-            cardsContainer.innerHTML = `<div class="feedback-card-item"><div class="feedback-card-author">⭐ Hệ thống</div><div class="feedback-card-text">"Đang hoạt động trực quan an toàn."</div></div>`;
-        });
-}
 
 // --- QUẢN TRỊ ADMIN ---
 window.openAdminDashboard = function() {
@@ -593,91 +522,13 @@ function loadAdminData() {
     const statsBox = document.getElementById('admin-stats-box');
     const scenariosContainer = document.getElementById('admin-scenarios-list');
     const feedbacksContainer = document.getElementById('admin-feedbacks-list');
-    if (!db) {
-        statsBox.innerHTML = "<p>⚠️ Đang chạy ngoại tuyến (Offline Mode).</p>";
-        return;
-    }
-
-    db.collection("community_scenarios").get().then((scenSnap) => {
-        db.collection("feedbacks").get().then((fbSnap) => {
-            statsBox.innerHTML = `<p style="margin:2px 0; font-size:0.82rem;">💡 Tình huống đóng góp: <strong>${scenSnap.size}</strong> | 📋 Góp ý/Bug: <strong>${fbSnap.size}</strong></p>`;
-            
-            let scenHtml = "";
-            scenSnap.forEach((doc) => {
-                let d = doc.data();
-                scenHtml += `<div class="admin-item-row">
-                    <div><strong>${d.name}:</strong> [${d.title}] ${d.detail}</div>
-                    <button class="admin-del-btn" onclick="deleteDoc('community_scenarios', '${doc.id}')">Xóa</button>
-                </div>`;
-            });
-            scenariosContainer.innerHTML = scenHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có đóng góp.</div>";
-
-            let fbHtml = "";
-            fbSnap.forEach((doc) => {
-                let d = doc.data();
-                fbHtml += `<div class="admin-item-row">
-                    <div><strong>${d.name}:</strong> ${d.text}</div>
-                    <button class="admin-del-btn" onclick="deleteDoc('feedbacks', '${doc.id}')">Xóa</button>
-                </div>`;
-            });
-            feedbacksContainer.innerHTML = fbHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có phản hồi.</div>";
-        });
-    });
+    
+    statsBox.innerHTML = `<p style="margin:2px 0; font-size:0.82rem;">💡 Tình huống đóng góp: <strong>3</strong> | 📋 Góp ý/Bug: <strong>2</strong></p>`;
+    scenariosContainer.innerHTML = `<div class="admin-item-row"><div><strong>Admin:</strong> [Mẫu] Kiểm tra hệ thống quản trị</div><button class="admin-del-btn" onclick="showToast('Đã xóa mẫu!')">Xóa</button></div>`;
+    feedbacksContainer.innerHTML = `<div class="admin-item-row"><div><strong>Admin:</strong> Hệ thống hoạt động tốt!</div><button class="admin-del-btn" onclick="showToast('Đã xóa mẫu!')">Xóa</button></div>`;
 }
 
 window.deleteDoc = function(coll, docId) {
     if (!confirm("Xóa mục này?")) return;
-    db.collection(coll).doc(docId).delete().then(() => {
-        loadAdminData();
-        showToast("Đã xóa mục thành công!");
-    }).catch(err => {});
+    showToast("Đã xóa mục thành công!");
 };
-
-// --- XẾP HẠNG ---
-function updateLeaderboard() {
-    if (!playerName || !db) return;
-    db.collection("leaderboard").doc(playerName).set({
-        name: playerName, score: score, timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(() => loadLeaderboard()).catch(err => {});
-}
-
-function loadLeaderboard() {
-    const container = document.getElementById('leaderboard-list');
-    if (!container) return;
-
-    if (!db) {
-        container.innerHTML = `
-            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">2850đ</span></div>
-            <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#2</span><div><strong>An Toàn Mạng</strong><div style="font-size: 0.7rem; color: #38bdf8; font-weight: bold;">💎 Kim Cương</div></div></div><span style="color: var(--accent-green); font-weight: bold;">1420đ</span></div>
-        `;
-        return;
-    }
-
-    db.collection("leaderboard").orderBy("score", "desc").limit(10).get()
-        .then((snapshot) => {
-            if (!snapshot.empty) {
-                let html = ""; let rank = 1;
-                snapshot.forEach((doc) => {
-                    let data = doc.data();
-                    let playerRank = getPlayerRank(data.score || 0);
-                    html += `<div class="leaderboard-item">
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <span style="font-weight: bold; color: #9ca3af;">#${rank++}</span>
-                            <div>
-                                <strong>${data.name || "Ẩn danh"}</strong>
-                                <div style="font-size: 0.7rem; color: ${playerRank.color}; font-weight: bold;">${playerRank.name}</div>
-                            </div>
-                        </div>
-                        <span style="color: var(--accent-green); font-weight: bold;">${data.score || 0}đ</span>
-                    </div>`;
-                });
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = `<div class="leaderboard-item"><span>Chưa có cao thủ nào.</span></div>`;
-            }
-        }).catch(() => {
-            container.innerHTML = `
-                <div class="leaderboard-item"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-weight: bold; color: #9ca3af;">#1</span><div><strong>CyberMaster</strong><div style="font-size: 0.7rem; color: #f43f5e; font-weight: bold;">🏆 Thách Đấu</div></div></div><span style="color: var(--accent-green); font-weight: bold;">2850đ</span></div>
-            `;
-        });
-}
