@@ -86,11 +86,11 @@ const warnings = [
     "⚡ Thử thách đỉnh cao: Khó (50đ) & Hack Não (100đ), cày điểm bứt phá rank!"
 ];
 
-// --- TRỌN VẸN 40 CÂU HỎI (20 CHẾ ĐỘ KHÓ + 20 CHẾ ĐỘ HACK NÃO) ---
+// --- KHO CÂU HỎI ĐẤU TRÍ 40 CÂU ---
 const questionPools = {
     kho: [
         { q: "1. Nhận cuộc gọi tự xưng Công an yêu cầu chuyển tiền vào tài khoản tạm giữ để điều tra. Bạn xử lý thế nào?", options: ["Cúp máy ngay lập tức và báo công an địa phương", "Chuyển tiền vào tài khoản để chứng minh trong sạch", "Cung cấp mã OTP qua điện thoại cho người gọi", "Hẹn gặp trực tiếp người gọi ở nơi vắng vẻ"], correct: "Cúp máy ngay lập tức và báo công an địa phương", explain: "💡 Công an không bao giờ làm việc hay yêu cầu chuyển tiền qua điện thoại!" },
-        { q: "2. Tin nhắn MXH thông báo trúng thưởng xe máy lớn nhưng phải nộp khoản phí làm thủ tục. Bạn làm gì?", options: ["Xóa và chặn tin nhắn giả mạo trúng thưởng ngay", "Nộp tiền phí qua thẻ cào để nhận thưởng lớn", "Gửi ảnh chụp thẻ ngân hàng cho người thông báo", "Chia sẻ bài viết công khai để nhận xe nhanh"], correct: "Xóa và chặn tin nhắn giả mạo trúng thưởng ngay", explain: "💡 Không có chương trình trúng thưởng hợp pháp nào bắt nộp phí trước để nhận giải!" },
+        { q: "2. Tin nhắn MXH thông báo trúng thưởng xe máy lớn nhưng phải nộp khoản phí làm thủ tục. Bạn làm gì?", options: ["Xóa và chặn tin nhắn giả mạo trúng thưởng ngay", "Nộp tiền phí qua thẻ cào để nhận thưởng lớn", "Gửi ảnh chụp thẻ ngân hàng cho người thông báo", "Chia sẻ bài viết công khai để nhận xe nhanh"], correct: "Xóa and chặn tin nhắn giả mạo trúng thưởng ngay", explain: "💡 Không có chương trình trúng thưởng hợp pháp nào bắt nộp phí trước để nhận giải!" },
         { q: "3. Tuyển cộng tác viên online thả tim đơn hàng ảo nhận hoa hồng. Dấu hiệu nhận diện lừa đảo là gì?", options: ["Yêu cầu nộp tiền ứng trước để mua đơn hàng", "Công ty trả lương qua ngân hàng chính thống", "Có hợp đồng ký kết trực tiếp tại trụ sở", "Không yêu cầu bất kỳ khoản tiền nào từ đầu"], correct: "Yêu cầu nộp tiền ứng trước để mua đơn hàng", explain: "💡 Kẻ lừa đảo dụ nộp tiền số lượng ngày càng lớn rồi chiếm đoạt!" },
         { q: "4. Nhận đường link lạ từ bạn bè giục click xem video hot hoặc hình ảnh cá nhân. Rủi ro lớn nhất là gì?", options: ["Dính mã độc đánh cắp tài khoản và thông tin", "Chỉ làm tốn dung lượng kết nối mạng 4G", "Không có rủi ro gì vì do bạn bè gửi tặng", "Làm thiết bị di động chạy mượt mà hơn"], correct: "Dính mã độc đánh cắp tài khoản và thông tin", explain: "💡 Tài khoản bạn bè có thể đã bị hack và tự động phát tán link mã độc!" },
         { q: "5. Khi đặt mật khẩu tài khoản quan trọng, cấu trúc nào mang lại mức độ an toàn cao nhất?", options: ["Kết hợp chữ hoa, thường, số và ký tự đặc biệt", "Sử dụng ngày tháng năm sinh của bản thân", "Sử dụng dãy số liên tiếp từ một đến tám", "Dùng chung một mật khẩu duy nhất mọi nơi"], correct: "Kết hợp chữ hoa, thường, số và ký tự đặc biệt", explain: "💡 Mật khẩu phức tạp và dài giúp chống lại các đợt tấn công dò quét tự động." },
@@ -268,6 +268,207 @@ function checkBadges() {
     if (score >= 10000) document.getElementById('badge-god')?.classList.add('unlocked');
 }
 
+// --- MINIGAME CIPHER MỞ RỘNG 10 CÂU + THỜI GIAN 45 GIÂY ---
+let cipherTimer = 45; 
+let cipherInterval = null; 
+let secretPin = ""; 
+let currentEnteredPin = "";
+
+const cipherChallenges = [
+    { clue: "💡 MANH MỐI: Số đầu = 2, số cuối = 8. Hai số giữa bằng nhau và bằng (2+8)/2", target: "2558" },
+    { clue: "💡 MANH MỐI: Mật mã chứa năm sinh kết thúc chiến tranh Việt Nam (1975) trừ đi 5", target: "1970" },
+    { clue: "💡 MANH MỐI: Dãy 4 chữ số tăng dần liên tiếp bắt đầu bằng số 3", target: "3456" },
+    { clue: "💡 MANH MỐI: Mật mã là bình phương của số 45 cộng thêm 253", target: "2278" },
+    { clue: "💡 MANH MỐI: Số điện thoại khẩn cấp 113 nhân đôi lên rồi trừ đi 126", target: "2130" },
+    { clue: "💡 MANH MỐI: Mật mã là năm thành lập Đảng Cộng sản Việt Nam (1930) nhân đôi chia hai", target: "1930" },
+    { clue: "💡 MANH MỐI: Tổng 4 chữ số bằng 20, chữ số sau lớn hơn chữ số trước 1 đơn vị (VD: x, x+1...)", target: "3566" },
+    { clue: "💡 MANH MỐI: Mật mã là số ngày trong một năm nhuận (366) nhân với 5 trừ đi 30", target: "1800" },
+    { clue: "💡 MANH MỐI: Bốn chữ số giống hệt nhau và là bội số của 1111 nhỏ hơn 6000", target: "5555" },
+    { clue: "💡 MANH MỐI: Số phòng bảo mật tối cao: Căn bậc hai của 160000 nhân với 2", target: "800" }
+];
+
+window.openCipherMinigame = function() {
+    playSound('click');
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('admin-dashboard-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'block';
+    startCipherMinigame();
+    showToast("Mở giao diện giải mã Cyber Cipher! 🔐");
+};
+
+window.closeCipherMinigame = function() {
+    playSound('click');
+    if (cipherInterval) clearInterval(cipherInterval);
+    document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('welcome-screen').style.display = 'block';
+    loadLeaderboard(); loadAllFeedbacks();
+};
+
+function startCipherMinigame() {
+    cipherTimer = 45; // Tăng thời gian lên 45 giây cho người chơi suy nghĩ
+    currentEnteredPin = ""; 
+    updatePinDisplay();
+    document.getElementById('cipher-timer-number').innerText = cipherTimer;
+    document.getElementById('cipher-result-msg').style.display = 'none';
+    
+    // Chọn ngẫu nhiên 1 trong 10 câu hỏi hack não
+    let randomTask = cipherChallenges[Math.floor(Math.random() * cipherChallenges.length)];
+    secretPin = randomTask.target;
+    document.getElementById('cipher-clue').innerText = randomTask.clue;
+
+    if (cipherInterval) clearInterval(cipherInterval);
+    cipherInterval = setInterval(() => {
+        cipherTimer--;
+        document.getElementById('cipher-timer-number').innerText = cipherTimer;
+        if (cipherTimer <= 0) {
+            clearInterval(cipherInterval); playSound('wrong');
+            endCipherGame(false, `💥 HẾT GIỜ! Mật mã đúng: <strong>${secretPin}</strong>`);
+        }
+    }, 1000);
+}
+
+window.pressNum = function(val) {
+    playSound('click');
+    if (cipherTimer <= 0) return;
+    if (val === 'del') { currentEnteredPin = currentEnteredPin.slice(0, -1); }
+    else if (currentEnteredPin.length < 4) { currentEnteredPin += val; }
+    updatePinDisplay();
+};
+
+function updatePinDisplay() {
+    for (let i = 0; i < 4; i++) {
+        let box = document.getElementById(`pin-digit-${i}`);
+        if (box) box.innerText = currentEnteredPin[i] || "_";
+    }
+}
+
+window.submitCipher = function() {
+    playSound('click');
+    if (cipherTimer <= 0) return;
+    if (currentEnteredPin.length < 4) { showToast("Vui lòng nhập đủ 4 chữ số!", "error"); return; }
+
+    if (currentEnteredPin === secretPin) {
+        clearInterval(cipherInterval); playSound('win'); confetti();
+        score += 150; localStorage.setItem('kmm_score', score);
+        updateLeaderboard(); checkBadges();
+        endCipherGame(true, "🎉 GIẢI MÃ THÀNH CÔNG! +150 ĐIỂM!");
+        showToast("🎉 Giải mã thành công +150đ!");
+    } else {
+        playSound('wrong'); cipherTimer = Math.max(0, cipherTimer - 5);
+        document.getElementById('cipher-timer-number').innerText = cipherTimer;
+        showToast("❌ Sai mật mã! Phạt trừ 5 giây!", "error");
+        currentEnteredPin = ""; updatePinDisplay();
+    }
+};
+
+function endCipherGame(isWin, msg) {
+    const resBox = document.getElementById('cipher-result-msg');
+    resBox.style.display = 'block';
+    resBox.style.background = isWin ? "rgba(52, 211, 153, 0.25)" : "rgba(239, 68, 68, 0.25)";
+    resBox.style.color = isWin ? "#34d399" : "#f87171";
+    resBox.innerHTML = `${msg} <br/><br/><button class="secondary-btn" onclick="startCipherMinigame()">🔄 Thử Lại</button>`;
+}
+
+// --- ĐÓNG GÓP & GÓP Ý ---
+window.submitCommunityScenario = function() {
+    playSound('click');
+    const qInput = document.getElementById('contrib-q-input');
+    const detailInput = document.getElementById('contrib-detail-input');
+    const author = playerName || "Khách ẩn danh";
+    const qText = qInput ? qInput.value.trim() : "";
+    const detailText = detailInput ? detailInput.value.trim() : "";
+
+    if (!qText || !detailText) { showToast("Vui lòng điền đầy đủ tiêu đề và nội dung!", "error"); return; }
+    if (!db) { showToast("⚠️ Đang chạy ngoại tuyến.", "error"); return; }
+
+    db.collection("community_scenarios").add({
+        name: author, title: qText, detail: detailText, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        qInput.value = ""; detailInput.value = "";
+        showToast("💡 Đã gửi tình huống đóng góp thành công!");
+    }).catch(err => showToast("Lỗi gửi dữ liệu!", "error"));
+};
+
+window.submitHomeFeedback = function() {
+    playSound('click');
+    const textInput = document.getElementById('home-feedback-input');
+    const typeSelect = document.getElementById('feedback-type-select');
+    const author = playerName || "Khách ẩn danh";
+    const text = textInput ? textInput.value.trim() : "";
+    const type = typeSelect ? typeSelect.value : "feedback";
+
+    if (!text) { showToast("Cậu chưa nhập nội dung!", "error"); return; }
+    if (!db) { showToast("⚠️ Đang chạy ngoại tuyến.", "error"); return; }
+
+    db.collection("feedbacks").add({
+        name: author, text: text, type: type, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        textInput.value = "";
+        showToast("❤️ Gửi đánh giá thành công!");
+        loadAllFeedbacks();
+    }).catch(err => {});
+};
+
+// --- QUẢN TRỊ ADMIN ---
+window.openAdminDashboard = function() {
+    playSound('click');
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('minigame-screen').style.display = 'none';
+    document.getElementById('admin-dashboard-screen').style.display = 'block';
+    loadAdminData();
+    showToast("Đã mở bảng điều khiển Admin ⚙️");
+};
+
+window.closeAdminDashboard = function() {
+    playSound('click');
+    document.getElementById('admin-dashboard-screen').style.display = 'none';
+    document.getElementById('welcome-screen').style.display = 'block';
+};
+
+function loadAdminData() {
+    const statsBox = document.getElementById('admin-stats-box');
+    const scenariosContainer = document.getElementById('admin-scenarios-list');
+    const feedbacksContainer = document.getElementById('admin-feedbacks-list');
+    if (!db) return;
+
+    db.collection("community_scenarios").get().then((scenSnap) => {
+        db.collection("feedbacks").get().then((fbSnap) => {
+            statsBox.innerHTML = `<p style="margin:2px 0; font-size:0.82rem;">💡 Tình huống đóng góp: <strong>${scenSnap.size}</strong> | 📋 Góp ý/Bug: <strong>${fbSnap.size}</strong></p>`;
+            
+            let scenHtml = "";
+            scenSnap.forEach((doc) => {
+                let d = doc.data();
+                scenHtml += `<div class="admin-item-row">
+                    <div><strong>${d.name}:</strong> [${d.title}] ${d.detail}</div>
+                    <button class="admin-del-btn" onclick="deleteDoc('community_scenarios', '${doc.id}')">Xóa</button>
+                </div>`;
+            });
+            scenariosContainer.innerHTML = scenHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có đóng góp.</div>";
+
+            let fbHtml = "";
+            fbSnap.forEach((doc) => {
+                let d = doc.data();
+                fbHtml += `<div class="admin-item-row">
+                    <div><strong>${d.name}:</strong> ${d.text}</div>
+                    <button class="admin-del-btn" onclick="deleteDoc('feedbacks', '${doc.id}')">Xóa</button>
+                </div>`;
+            });
+            feedbacksContainer.innerHTML = fbHtml || "<div style='color:#888; font-size:0.8rem;'>Chưa có phản hồi.</div>";
+        });
+    });
+}
+
+window.deleteDoc = function(coll, docId) {
+    if (!confirm("Xóa mục này?")) return;
+    db.collection(coll).doc(docId).delete().then(() => {
+        loadAdminData();
+        showToast("Đã xóa mục thành công!");
+    }).catch(err => {});
+};
+
+// --- XẾP HẠNG ---
 function updateLeaderboard() {
     if (!playerName || !db) return;
     db.collection("leaderboard").doc(playerName).set({
@@ -320,9 +521,3 @@ function loadAllFeedbacks() {
             }
         }).catch(err => {});
 }
-
-window.openCipherMinigame = function() { showToast("Mở minigame Cipher!"); }
-window.submitCommunityScenario = function() { showToast("Đã gửi đóng góp!"); }
-window.submitHomeFeedback = function() { showToast("Đã gửi phản hồi!"); }
-window.openAdminDashboard = function() { showToast("Mở bảng quản trị Admin!"); }
-window.closeAdminDashboard = function() {}
